@@ -7,14 +7,14 @@ __pycache__/
 artifacts/
 runs/
 logs/
-
+models/
 # Data - regenerate with tools/
+data/
 data/processed/
 data/raw/
 data/synthetic/
 
 # Models - download or retrain
-models/yolov8/*/best.pt
 yolov8n.pt
 *.pt
 
