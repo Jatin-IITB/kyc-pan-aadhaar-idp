@@ -1,0 +1,20 @@
+{
+  "total": 63,
+  "ok_count": 62,
+  "ok_rate": 0.9841269841269841,
+  "valid_count": 2,
+  "valid_rate": 0.031746031746031744,
+  "by_doctype": {
+    "aadhaar": 49,
+    "pan": 13,
+    "unknown": 1
+  },
+  "by_reason": {
+    "invalid:regex_mismatch": 36,
+    "invalid:other": 15,
+    "invalid:enum": 9,
+    "valid": 2,
+    "transport:(PreconditionNotMet) Tensor holds no memory. Call Tensor::mutable_data firstly.\n  [Hint: holder_ should not be null.] (at ..\\paddle\\phi\\core\\dense_tensor_impl.cc:44)\n": 1
+  },
+  "field_fail_counts": {}
+}

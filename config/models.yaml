@@ -1,0 +1,9 @@
+yolov8:
+  pan_fields:
+    weights: models/yolov8/pan_field_detector_v1/best.pt
+    imgsz: 640
+    conf: 0.25
+  aadhar_fields:
+    weights: models/yolov8/aadhar_field_detector_v1/best.pt
+    imgsz: 640
+    conf: 0.25

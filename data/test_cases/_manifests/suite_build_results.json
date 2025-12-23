@@ -1,0 +1,3287 @@
+[
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\003bad48-58ca2474a0b8b50a0499d5a8_pan_jpg.rf.8f128332404e42f5dd6f91223eda314b.jpg",
+    "filename": "003bad48-58ca2474a0b8b50a0499d5a8_pan_jpg.rf.8f128332404e42f5dd6f91223eda314b.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "unknown",
+    "ok": false,
+    "is_valid": false,
+    "message": "bn"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\038469f5-imgtopdf_generated_2508201310016_page-15_jpg.rf.1a3e63a3e056c7bd80aa7d5d0986facf.jpg",
+    "filename": "038469f5-imgtopdf_generated_2508201310016_page-15_jpg.rf.1a3e63a3e056c7bd80aa7d5d0986facf.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\03fc1639-photo_10_2023-07-14_15-49-37_jpg.rf.cc03bb23177dcde75af70a7bbab20c3d.jpg",
+    "filename": "03fc1639-photo_10_2023-07-14_15-49-37_jpg.rf.cc03bb23177dcde75af70a7bbab20c3d.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "unknown",
+    "ok": false,
+    "is_valid": false,
+    "message": "bn"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\06637104-5875f38a9ecee3a41d6467d2_pan_jpg.rf.7bb2b1664b13a95adfd1df7a90c070be.jpg",
+    "filename": "06637104-5875f38a9ecee3a41d6467d2_pan_jpg.rf.7bb2b1664b13a95adfd1df7a90c070be.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\0941ebdd-58cfef7e42e00c4f07edbc96_pan_Sign_page-1_jpg.rf.ce56f6675a19b8e2d8b2683d845ef9bc.jpg",
+    "filename": "0941ebdd-58cfef7e42e00c4f07edbc96_pan_Sign_page-1_jpg.rf.ce56f6675a19b8e2d8b2683d845ef9bc.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\096475d8-58c59537cb425d7c74570526_pan_Sign_page-1_jpg.rf.bb5b01ce003a78485e9ff9c8997ea269.jpg",
+    "filename": "096475d8-58c59537cb425d7c74570526_pan_Sign_page-1_jpg.rf.bb5b01ce003a78485e9ff9c8997ea269.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": false,
+    "message": "'S1466' does not match '^[A-Z]{5}[0-9]{4}[A-Z]$'"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\0c1db974-58270f9d1c0e0077420b7740_pan_page-1_jpg.rf.9bea3e6f7b4628e173d8ab74fb02985a.jpg",
+    "filename": "0c1db974-58270f9d1c0e0077420b7740_pan_page-1_jpg.rf.9bea3e6f7b4628e173d8ab74fb02985a.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\0c870ea1-hpvfyf_jpg.rf.499021bfc949d3d59af873fdb8c5c3a5.jpg",
+    "filename": "0c870ea1-hpvfyf_jpg.rf.499021bfc949d3d59af873fdb8c5c3a5.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\0cd16565-photo_2_2023-07-14_15-55-24_jpg.rf.ce8c567a3e2c3d6d6d2c1c2390e67269.jpg",
+    "filename": "0cd16565-photo_2_2023-07-14_15-55-24_jpg.rf.ce8c567a3e2c3d6d6d2c1c2390e67269.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\10cf9568-589028c58188a14f5da5f738_pan_jpg.rf.693c361f3fccbd0e8e96219ceb77cfd6.jpg",
+    "filename": "10cf9568-589028c58188a14f5da5f738_pan_jpg.rf.693c361f3fccbd0e8e96219ceb77cfd6.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\11b04841-imgtopdf_generated_2508201303047_page-187_jpg.rf.a585c502b52634191f280c57733c07f3.jpg",
+    "filename": "11b04841-imgtopdf_generated_2508201303047_page-187_jpg.rf.a585c502b52634191f280c57733c07f3.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\13432d1f-sp4fo_jpg.rf.d560c55aa1ba4beeafd88e0cfdf4c1e1.jpg",
+    "filename": "13432d1f-sp4fo_jpg.rf.d560c55aa1ba4beeafd88e0cfdf4c1e1.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": false,
+    "message": "'04704/2005' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\19cf2eb4-us24q_jpg.rf.4371a81ff5250a34b7dcbb01514d4bd3.jpg",
+    "filename": "19cf2eb4-us24q_jpg.rf.4371a81ff5250a34b7dcbb01514d4bd3.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\1b6d3a29-imgtopdf_generated_2508201303047_page-177_jpg.rf.f2b4c173dce311006665032442553c11.jpg",
+    "filename": "1b6d3a29-imgtopdf_generated_2508201303047_page-177_jpg.rf.f2b4c173dce311006665032442553c11.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\1c0d3327-584a67a36e5aa0a8259044a5_proof_pdf_page-4_jpg.rf.872964efdf93c8db20858e8c9af8d3f7.jpg",
+    "filename": "1c0d3327-584a67a36e5aa0a8259044a5_proof_pdf_page-4_jpg.rf.872964efdf93c8db20858e8c9af8d3f7.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\1eb69d5b-58537a14094cd41e02017a37_pan_jpg.rf.82fac41264db539417be084eeb87511c.jpg",
+    "filename": "1eb69d5b-58537a14094cd41e02017a37_pan_jpg.rf.82fac41264db539417be084eeb87511c.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\1f7868d9-58d67627dd39f3ad282f1419_pan_Sign_page-1_jpg.rf.fd23abedf64a745240a4aca76e993134.jpg",
+    "filename": "1f7868d9-58d67627dd39f3ad282f1419_pan_Sign_page-1_jpg.rf.fd23abedf64a745240a4aca76e993134.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\24f4c84d-5879f7993856e43677c5473c_pan_page-1_jpg.rf.42a94f8f3af0feca5f7a3590e244d1a7.jpg",
+    "filename": "24f4c84d-5879f7993856e43677c5473c_pan_page-1_jpg.rf.42a94f8f3af0feca5f7a3590e244d1a7.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\2806ef09-58d20ea16665b0024e85b43a_pan_Sign_page-1_jpg.rf.778d7f44d30036367c7ee05b0b7327bc.jpg",
+    "filename": "2806ef09-58d20ea16665b0024e85b43a_pan_Sign_page-1_jpg.rf.778d7f44d30036367c7ee05b0b7327bc.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\2d437aa3-5873bc1b831b54ff05c8f6bb_pan_jpg.rf.a218f2e10023b3d34e3799ec0d73ffd4.jpg",
+    "filename": "2d437aa3-5873bc1b831b54ff05c8f6bb_pan_jpg.rf.a218f2e10023b3d34e3799ec0d73ffd4.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": false,
+    "message": "'ADKERO' does not match '^[A-Z]{5}[0-9]{4}[A-Z]$'"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\2e2d68d3-imgtopdf_generated_2508201303047_page-29_jpg.rf.3f506dcd9f28a1af9dcf1a15aa15633d.jpg",
+    "filename": "2e2d68d3-imgtopdf_generated_2508201303047_page-29_jpg.rf.3f506dcd9f28a1af9dcf1a15aa15633d.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\306a3f00-dy9ci_jpg.rf.7121e22160e77c06d734134d22df9539.jpg",
+    "filename": "306a3f00-dy9ci_jpg.rf.7121e22160e77c06d734134d22df9539.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\329b6cc7-58c25aab776606e60fc8e001_pan_jpg.rf.52dd70a81637ee1f725b0cbd36f6ff6b.jpg",
+    "filename": "329b6cc7-58c25aab776606e60fc8e001_pan_jpg.rf.52dd70a81637ee1f725b0cbd36f6ff6b.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\35cadaf2-58245899cb9e2aca4d85b503_pan_jpg.rf.0401194b2f373771cf1d34eb61420059.jpg",
+    "filename": "35cadaf2-58245899cb9e2aca4d85b503_pan_jpg.rf.0401194b2f373771cf1d34eb61420059.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\362ab354-imgtopdf_generated_2508201303047_page-82_jpg.rf.cb858ae508fdb12142a1b33dba190f42.jpg",
+    "filename": "362ab354-imgtopdf_generated_2508201303047_page-82_jpg.rf.cb858ae508fdb12142a1b33dba190f42.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\36d3ee91-58cfe61242e00c4f07edbc87_pan_Sign_page-1_jpg.rf.142dc230a930d88db3260f17f01bf63f.jpg",
+    "filename": "36d3ee91-58cfe61242e00c4f07edbc87_pan_Sign_page-1_jpg.rf.142dc230a930d88db3260f17f01bf63f.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": false,
+    "message": "'CVEPS1336.' does not match '^[A-Z]{5}[0-9]{4}[A-Z]$'"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\39ae37f3-photo_607-06-2022_13-19-27_thumb_jpg.rf.930f68bf0e60d776a152f0ca0a10c0a1.jpg",
+    "filename": "39ae37f3-photo_607-06-2022_13-19-27_thumb_jpg.rf.930f68bf0e60d776a152f0ca0a10c0a1.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\40742388-582182e19101998257475cb9_pan_jpg.rf.9c747510cefff18072cd8382be063a19.jpg",
+    "filename": "40742388-582182e19101998257475cb9_pan_jpg.rf.9c747510cefff18072cd8382be063a19.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\4903932e-photo_7_2023-07-14_15-52-26_jpg.rf.16c0b4a1e3ca0da50e047bfd54fff3a5.jpg",
+    "filename": "4903932e-photo_7_2023-07-14_15-52-26_jpg.rf.16c0b4a1e3ca0da50e047bfd54fff3a5.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\4b53af6e-imgtopdf_generated_2508201303047_page-118_jpg.rf.bf8bd21cc35c9d9ad1127ba8dca81479.jpg",
+    "filename": "4b53af6e-imgtopdf_generated_2508201303047_page-118_jpg.rf.bf8bd21cc35c9d9ad1127ba8dca81479.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\4d4924a7-583d1f04754c0f134781a450_pan_Sign_page-1_jpg.rf.dc30be1b81e2fff5814aa2a1481a0390.jpg",
+    "filename": "4d4924a7-583d1f04754c0f134781a450_pan_Sign_page-1_jpg.rf.dc30be1b81e2fff5814aa2a1481a0390.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\53ce3c30-imgtopdf_generated_2208201756030_page-97_jpg.rf.fd27181e9743cd93ac926a523b7a6bc2.jpg",
+    "filename": "53ce3c30-imgtopdf_generated_2208201756030_page-97_jpg.rf.fd27181e9743cd93ac926a523b7a6bc2.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\59806e62-58d8e0b0ca35d5ce7347b5d9_pan_jpg.rf.489c5092e35155a538c7b6a65d0ee4d1.jpg",
+    "filename": "59806e62-58d8e0b0ca35d5ce7347b5d9_pan_jpg.rf.489c5092e35155a538c7b6a65d0ee4d1.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\59a974b3-imgtopdf_generated_2208201757059_page-25_jpg.rf.380f1955f761c5f97a06019e8662bdb5.jpg",
+    "filename": "59a974b3-imgtopdf_generated_2208201757059_page-25_jpg.rf.380f1955f761c5f97a06019e8662bdb5.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\5a6dc3b4-589d7f31df0f3efd50f2e781_pan_jpg.rf.5c79bc7dcb859740fd7afd9d543c2855.jpg",
+    "filename": "5a6dc3b4-589d7f31df0f3efd50f2e781_pan_jpg.rf.5c79bc7dcb859740fd7afd9d543c2855.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\5dc388a9-imgtopdf_generated_2508201310016_page-156_jpg.rf.bcef43f41685ec37a0e9fb181515ee43.jpg",
+    "filename": "5dc388a9-imgtopdf_generated_2508201310016_page-156_jpg.rf.bcef43f41685ec37a0e9fb181515ee43.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\5e38eae4-582fe6dd8961dabf0a7ce765_pan_jpg.rf.2ba28b7945a64bc1326e150653db31e6.jpg",
+    "filename": "5e38eae4-582fe6dd8961dabf0a7ce765_pan_jpg.rf.2ba28b7945a64bc1326e150653db31e6.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\5f97866a-photo_3_2023-07-14_15-45-57_jpg.rf.5887bba44d5c9077fec251ad33a82e57.jpg",
+    "filename": "5f97866a-photo_3_2023-07-14_15-45-57_jpg.rf.5887bba44d5c9077fec251ad33a82e57.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\60ee5df6-5845904cd1687aa37c34142b_pan_page-1_jpg.rf.f267bb846f3b3f8e22aa078ebc4d207a.jpg",
+    "filename": "60ee5df6-5845904cd1687aa37c34142b_pan_page-1_jpg.rf.f267bb846f3b3f8e22aa078ebc4d207a.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\674ddb8a-58383178b048210a540e9cb7_pan_page-1_jpg.rf.ae2a25bccf685046506871ac81351e8c.jpg",
+    "filename": "674ddb8a-58383178b048210a540e9cb7_pan_page-1_jpg.rf.ae2a25bccf685046506871ac81351e8c.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\69d35188-582ae7bb1adb4fea53776457_pan_Sign_page-1_jpg.rf.748361da20603fcba164326d1bf9b460.jpg",
+    "filename": "69d35188-582ae7bb1adb4fea53776457_pan_Sign_page-1_jpg.rf.748361da20603fcba164326d1bf9b460.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": false,
+    "message": "'15/00/1989' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\6b3c2164-imgtopdf_generated_2508201310016_page-87_jpg.rf.caada2e04d526d3879e0ec17b6296486.jpg",
+    "filename": "6b3c2164-imgtopdf_generated_2508201310016_page-87_jpg.rf.caada2e04d526d3879e0ec17b6296486.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\70c2ddac-imgtopdf_generated_2508201310016_page-111_jpg.rf.7036833c1dfd29b88d53dfa695ba30ca.jpg",
+    "filename": "70c2ddac-imgtopdf_generated_2508201310016_page-111_jpg.rf.7036833c1dfd29b88d53dfa695ba30ca.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\7230773a-photo_11_2023-07-14_15-48-04_jpg.rf.28d0829f84a2af2e5a12cc190604a639.jpg",
+    "filename": "7230773a-photo_11_2023-07-14_15-48-04_jpg.rf.28d0829f84a2af2e5a12cc190604a639.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\742bf8aa-58158a8b16300aa644a69d1a_pan_jpg.rf.60ae0541a90d07d6199f28acd60eeaab.jpg",
+    "filename": "742bf8aa-58158a8b16300aa644a69d1a_pan_jpg.rf.60ae0541a90d07d6199f28acd60eeaab.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\770875bd-photo_2_2023-07-14_11-03-54_jpg.rf.e36b07ad84e777aa477f01e44a6eadca.jpg",
+    "filename": "770875bd-photo_2_2023-07-14_11-03-54_jpg.rf.e36b07ad84e777aa477f01e44a6eadca.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\7769d5ec-photo_1_2023-07-14_15-52-26_jpg.rf.4ce6a61f5e0827917fdbd3467ab7d72a.jpg",
+    "filename": "7769d5ec-photo_1_2023-07-14_15-52-26_jpg.rf.4ce6a61f5e0827917fdbd3467ab7d72a.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\79a26302-5871e0227338bb0821fa34f3_pan_page-1_jpg.rf.23c0fc85d4bb07ac086e78e112e9b78f.jpg",
+    "filename": "79a26302-5871e0227338bb0821fa34f3_pan_page-1_jpg.rf.23c0fc85d4bb07ac086e78e112e9b78f.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\817f25a2-photo_10_2023-07-14_15-47-40_jpg.rf.1d0b52eb943c35a00d3f19e3dc0f76b0.jpg",
+    "filename": "817f25a2-photo_10_2023-07-14_15-47-40_jpg.rf.1d0b52eb943c35a00d3f19e3dc0f76b0.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\83ea13b9-imgtopdf_generated_2208201757059_page-97_jpg.rf.e31e4660c700a9aa1f6e264fd0919060.jpg",
+    "filename": "83ea13b9-imgtopdf_generated_2208201757059_page-97_jpg.rf.e31e4660c700a9aa1f6e264fd0919060.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\88d2848b-imgtopdf_generated_2508201310016_page-132_jpg.rf.f707a42674494b203c41837a6cc15148.jpg",
+    "filename": "88d2848b-imgtopdf_generated_2508201310016_page-132_jpg.rf.f707a42674494b203c41837a6cc15148.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\8996b627-4i08i_jpg.rf.cd24c96aa77403de1522b999c765b77f.jpg",
+    "filename": "8996b627-4i08i_jpg.rf.cd24c96aa77403de1522b999c765b77f.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\8c50afd0-58d4d1f095de9d7a73afeb5f_pan_jpg.rf.e649473301186bf46cdbd65312f00e6b.jpg",
+    "filename": "8c50afd0-58d4d1f095de9d7a73afeb5f_pan_jpg.rf.e649473301186bf46cdbd65312f00e6b.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\8d4ee038-photo_7_2023-07-14_11-09-35_jpg.rf.d27884997ba6a6e4bac2ab83d44028b6.jpg",
+    "filename": "8d4ee038-photo_7_2023-07-14_11-09-35_jpg.rf.d27884997ba6a6e4bac2ab83d44028b6.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": false,
+    "message": "'AABPG81080' does not match '^[A-Z]{5}[0-9]{4}[A-Z]$'"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\8e2b1707-5888f1afa39ecac15e5649e7_pan_jpg.rf.68af1c5e1457dd9be7fe18526dd3fba1.jpg",
+    "filename": "8e2b1707-5888f1afa39ecac15e5649e7_pan_jpg.rf.68af1c5e1457dd9be7fe18526dd3fba1.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\8fe1985b-58302b4e63dfa15927c524ff_pan_jpg.rf.4f0789ff4ed6325d2eb770af63aafd34.jpg",
+    "filename": "8fe1985b-58302b4e63dfa15927c524ff_pan_jpg.rf.4f0789ff4ed6325d2eb770af63aafd34.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\94a87c91-585ba6cfd9d6c87648f56f00_pan_Sign_page-1_jpg.rf.c6809c9c3bb02eb72eaf73108705482d.jpg",
+    "filename": "94a87c91-585ba6cfd9d6c87648f56f00_pan_Sign_page-1_jpg.rf.c6809c9c3bb02eb72eaf73108705482d.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\9636177d-584feefec8f187be26785386_pan_Sign_page-1_jpg.rf.f4f47625b69807fccae403babf561d6c.jpg",
+    "filename": "9636177d-584feefec8f187be26785386_pan_Sign_page-1_jpg.rf.f4f47625b69807fccae403babf561d6c.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\96d5bb8c-586bad013b52f40d046b9ace_pan_jpg.rf.fed126c1f662527dee2697c6a88395b7.jpg",
+    "filename": "96d5bb8c-586bad013b52f40d046b9ace_pan_jpg.rf.fed126c1f662527dee2697c6a88395b7.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\98d8207b-imgtopdf_generated_2508201310016_page-23_jpg.rf.51afe9264c1589cb4fd6b1fdfd9f2715.jpg",
+    "filename": "98d8207b-imgtopdf_generated_2508201310016_page-23_jpg.rf.51afe9264c1589cb4fd6b1fdfd9f2715.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\9a18406e-photo_1_2023-07-14_15-46-19_jpg.rf.458fa5638755aa50e290134f65f3a863.jpg",
+    "filename": "9a18406e-photo_1_2023-07-14_15-46-19_jpg.rf.458fa5638755aa50e290134f65f3a863.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\9de46fd6-photo_2_2023-07-14_15-43-32_jpg.rf.d9d15c49f982866fac79c1177114b7cf.jpg",
+    "filename": "9de46fd6-photo_2_2023-07-14_15-43-32_jpg.rf.d9d15c49f982866fac79c1177114b7cf.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\a7d01fba-58d7717835d8a2ab0122fc2b_pan_Sign_page-1_jpg.rf.8da0524b6f6dc834712611be448ec7ca.jpg",
+    "filename": "a7d01fba-58d7717835d8a2ab0122fc2b_pan_Sign_page-1_jpg.rf.8da0524b6f6dc834712611be448ec7ca.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\ab35990a-583b074892fe77ec452dfa64_pan_Sign_page-1_jpg.rf.936e878381c29ec13d60bf1e88299192.jpg",
+    "filename": "ab35990a-583b074892fe77ec452dfa64_pan_Sign_page-1_jpg.rf.936e878381c29ec13d60bf1e88299192.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\ac3372e1-5835bd9fa93533283d8858a0_pan_jpg.rf.eddd9a4dc14e827b509cfea99c84764b.jpg",
+    "filename": "ac3372e1-5835bd9fa93533283d8858a0_pan_jpg.rf.eddd9a4dc14e827b509cfea99c84764b.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\acae542e-y2as4_jpg.rf.8aca6100ae4b74592a677d67a8e23450.jpg",
+    "filename": "acae542e-y2as4_jpg.rf.8aca6100ae4b74592a677d67a8e23450.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\aefefd07-582fab328961dabf0a7ce730_pan_page-1_jpg.rf.643161b16386284dd43b43d6c92d59da.jpg",
+    "filename": "aefefd07-582fab328961dabf0a7ce730_pan_page-1_jpg.rf.643161b16386284dd43b43d6c92d59da.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\b00575cd-58cabbe9ede71a9855e03dfc_pan_jpg.rf.5cbfbf4879235d13c5f797c51268a6b3.jpg",
+    "filename": "b00575cd-58cabbe9ede71a9855e03dfc_pan_jpg.rf.5cbfbf4879235d13c5f797c51268a6b3.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\b0a260cc-586f194f272a812c2a2455d0_pan_Sign_page-1_jpg.rf.f53ee8ac9dd388caf4d4b63a0aa35847.jpg",
+    "filename": "b0a260cc-586f194f272a812c2a2455d0_pan_Sign_page-1_jpg.rf.f53ee8ac9dd388caf4d4b63a0aa35847.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": false,
+    "message": "'BXXPS40330' does not match '^[A-Z]{5}[0-9]{4}[A-Z]$'"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\b22862ff-photo_4_2023-07-14_15-57-57_jpg.rf.88c948a77e9ceb375bc62a45539a7378.jpg",
+    "filename": "b22862ff-photo_4_2023-07-14_15-57-57_jpg.rf.88c948a77e9ceb375bc62a45539a7378.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\b41bc15c-5874a5f2985fe65d4d1062b6_pan_jpg.rf.a1dd9e78226d6ee8bac1c2d0e6af4aa7.jpg",
+    "filename": "b41bc15c-5874a5f2985fe65d4d1062b6_pan_jpg.rf.a1dd9e78226d6ee8bac1c2d0e6af4aa7.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\b4ceadb7-imgtopdf_generated_2508201303047_page-39_jpg.rf.13cd648dbf7280cd9fcbbe9e66c91358.jpg",
+    "filename": "b4ceadb7-imgtopdf_generated_2508201303047_page-39_jpg.rf.13cd648dbf7280cd9fcbbe9e66c91358.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\b61438bf-586fd612d8d7763a03069ceb_pan_Sign_page-1_jpg.rf.0f132df6a4e18c555f4bc91c3fff6518.jpg",
+    "filename": "b61438bf-586fd612d8d7763a03069ceb_pan_Sign_page-1_jpg.rf.0f132df6a4e18c555f4bc91c3fff6518.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\b9c4509d-photo_12_2023-07-14_15-49-37_jpg.rf.1439a37cdac50129d01676c2b6b07b0f.jpg",
+    "filename": "b9c4509d-photo_12_2023-07-14_15-49-37_jpg.rf.1439a37cdac50129d01676c2b6b07b0f.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\bb8d8ddd-imgtopdf_generated_2508201303047_page-31_jpg.rf.8809f37e95af2c71a4fbb55f3e356cf4.jpg",
+    "filename": "bb8d8ddd-imgtopdf_generated_2508201303047_page-31_jpg.rf.8809f37e95af2c71a4fbb55f3e356cf4.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\bc7cafcb-583c6765cf2db44523dd3d87_pan_jpg.rf.d48de966424083adc8488cb5b77a4e1d.jpg",
+    "filename": "bc7cafcb-583c6765cf2db44523dd3d87_pan_jpg.rf.d48de966424083adc8488cb5b77a4e1d.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\c36d1d4b-photo_6_2023-07-14_15-45-14_jpg.rf.b6073d18f9f531446b28956048561539.jpg",
+    "filename": "c36d1d4b-photo_6_2023-07-14_15-45-14_jpg.rf.b6073d18f9f531446b28956048561539.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\c4571ca0-imgtopdf_generated_2508201310016_page-46_jpg.rf.e21a9614a6972c71123e77a92683f557.jpg",
+    "filename": "c4571ca0-imgtopdf_generated_2508201310016_page-46_jpg.rf.e21a9614a6972c71123e77a92683f557.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\c99d2f16-58d0fe4f8c40f76560d01dcb_pan_jpg.rf.26fcb7284a9e897fa60d6cfbd4fecc4c.jpg",
+    "filename": "c99d2f16-58d0fe4f8c40f76560d01dcb_pan_jpg.rf.26fcb7284a9e897fa60d6cfbd4fecc4c.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\cabdaa4e-photo_6_2023-07-14_15-52-06_jpg.rf.6b6cfe303f14ad9143fabf0a515cdf1c.jpg",
+    "filename": "cabdaa4e-photo_6_2023-07-14_15-52-06_jpg.rf.6b6cfe303f14ad9143fabf0a515cdf1c.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": false,
+    "message": "'date_of_birth' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\cb8257ad-photo_9_2023-07-14_15-52-26_jpg.rf.4aaaa4e920e1efd0962e21172282c537.jpg",
+    "filename": "cb8257ad-photo_9_2023-07-14_15-52-26_jpg.rf.4aaaa4e920e1efd0962e21172282c537.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\cc9612f1-imgtopdf_generated_2508201310016_page-95_jpg.rf.f3c1a808cbfee193165258d18fe51932.jpg",
+    "filename": "cc9612f1-imgtopdf_generated_2508201310016_page-95_jpg.rf.f3c1a808cbfee193165258d18fe51932.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\ce3a420f-586bd4b53b52f40d046b9ae3_pan_Sign_page-1_jpg.rf.fccaa9c01f41bbcefd2b42caf64470d4.jpg",
+    "filename": "ce3a420f-586bd4b53b52f40d046b9ae3_pan_Sign_page-1_jpg.rf.fccaa9c01f41bbcefd2b42caf64470d4.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": false,
+    "message": "'DRZPS37054' does not match '^[A-Z]{5}[0-9]{4}[A-Z]$'"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\d225412f-photo_11_2023-07-14_15-49-37_jpg.rf.7096f43ebea4df7aa23fc06eed665f58.jpg",
+    "filename": "d225412f-photo_11_2023-07-14_15-49-37_jpg.rf.7096f43ebea4df7aa23fc06eed665f58.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\d2a806d2-photo_3_2023-07-14_15-45-14_jpg.rf.d66d891212e4451c85684ad0e87cc9a9.jpg",
+    "filename": "d2a806d2-photo_3_2023-07-14_15-45-14_jpg.rf.d66d891212e4451c85684ad0e87cc9a9.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\d637fe3f-imgtopdf_generated_2508201310016_page-18_jpg.rf.ff9e9a6e950afd9b63cca864ad1d0fa7.jpg",
+    "filename": "d637fe3f-imgtopdf_generated_2508201310016_page-18_jpg.rf.ff9e9a6e950afd9b63cca864ad1d0fa7.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\d654749a-photo_11_2023-07-14_15-43-32_jpg.rf.47a297bacee71255770bb946141f9827.jpg",
+    "filename": "d654749a-photo_11_2023-07-14_15-43-32_jpg.rf.47a297bacee71255770bb946141f9827.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\da659559-589ab473183b9bf66fe2f12d_pan_page-1_jpg.rf.fad178e5799f742d661711a9f85027df.jpg",
+    "filename": "da659559-589ab473183b9bf66fe2f12d_pan_page-1_jpg.rf.fad178e5799f742d661711a9f85027df.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\dfa4cd79-583c4a27cf2db44523dd3d7d_pan_jpg.rf.5cfcf4524e98c399a4192a500e219196.jpg",
+    "filename": "dfa4cd79-583c4a27cf2db44523dd3d7d_pan_jpg.rf.5cfcf4524e98c399a4192a500e219196.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\e0ef3667-586e560e9aaac55d0e8d403f_pan_Sign_page-1_jpg.rf.8f25b8c5587f5e7c9986262bd630256c.jpg",
+    "filename": "e0ef3667-586e560e9aaac55d0e8d403f_pan_Sign_page-1_jpg.rf.8f25b8c5587f5e7c9986262bd630256c.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\e188713b-imgtopdf_generated_2508201303047_page-144_jpg.rf.4fe4780d2a22fe16e301140a5ee54900.jpg",
+    "filename": "e188713b-imgtopdf_generated_2508201303047_page-144_jpg.rf.4fe4780d2a22fe16e301140a5ee54900.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\e2802478-585e3c91d5952fce6361ff0c_pan_Sign_page-1_jpg.rf.736131816ddf85c693764ec72215179d.jpg",
+    "filename": "e2802478-585e3c91d5952fce6361ff0c_pan_Sign_page-1_jpg.rf.736131816ddf85c693764ec72215179d.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\e45cef4b-imgtopdf_generated_2508201303047_page-117_jpg.rf.d308852a34a0f21bc6573cbddcfb2dd6.jpg",
+    "filename": "e45cef4b-imgtopdf_generated_2508201303047_page-117_jpg.rf.d308852a34a0f21bc6573cbddcfb2dd6.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\e70b621a-photo_303-03-2022_15-47-15_jpg.rf.6db04377affe96991c6c5f349ddea0da.jpg",
+    "filename": "e70b621a-photo_303-03-2022_15-47-15_jpg.rf.6db04377affe96991c6c5f349ddea0da.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": false,
+    "message": "'' does not match '^[A-Z]{5}[0-9]{4}[A-Z]$'"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\edd3f458-imgtopdf_generated_2508201303047_page-98_jpg.rf.a578aaffdaf49916744663c07747d5be.jpg",
+    "filename": "edd3f458-imgtopdf_generated_2508201303047_page-98_jpg.rf.a578aaffdaf49916744663c07747d5be.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\f0d85e27-imgtopdf_generated_2508201310016_page-167_jpg.rf.7b110db667afe289a6478849e225264d.jpg",
+    "filename": "f0d85e27-imgtopdf_generated_2508201310016_page-167_jpg.rf.7b110db667afe289a6478849e225264d.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\f2c5f429-pavzr_jpg.rf.258651137158d43941b9ab1b3cdd892b.jpg",
+    "filename": "f2c5f429-pavzr_jpg.rf.258651137158d43941b9ab1b3cdd892b.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\f7cd27c5-58537b09094cd41e02017a38_pan_jpg.rf.8bb083ef4a8ac53ce722a958da3dab57.jpg",
+    "filename": "f7cd27c5-58537b09094cd41e02017a38_pan_jpg.rf.8bb083ef4a8ac53ce722a958da3dab57.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\fe45cc31-imgtopdf_generated_2508201303047_page-170_jpg.rf.d2d3c7922476d4a594d3f3468ffcf130.jpg",
+    "filename": "fe45cc31-imgtopdf_generated_2508201303047_page-170_jpg.rf.d2d3c7922476d4a594d3f3468ffcf130.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\pan\\images\\test\\fe7c455e-5854b8f6cf43490967d0c6a8_pan_jpg.rf.01843edc080abae50de5ab6c803bcc1b.jpg",
+    "filename": "fe7c455e-5854b8f6cf43490967d0c6a8_pan_jpg.rf.01843edc080abae50de5ab6c803bcc1b.jpg",
+    "requested_doc_type": "pan",
+    "result_doc_type": "pan",
+    "ok": true,
+    "is_valid": false,
+    "message": "'CDTP82759K' does not match '^[A-Z]{5}[0-9]{4}[A-Z]$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\0521_adhar_jpg.rf.72e13b4a4ab63197d7bab138671ba17c.jpg",
+    "filename": "0521_adhar_jpg.rf.72e13b4a4ab63197d7bab138671ba17c.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'name' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\06_01_2022_03_14_17_png_jpg.rf.84c131e9f3739196dcb217ce66872568.jpg",
+    "filename": "06_01_2022_03_14_17_png_jpg.rf.84c131e9f3739196dcb217ce66872568.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'name' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\06_01_2022_03_14_51_png_jpg.rf.066ab05c8e52e0c8eb7f8160c29a5aae.jpg",
+    "filename": "06_01_2022_03_14_51_png_jpg.rf.066ab05c8e52e0c8eb7f8160c29a5aae.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'5003 9998 30641' does not match '^[0-9]{12}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\06_01_2022_03_14_59_png_jpg.rf.7d753a7852c989342a25fbf67bf385e9.jpg",
+    "filename": "06_01_2022_03_14_59_png_jpg.rf.7d753a7852c989342a25fbf67bf385e9.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "unknown",
+    "ok": false,
+    "is_valid": false,
+    "message": "bn"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\06_01_2022_03_15_10_png_jpg.rf.17c7b58f4770bbdfe37d7d6379c0d9b8.jpg",
+    "filename": "06_01_2022_03_15_10_png_jpg.rf.17c7b58f4770bbdfe37d7d6379c0d9b8.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\06a0686f91bed47d1f4873e4d104442c_jpg.rf.4de248f1b4d17d260413ea9bdde71762.jpg",
+    "filename": "06a0686f91bed47d1f4873e4d104442c_jpg.rf.4de248f1b4d17d260413ea9bdde71762.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\06a0686f91bed47d1f4873e4d104442c_jpg.rf.ca85802ebdca5a2f1f293741021a6645.jpg",
+    "filename": "06a0686f91bed47d1f4873e4d104442c_jpg.rf.ca85802ebdca5a2f1f293741021a6645.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\086d820550f34066764f4047ddc263ca_jpg.rf.32454616917066849f631ca30a4b828c.jpg",
+    "filename": "086d820550f34066764f4047ddc263ca_jpg.rf.32454616917066849f631ca30a4b828c.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'Fenale' is not one of ['Male', 'MALE', 'Female', 'FEMALE', 'Other']"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\086d820550f34066764f4047ddc263ca_jpg.rf.a1db7cb32097409875a50ff57106348a.jpg",
+    "filename": "086d820550f34066764f4047ddc263ca_jpg.rf.a1db7cb32097409875a50ff57106348a.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'171199' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\086d820550f34066764f4047ddc263ca_jpg.rf.ff9a8b4ea165aedc0d9b0e2f17aea548.jpg",
+    "filename": "086d820550f34066764f4047ddc263ca_jpg.rf.ff9a8b4ea165aedc0d9b0e2f17aea548.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\0c0584201ff552c4bdcbe160315aa432_jpg.rf.55120e70e8bb77f855f46a2301544087.jpg",
+    "filename": "0c0584201ff552c4bdcbe160315aa432_jpg.rf.55120e70e8bb77f855f46a2301544087.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'8.1951' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\0c0584201ff552c4bdcbe160315aa432_jpg.rf.5942e1af703ab2365c8b22d581c90451.jpg",
+    "filename": "0c0584201ff552c4bdcbe160315aa432_jpg.rf.5942e1af703ab2365c8b22d581c90451.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1951' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\0c0584201ff552c4bdcbe160315aa432_jpg.rf.e0c3309bc63eac6d5352733e8406f5bd.jpg",
+    "filename": "0c0584201ff552c4bdcbe160315aa432_jpg.rf.e0c3309bc63eac6d5352733e8406f5bd.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1951' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\0d4c873ace54e82fb49c451a9bdc6d24_jpg.rf.02e7c632969d4ac3e220650714efc1ea.jpg",
+    "filename": "0d4c873ace54e82fb49c451a9bdc6d24_jpg.rf.02e7c632969d4ac3e220650714efc1ea.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\0d4c873ace54e82fb49c451a9bdc6d24_jpg.rf.ace4d5e5287b475a42cc6ff51a027fda.jpg",
+    "filename": "0d4c873ace54e82fb49c451a9bdc6d24_jpg.rf.ace4d5e5287b475a42cc6ff51a027fda.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\0d4c873ace54e82fb49c451a9bdc6d24_jpg.rf.bfdcbea6ad7d228da2021ff6325fd938.jpg",
+    "filename": "0d4c873ace54e82fb49c451a9bdc6d24_jpg.rf.bfdcbea6ad7d228da2021ff6325fd938.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\0e0a5204f238d9c743ae456a8dc6529a_jpg.rf.4ec48c9c5e0e0a6ce056bf50d5201e60.jpg",
+    "filename": "0e0a5204f238d9c743ae456a8dc6529a_jpg.rf.4ec48c9c5e0e0a6ce056bf50d5201e60.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\0e0a5204f238d9c743ae456a8dc6529a_jpg.rf.667044735c41420c552f3757c5825819.jpg",
+    "filename": "0e0a5204f238d9c743ae456a8dc6529a_jpg.rf.667044735c41420c552f3757c5825819.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\0e0a5204f238d9c743ae456a8dc6529a_jpg.rf.c0818887a603326d955243418823a1ca.jpg",
+    "filename": "0e0a5204f238d9c743ae456a8dc6529a_jpg.rf.c0818887a603326d955243418823a1ca.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\0e0a5204f238d9c743ae456a8dc6529a_jpg.rf.c3ca9420de53c5d7b5a7234f51f53644.jpg",
+    "filename": "0e0a5204f238d9c743ae456a8dc6529a_jpg.rf.c3ca9420de53c5d7b5a7234f51f53644.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\0e0a5204f238d9c743ae456a8dc6529a_jpg.rf.cc90d1e8d808ac1cba7272da6c29314a.jpg",
+    "filename": "0e0a5204f238d9c743ae456a8dc6529a_jpg.rf.cc90d1e8d808ac1cba7272da6c29314a.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\10067_jpg.rf.dd242baa06b7370a17f6fe454c713ae3.jpg",
+    "filename": "10067_jpg.rf.dd242baa06b7370a17f6fe454c713ae3.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "unknown",
+    "ok": false,
+    "is_valid": false,
+    "message": "(PreconditionNotMet) Tensor holds no memory. Call Tensor::mutable_data firstly.\n  [Hint: holder_ should not be null.] (at ..\\paddle\\phi\\core\\dense_tensor_impl.cc:44)\n"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\10069_jpg.rf.b9981b49cb390c217bdab9cabb7b4c10.jpg",
+    "filename": "10069_jpg.rf.b9981b49cb390c217bdab9cabb7b4c10.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'aadhaar_number' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\10118_jpg.rf.ab40fa1a50aa5454cd1f4e28fa2bb7eb.jpg",
+    "filename": "10118_jpg.rf.ab40fa1a50aa5454cd1f4e28fa2bb7eb.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'name' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\10120_jpg.rf.722b5143fb2446ed8a0748f5a704be1e.jpg",
+    "filename": "10120_jpg.rf.722b5143fb2446ed8a0748f5a704be1e.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'name' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\10123_jpg.rf.c5804ceb287e548b33a3a439a5d9eca0.jpg",
+    "filename": "10123_jpg.rf.c5804ceb287e548b33a3a439a5d9eca0.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'name' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\10130_jpg.rf.9a9d104cab3d29b3606a1d351e6b5d3e.jpg",
+    "filename": "10130_jpg.rf.9a9d104cab3d29b3606a1d351e6b5d3e.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'name' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\102_509409293_jpg.rf.08cec237a3dc21e6d4418c03383a8c51.jpg",
+    "filename": "102_509409293_jpg.rf.08cec237a3dc21e6d4418c03383a8c51.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\102_509409293_jpg.rf.d6b6e5f32f5267dfd049910dd384bb23.jpg",
+    "filename": "102_509409293_jpg.rf.d6b6e5f32f5267dfd049910dd384bb23.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'Z12/1986' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\110_504886170_jpg.rf.40fdcccd0e14d19f4bff37d8829cf49f.jpg",
+    "filename": "110_504886170_jpg.rf.40fdcccd0e14d19f4bff37d8829cf49f.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\14171f7e3e906f9bb9cbee0e44b183ab-1-_jpg.rf.08e306a6d8b48d3ee6311bdb46da1ee8.jpg",
+    "filename": "14171f7e3e906f9bb9cbee0e44b183ab-1-_jpg.rf.08e306a6d8b48d3ee6311bdb46da1ee8.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\14171f7e3e906f9bb9cbee0e44b183ab-1-_jpg.rf.44fad98a2f2b5c217f49f9d8f7f44e54.jpg",
+    "filename": "14171f7e3e906f9bb9cbee0e44b183ab-1-_jpg.rf.44fad98a2f2b5c217f49f9d8f7f44e54.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\14171f7e3e906f9bb9cbee0e44b183ab-1-_jpg.rf.e27d0af90fa71a2553699a70633d37c0.jpg",
+    "filename": "14171f7e3e906f9bb9cbee0e44b183ab-1-_jpg.rf.e27d0af90fa71a2553699a70633d37c0.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\14171f7e3e906f9bb9cbee0e44b183ab_jpg.rf.0881693fc13cfdf4b1f250c7203c2f24.jpg",
+    "filename": "14171f7e3e906f9bb9cbee0e44b183ab_jpg.rf.0881693fc13cfdf4b1f250c7203c2f24.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\15702284b04c27864e819ad89483b80d_jpg.rf.9fa021dc12fed4af38e193100f100d2b.jpg",
+    "filename": "15702284b04c27864e819ad89483b80d_jpg.rf.9fa021dc12fed4af38e193100f100d2b.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1993' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\17e77ff746a7f6995dcbe80f0b107701_jpg.rf.30786fa6434ac31a3a4dc0d301fdb3aa.jpg",
+    "filename": "17e77ff746a7f6995dcbe80f0b107701_jpg.rf.30786fa6434ac31a3a4dc0d301fdb3aa.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1987' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\17e77ff746a7f6995dcbe80f0b107701_jpg.rf.7ccaf6834cea28e9a5ccc6ad5d0b4e04.jpg",
+    "filename": "17e77ff746a7f6995dcbe80f0b107701_jpg.rf.7ccaf6834cea28e9a5ccc6ad5d0b4e04.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1987' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\17e77ff746a7f6995dcbe80f0b107701_jpg.rf.dab7ba8a80ecdf1754bbb42c0dcadb13.jpg",
+    "filename": "17e77ff746a7f6995dcbe80f0b107701_jpg.rf.dab7ba8a80ecdf1754bbb42c0dcadb13.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1987' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\19b620ad00aeb2885f0f0a1ccb337919_jpg.rf.874da0cffbd3af611f8e8dd7c47458f9.jpg",
+    "filename": "19b620ad00aeb2885f0f0a1ccb337919_jpg.rf.874da0cffbd3af611f8e8dd7c47458f9.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\19b620ad00aeb2885f0f0a1ccb337919_jpg.rf.a69a8e9d988a2e17c032e4fd5d09cc20.jpg",
+    "filename": "19b620ad00aeb2885f0f0a1ccb337919_jpg.rf.a69a8e9d988a2e17c032e4fd5d09cc20.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "unknown",
+    "ok": false,
+    "is_valid": false,
+    "message": "(PreconditionNotMet) Tensor holds no memory. Call Tensor::mutable_data firstly.\n  [Hint: holder_ should not be null.] (at ..\\paddle\\phi\\core\\dense_tensor_impl.cc:44)\n"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\19b620ad00aeb2885f0f0a1ccb337919_jpg.rf.f8a122731eb7ac200524c5e88216ee68.jpg",
+    "filename": "19b620ad00aeb2885f0f0a1ccb337919_jpg.rf.f8a122731eb7ac200524c5e88216ee68.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\1b26b406ad9485c98cd496bc371db57f_jpg.rf.180c32ee69f5226183c235c361b2d91e.jpg",
+    "filename": "1b26b406ad9485c98cd496bc371db57f_jpg.rf.180c32ee69f5226183c235c361b2d91e.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'Hae' is not one of ['Male', 'MALE', 'Female', 'FEMALE', 'Other']"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\1b26b406ad9485c98cd496bc371db57f_jpg.rf.372f8faabec2d92d7f64d5741809cc9f.jpg",
+    "filename": "1b26b406ad9485c98cd496bc371db57f_jpg.rf.372f8faabec2d92d7f64d5741809cc9f.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "\"Ma'e\" is not one of ['Male', 'MALE', 'Female', 'FEMALE', 'Other']"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\1b26b406ad9485c98cd496bc371db57f_jpg.rf.3971db2690b5f9b5692e172d7f7b913f.jpg",
+    "filename": "1b26b406ad9485c98cd496bc371db57f_jpg.rf.3971db2690b5f9b5692e172d7f7b913f.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'Mat' is not one of ['Male', 'MALE', 'Female', 'FEMALE', 'Other']"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\1b26b406ad9485c98cd496bc371db57f_jpg.rf.57b9dcafd0d5d82f6c6b80922dff1ade.jpg",
+    "filename": "1b26b406ad9485c98cd496bc371db57f_jpg.rf.57b9dcafd0d5d82f6c6b80922dff1ade.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "\"Ma'e\" is not one of ['Male', 'MALE', 'Female', 'FEMALE', 'Other']"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\2017_7image_01_34_3344908890_jpg.rf.4a4041ede07dccc0e2065b0176c84fde.jpg",
+    "filename": "2017_7image_01_34_3344908890_jpg.rf.4a4041ede07dccc0e2065b0176c84fde.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\23752a535ecca255d677464b5a7a24f4_jpg.rf.77b27bba6b5b3e369ca123f467673f5a.jpg",
+    "filename": "23752a535ecca255d677464b5a7a24f4_jpg.rf.77b27bba6b5b3e369ca123f467673f5a.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\25305fe9d4d92e3899f5fbcab86fb2c7-1-_jpg.rf.19c876c6bd2841288b8ac497ad5c4874.jpg",
+    "filename": "25305fe9d4d92e3899f5fbcab86fb2c7-1-_jpg.rf.19c876c6bd2841288b8ac497ad5c4874.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1990' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\25305fe9d4d92e3899f5fbcab86fb2c7_jpg.rf.70d576ce37d2f797a436735bc2e57abd.jpg",
+    "filename": "25305fe9d4d92e3899f5fbcab86fb2c7_jpg.rf.70d576ce37d2f797a436735bc2e57abd.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'f Birth1990' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\25305fe9d4d92e3899f5fbcab86fb2c7_jpg.rf.86dde802744b7ece8337002ba468a3fe.jpg",
+    "filename": "25305fe9d4d92e3899f5fbcab86fb2c7_jpg.rf.86dde802744b7ece8337002ba468a3fe.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1990' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\25305fe9d4d92e3899f5fbcab86fb2c7_jpg.rf.b08751bef94d1f455d8a20c3f6f22a91.jpg",
+    "filename": "25305fe9d4d92e3899f5fbcab86fb2c7_jpg.rf.b08751bef94d1f455d8a20c3f6f22a91.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1990' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\26e69450edbd8716ee253bd7ec9b7607_jpg.rf.2ebabd09c9178da81e9f8c0217e9d877.jpg",
+    "filename": "26e69450edbd8716ee253bd7ec9b7607_jpg.rf.2ebabd09c9178da81e9f8c0217e9d877.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\26e69450edbd8716ee253bd7ec9b7607_jpg.rf.b7f02b22541a169559cd40455a8b886b.jpg",
+    "filename": "26e69450edbd8716ee253bd7ec9b7607_jpg.rf.b7f02b22541a169559cd40455a8b886b.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\2b923b9c9b526e45022e18d0493946ba-1-_jpg.rf.b5a3acaba2e9d128043db9f8e8a0753d.jpg",
+    "filename": "2b923b9c9b526e45022e18d0493946ba-1-_jpg.rf.b5a3acaba2e9d128043db9f8e8a0753d.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\2b923b9c9b526e45022e18d0493946ba_jpg.rf.739e16bf8e4e5bb672fcb0053a294746.jpg",
+    "filename": "2b923b9c9b526e45022e18d0493946ba_jpg.rf.739e16bf8e4e5bb672fcb0053a294746.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\2b923b9c9b526e45022e18d0493946ba_jpg.rf.c542258dac015b79f8f37e46eb7f37dd.jpg",
+    "filename": "2b923b9c9b526e45022e18d0493946ba_jpg.rf.c542258dac015b79f8f37e46eb7f37dd.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\2bfd2f150b31581bac34445b5c49dd26_jpg.rf.b786b7ed79451abf77b22980faf97fbe.jpg",
+    "filename": "2bfd2f150b31581bac34445b5c49dd26_jpg.rf.b786b7ed79451abf77b22980faf97fbe.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'165/2010' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\3564191365d6dd7bff705c3252860029_jpg.rf.4da254870df54ce8a718330c511011c4.jpg",
+    "filename": "3564191365d6dd7bff705c3252860029_jpg.rf.4da254870df54ce8a718330c511011c4.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\3564191365d6dd7bff705c3252860029_jpg.rf.5159e2b5bf7e4bff4e98982003544c87.jpg",
+    "filename": "3564191365d6dd7bff705c3252860029_jpg.rf.5159e2b5bf7e4bff4e98982003544c87.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\3564191365d6dd7bff705c3252860029_jpg.rf.c2916c3602a6b5f5f29aa3523e4e2a74.jpg",
+    "filename": "3564191365d6dd7bff705c3252860029_jpg.rf.c2916c3602a6b5f5f29aa3523e4e2a74.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\3564191365d6dd7bff705c3252860029_jpg.rf.ecfc9fd2a0d76416f6a74b0d8cdf2d68.jpg",
+    "filename": "3564191365d6dd7bff705c3252860029_jpg.rf.ecfc9fd2a0d76416f6a74b0d8cdf2d68.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\35c4f8abcda3c0e3fe13b2435deaaff4_jpg.rf.5c511a5a9ebe10ae6eced954001c1d7f.jpg",
+    "filename": "35c4f8abcda3c0e3fe13b2435deaaff4_jpg.rf.5c511a5a9ebe10ae6eced954001c1d7f.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\35c4f8abcda3c0e3fe13b2435deaaff4_jpg.rf.79755b833339ff43d89c9b04325150fb.jpg",
+    "filename": "35c4f8abcda3c0e3fe13b2435deaaff4_jpg.rf.79755b833339ff43d89c9b04325150fb.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\368a4dd1224bf4d35aa30fc7b61d32d2-1-_jpg.rf.0065937b856bb733ddafeb2462371ee1.jpg",
+    "filename": "368a4dd1224bf4d35aa30fc7b61d32d2-1-_jpg.rf.0065937b856bb733ddafeb2462371ee1.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1993' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\368a4dd1224bf4d35aa30fc7b61d32d2-1-_jpg.rf.0e39ab28f41ec733332c5c023861c732.jpg",
+    "filename": "368a4dd1224bf4d35aa30fc7b61d32d2-1-_jpg.rf.0e39ab28f41ec733332c5c023861c732.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'aadhaar_number' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\447675edf75967ed3047d0ff28f280ac-1-_jpg.rf.107cc237bfe7a182a4d0174efbf82f0a.jpg",
+    "filename": "447675edf75967ed3047d0ff28f280ac-1-_jpg.rf.107cc237bfe7a182a4d0174efbf82f0a.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\447675edf75967ed3047d0ff28f280ac-1-_jpg.rf.6e9c099de3ec5adcbe0f22b0ccecc727.jpg",
+    "filename": "447675edf75967ed3047d0ff28f280ac-1-_jpg.rf.6e9c099de3ec5adcbe0f22b0ccecc727.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\447675edf75967ed3047d0ff28f280ac_jpg.rf.14b577defec5aeab73f07dfa5f2a4744.jpg",
+    "filename": "447675edf75967ed3047d0ff28f280ac_jpg.rf.14b577defec5aeab73f07dfa5f2a4744.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\447675edf75967ed3047d0ff28f280ac_jpg.rf.563964b640acfc8db5469757f23dcbde.jpg",
+    "filename": "447675edf75967ed3047d0ff28f280ac_jpg.rf.563964b640acfc8db5469757f23dcbde.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\44ca6539da21ea839134cf0e39ff6e37_jpg.rf.35c971d486e343fec0599a3117360912.jpg",
+    "filename": "44ca6539da21ea839134cf0e39ff6e37_jpg.rf.35c971d486e343fec0599a3117360912.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "':1977' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\46804894d63fe5b3fea2582cfa7657c7-1-_jpg.rf.e2519e141f613317df34e19a4dbd8652.jpg",
+    "filename": "46804894d63fe5b3fea2582cfa7657c7-1-_jpg.rf.e2519e141f613317df34e19a4dbd8652.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\46804894d63fe5b3fea2582cfa7657c7-2-_jpg.rf.5f80a5c9f32a1b502ea9d6cdb2087a6e.jpg",
+    "filename": "46804894d63fe5b3fea2582cfa7657c7-2-_jpg.rf.5f80a5c9f32a1b502ea9d6cdb2087a6e.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\46bad340b458a566dc6e2fd9cd2b1b33_jpg.rf.aca6d9ac3e29f1959e6de0f25b673ccd.jpg",
+    "filename": "46bad340b458a566dc6e2fd9cd2b1b33_jpg.rf.aca6d9ac3e29f1959e6de0f25b673ccd.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\49fa3bcf36cda2851f2d12adc5f9f6db-1-_jpg.rf.b3d90c7f65d82b3665fd5782db5415f6.jpg",
+    "filename": "49fa3bcf36cda2851f2d12adc5f9f6db-1-_jpg.rf.b3d90c7f65d82b3665fd5782db5415f6.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\49fa3bcf36cda2851f2d12adc5f9f6db-2-_jpg.rf.272d693151b558bba6d2f45d5aadc942.jpg",
+    "filename": "49fa3bcf36cda2851f2d12adc5f9f6db-2-_jpg.rf.272d693151b558bba6d2f45d5aadc942.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\49fa3bcf36cda2851f2d12adc5f9f6db-2-_jpg.rf.4934e225b5b45164f93e1f1cb8cb605e.jpg",
+    "filename": "49fa3bcf36cda2851f2d12adc5f9f6db-2-_jpg.rf.4934e225b5b45164f93e1f1cb8cb605e.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\49fa3bcf36cda2851f2d12adc5f9f6db-2-_jpg.rf.a5193af4709eb932b943f6478eacec77.jpg",
+    "filename": "49fa3bcf36cda2851f2d12adc5f9f6db-2-_jpg.rf.a5193af4709eb932b943f6478eacec77.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\5a9f2c8658426f9b1b17bfa65ef0d62c_jpg.rf.4257baedfb784a5fab86fc06e46dad36.jpg",
+    "filename": "5a9f2c8658426f9b1b17bfa65ef0d62c_jpg.rf.4257baedfb784a5fab86fc06e46dad36.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\60643f2e835245dfa9b0c9c988abb748_jpg.rf.9e9111e97d4168c55c7aeb87763ddd59.jpg",
+    "filename": "60643f2e835245dfa9b0c9c988abb748_jpg.rf.9e9111e97d4168c55c7aeb87763ddd59.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\60643f2e835245dfa9b0c9c988abb748_jpg.rf.ea9e2dd862ccbf64486e7102532ab507.jpg",
+    "filename": "60643f2e835245dfa9b0c9c988abb748_jpg.rf.ea9e2dd862ccbf64486e7102532ab507.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\6b6ad42e38094e11a2260c2694582da5_jpg.rf.eca57c77c0b4cccd70cbcbf317eaae5c.jpg",
+    "filename": "6b6ad42e38094e11a2260c2694582da5_jpg.rf.eca57c77c0b4cccd70cbcbf317eaae5c.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\6cc303eb6be78797fd871ec8cad3a65d_jpg.rf.0021e648ae24f81dd7187b272b76ce13.jpg",
+    "filename": "6cc303eb6be78797fd871ec8cad3a65d_jpg.rf.0021e648ae24f81dd7187b272b76ce13.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\6cc303eb6be78797fd871ec8cad3a65d_jpg.rf.aa9b9dd3882d3a0cf52031d083f935bf.jpg",
+    "filename": "6cc303eb6be78797fd871ec8cad3a65d_jpg.rf.aa9b9dd3882d3a0cf52031d083f935bf.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\6cc303eb6be78797fd871ec8cad3a65d_jpg.rf.d9226a1b739895bdcad78065fa27291f.jpg",
+    "filename": "6cc303eb6be78797fd871ec8cad3a65d_jpg.rf.d9226a1b739895bdcad78065fa27291f.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\6d8e67208737a556302565d3c61dc373_jpg.rf.20da8bf6be6638f72635d0deed85958c.jpg",
+    "filename": "6d8e67208737a556302565d3c61dc373_jpg.rf.20da8bf6be6638f72635d0deed85958c.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\6d8e67208737a556302565d3c61dc373_jpg.rf.c1bd0fc7810710ea840d37754e750cb5.jpg",
+    "filename": "6d8e67208737a556302565d3c61dc373_jpg.rf.c1bd0fc7810710ea840d37754e750cb5.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'' is too short"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\6d8e67208737a556302565d3c61dc373_jpg.rf.e7ab02f8ef20259f9854a42b00613824.jpg",
+    "filename": "6d8e67208737a556302565d3c61dc373_jpg.rf.e7ab02f8ef20259f9854a42b00613824.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\6faf8790a38b5e6a7d9e3347ba84a24f_jpg.rf.005130bb4a125264d27f3e0849f398f4.jpg",
+    "filename": "6faf8790a38b5e6a7d9e3347ba84a24f_jpg.rf.005130bb4a125264d27f3e0849f398f4.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\6faf8790a38b5e6a7d9e3347ba84a24f_jpg.rf.43609a3b1adff8b1f1098c3432939f1b.jpg",
+    "filename": "6faf8790a38b5e6a7d9e3347ba84a24f_jpg.rf.43609a3b1adff8b1f1098c3432939f1b.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "\"Fena'a\" is not one of ['Male', 'MALE', 'Female', 'FEMALE', 'Other']"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\6faf8790a38b5e6a7d9e3347ba84a24f_jpg.rf.6dae4cc3f50cb4a71bcd8496eaaf07a1.jpg",
+    "filename": "6faf8790a38b5e6a7d9e3347ba84a24f_jpg.rf.6dae4cc3f50cb4a71bcd8496eaaf07a1.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "\"Fera'e\" is not one of ['Male', 'MALE', 'Female', 'FEMALE', 'Other']"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\6faf8790a38b5e6a7d9e3347ba84a24f_jpg.rf.aeb305508f446a30672a7a556b287383.jpg",
+    "filename": "6faf8790a38b5e6a7d9e3347ba84a24f_jpg.rf.aeb305508f446a30672a7a556b287383.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\71697128_jpg.rf.e6d7abeda1d075bd361c22f00714f5ec.jpg",
+    "filename": "71697128_jpg.rf.e6d7abeda1d075bd361c22f00714f5ec.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "unknown",
+    "ok": false,
+    "is_valid": false,
+    "message": "(PreconditionNotMet) Tensor holds no memory. Call Tensor::mutable_data firstly.\n  [Hint: holder_ should not be null.] (at ..\\paddle\\phi\\core\\dense_tensor_impl.cc:44)\n"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\766ad22cd5a05c1a9d21c658bb1e925c_jpg.rf.4131ee7d52c7ee48fdd00a08bda8d5ac.jpg",
+    "filename": "766ad22cd5a05c1a9d21c658bb1e925c_jpg.rf.4131ee7d52c7ee48fdd00a08bda8d5ac.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "unknown",
+    "ok": false,
+    "is_valid": false,
+    "message": "index 1 is out of bounds for axis 0 with size 1"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\766ad22cd5a05c1a9d21c658bb1e925c_jpg.rf.bcd0b0a08f11b4b5fbaa668f18558a5f.jpg",
+    "filename": "766ad22cd5a05c1a9d21c658bb1e925c_jpg.rf.bcd0b0a08f11b4b5fbaa668f18558a5f.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'name' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\78ebbaace416b45c0b552a5a3de7b1a7_jpg.rf.8db08df41d05020a4efb227f109359ba.jpg",
+    "filename": "78ebbaace416b45c0b552a5a3de7b1a7_jpg.rf.8db08df41d05020a4efb227f109359ba.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\78ebbaace416b45c0b552a5a3de7b1a7_jpg.rf.d4af01944897e28033b40568ed83fe85.jpg",
+    "filename": "78ebbaace416b45c0b552a5a3de7b1a7_jpg.rf.d4af01944897e28033b40568ed83fe85.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\78ebbaace416b45c0b552a5a3de7b1a7_jpg.rf.fcb81e3b6922bc1fed0cd0cdc6e2428c.jpg",
+    "filename": "78ebbaace416b45c0b552a5a3de7b1a7_jpg.rf.fcb81e3b6922bc1fed0cd0cdc6e2428c.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\7e65eb61f2d964e4e46a9ee5e1330c28_jpg.rf.0e110a1eea24e86790ff22111e23ca0d.jpg",
+    "filename": "7e65eb61f2d964e4e46a9ee5e1330c28_jpg.rf.0e110a1eea24e86790ff22111e23ca0d.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'aadhaar_number' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\7e65eb61f2d964e4e46a9ee5e1330c28_jpg.rf.285341723defe616334b1c5d12146248.jpg",
+    "filename": "7e65eb61f2d964e4e46a9ee5e1330c28_jpg.rf.285341723defe616334b1c5d12146248.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\7e65eb61f2d964e4e46a9ee5e1330c28_jpg.rf.6143f3affde0e34f33469eeea1f05743.jpg",
+    "filename": "7e65eb61f2d964e4e46a9ee5e1330c28_jpg.rf.6143f3affde0e34f33469eeea1f05743.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'aadhaar_number' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\7e65eb61f2d964e4e46a9ee5e1330c28_jpg.rf.cc3c2eb29f75365a3b9591d2c1afe526.jpg",
+    "filename": "7e65eb61f2d964e4e46a9ee5e1330c28_jpg.rf.cc3c2eb29f75365a3b9591d2c1afe526.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'aadhaar_number' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\80-Adding-Aadhar-Card-Template-Download-in-Photoshop-with-Aadhar-Card-Template-Download_jpg.rf.6da808a073d25bf42f7984f8383697d5.jpg",
+    "filename": "80-Adding-Aadhar-Card-Template-Download-in-Photoshop-with-Aadhar-Card-Template-Download_jpg.rf.6da808a073d25bf42f7984f8383697d5.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\80-Adding-Aadhar-Card-Template-Download-in-Photoshop-with-Aadhar-Card-Template-Download_jpg.rf.c6ae42e8f1221267e73a80b36398591d.jpg",
+    "filename": "80-Adding-Aadhar-Card-Template-Download-in-Photoshop-with-Aadhar-Card-Template-Download_jpg.rf.c6ae42e8f1221267e73a80b36398591d.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\81eadb49cb7736c4e7460f318ebd5d29_jpg.rf.48eb7b67f93cd1046100ef7067e37448.jpg",
+    "filename": "81eadb49cb7736c4e7460f318ebd5d29_jpg.rf.48eb7b67f93cd1046100ef7067e37448.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\81eadb49cb7736c4e7460f318ebd5d29_jpg.rf.4ad0824c9f5aca7b633abddb6643a7d3.jpg",
+    "filename": "81eadb49cb7736c4e7460f318ebd5d29_jpg.rf.4ad0824c9f5aca7b633abddb6643a7d3.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\81eadb49cb7736c4e7460f318ebd5d29_jpg.rf.77b53df751cfb48991a3b4a13943379b.jpg",
+    "filename": "81eadb49cb7736c4e7460f318ebd5d29_jpg.rf.77b53df751cfb48991a3b4a13943379b.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\82a73cb534ca5805e7136e48059e7000_jpg.rf.a9dbc01e03aa94a28114bceef16c02ac.jpg",
+    "filename": "82a73cb534ca5805e7136e48059e7000_jpg.rf.a9dbc01e03aa94a28114bceef16c02ac.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\8455878ee3f6d5bf35580169888b3fb6_jpg.rf.386a15cfcec4f380e952e2c9185ff115.jpg",
+    "filename": "8455878ee3f6d5bf35580169888b3fb6_jpg.rf.386a15cfcec4f380e952e2c9185ff115.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\8988c5603729dd48f76f59d6f3c6148e_jpg.rf.15376fc1b38a29b0d4165ee99ad69065.jpg",
+    "filename": "8988c5603729dd48f76f59d6f3c6148e_jpg.rf.15376fc1b38a29b0d4165ee99ad69065.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\8988c5603729dd48f76f59d6f3c6148e_jpg.rf.6086eef144c8b3e43ecd99528fe577ae.jpg",
+    "filename": "8988c5603729dd48f76f59d6f3c6148e_jpg.rf.6086eef144c8b3e43ecd99528fe577ae.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\8c7dab60c3bdf9f210aaaca1a87c78de_jpg.rf.efc4f906b57e34f8d8ccee52679e3dbc.jpg",
+    "filename": "8c7dab60c3bdf9f210aaaca1a87c78de_jpg.rf.efc4f906b57e34f8d8ccee52679e3dbc.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\94eb12c96f2d79889f4856eb47ae25a4_jpg.rf.1995fda41c837d6ef94b56185db45e2e.jpg",
+    "filename": "94eb12c96f2d79889f4856eb47ae25a4_jpg.rf.1995fda41c837d6ef94b56185db45e2e.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\94eb12c96f2d79889f4856eb47ae25a4_jpg.rf.cd6ade55d205bfa020f121a52222e78f.jpg",
+    "filename": "94eb12c96f2d79889f4856eb47ae25a4_jpg.rf.cd6ade55d205bfa020f121a52222e78f.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\94fc829f3e5abeea915fd790fba1ca4f_jpg.rf.5be8baa783a116a145c80add3e77e54f.jpg",
+    "filename": "94fc829f3e5abeea915fd790fba1ca4f_jpg.rf.5be8baa783a116a145c80add3e77e54f.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'' is too short"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\94fc829f3e5abeea915fd790fba1ca4f_jpg.rf.bb63a925bb340e55517e8cfcc088600e.jpg",
+    "filename": "94fc829f3e5abeea915fd790fba1ca4f_jpg.rf.bb63a925bb340e55517e8cfcc088600e.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'12/I0N' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\97d297f8384d0e9b857e3ebc0bd31dcd_jpg.rf.1eb32cec43fad4433844a3f4b12f4cb5.jpg",
+    "filename": "97d297f8384d0e9b857e3ebc0bd31dcd_jpg.rf.1eb32cec43fad4433844a3f4b12f4cb5.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'74/09/1985' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\9ccffeac84c5b19e14bab96b9177b18b_jpg.rf.0876d3c796ce732b89fc3f1d66875c1c.jpg",
+    "filename": "9ccffeac84c5b19e14bab96b9177b18b_jpg.rf.0876d3c796ce732b89fc3f1d66875c1c.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'' is not one of ['Male', 'MALE', 'Female', 'FEMALE', 'Other']"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\a1e3125efaa4eebd8efc907ae48b69a1-1-_jpg.rf.20ddc9f7be6f889f8b6f20b3977d5366.jpg",
+    "filename": "a1e3125efaa4eebd8efc907ae48b69a1-1-_jpg.rf.20ddc9f7be6f889f8b6f20b3977d5366.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\a1e3125efaa4eebd8efc907ae48b69a1-1-_jpg.rf.6f806db00d57687a612baff47496612e.jpg",
+    "filename": "a1e3125efaa4eebd8efc907ae48b69a1-1-_jpg.rf.6f806db00d57687a612baff47496612e.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\a1e3125efaa4eebd8efc907ae48b69a1-1-_jpg.rf.8df60a02ffa4941d96b247573359b635.jpg",
+    "filename": "a1e3125efaa4eebd8efc907ae48b69a1-1-_jpg.rf.8df60a02ffa4941d96b247573359b635.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\a1e3125efaa4eebd8efc907ae48b69a1-1-_jpg.rf.e13e33b49eb5faf5ed026d29b022f5df.jpg",
+    "filename": "a1e3125efaa4eebd8efc907ae48b69a1-1-_jpg.rf.e13e33b49eb5faf5ed026d29b022f5df.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\a1e3125efaa4eebd8efc907ae48b69a1-2-_jpg.rf.31b74d806ea3856468d5a414c6b32912.jpg",
+    "filename": "a1e3125efaa4eebd8efc907ae48b69a1-2-_jpg.rf.31b74d806ea3856468d5a414c6b32912.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'0$071990' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\aa-Cover-k9ll0etrgjri1nlb9pgj8k12q2-20170526111344_jpg.rf.29e538a9a2e230f9633329a2a45cf01b.jpg",
+    "filename": "aa-Cover-k9ll0etrgjri1nlb9pgj8k12q2-20170526111344_jpg.rf.29e538a9a2e230f9633329a2a45cf01b.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\aa-Cover-k9ll0etrgjri1nlb9pgj8k12q2-20170526111344_jpg.rf.9d944d9b3b5963c6ce563e090ba4f909.jpg",
+    "filename": "aa-Cover-k9ll0etrgjri1nlb9pgj8k12q2-20170526111344_jpg.rf.9d944d9b3b5963c6ce563e090ba4f909.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1303/497' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\aad43_jpg.rf.147040ac86281b08f5c9d23f0e1cae2b.jpg",
+    "filename": "aad43_jpg.rf.147040ac86281b08f5c9d23f0e1cae2b.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\aad43_jpg.rf.6ed87ce38ccdd88befdfdd26d62cd637.jpg",
+    "filename": "aad43_jpg.rf.6ed87ce38ccdd88befdfdd26d62cd637.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\aad43_jpg.rf.c81d7258c4cf77697673068f15ee177e.jpg",
+    "filename": "aad43_jpg.rf.c81d7258c4cf77697673068f15ee177e.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\aadhar_jpg.rf.09c5b0d145b02edd4fea3f30801bb13e.jpg",
+    "filename": "aadhar_jpg.rf.09c5b0d145b02edd4fea3f30801bb13e.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'9147385602' does not match '^[0-9]{12}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\ac313c63f18e91c513128fa97bce32d6_jpg.rf.5a288bae05a38f7b3d6c777bd87e3a7d.jpg",
+    "filename": "ac313c63f18e91c513128fa97bce32d6_jpg.rf.5a288bae05a38f7b3d6c777bd87e3a7d.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\ac313c63f18e91c513128fa97bce32d6_jpg.rf.f285f8fd7c0dc9b51126ca25933617ee.jpg",
+    "filename": "ac313c63f18e91c513128fa97bce32d6_jpg.rf.f285f8fd7c0dc9b51126ca25933617ee.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\ac6c7da416cbf07230d588741cbb2d99_jpg.rf.fa804300516b8c3ed422f84a08c33780.jpg",
+    "filename": "ac6c7da416cbf07230d588741cbb2d99_jpg.rf.fa804300516b8c3ed422f84a08c33780.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'' is not one of ['Male', 'MALE', 'Female', 'FEMALE', 'Other']"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\adhar1_2366193f_jpg.rf.57a36e9035730fe09de3ad5851427c21.jpg",
+    "filename": "adhar1_2366193f_jpg.rf.57a36e9035730fe09de3ad5851427c21.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\adhar1_2366193f_jpg.rf.f0cf36267d836194bf1cf433c7ba3677.jpg",
+    "filename": "adhar1_2366193f_jpg.rf.f0cf36267d836194bf1cf433c7ba3677.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\adhar_card_6402313_835x547-m_jpg.rf.26810bbf744c68f758a66a86938c634d.jpg",
+    "filename": "adhar_card_6402313_835x547-m_jpg.rf.26810bbf744c68f758a66a86938c634d.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'aadhaar_number' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\adhar_card_6402313_835x547-m_jpg.rf.51d58b6965e5689cb6eefe743fd3aad9.jpg",
+    "filename": "adhar_card_6402313_835x547-m_jpg.rf.51d58b6965e5689cb6eefe743fd3aad9.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'aadhaar_number' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\Adhar_Card_jpg.rf.c119817e5ac1a272edd6e2f4b3fed224.jpg",
+    "filename": "Adhar_Card_jpg.rf.c119817e5ac1a272edd6e2f4b3fed224.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\amb-022_1636178548_jpg.rf.0e65a11e32ec3e2b54995a4d949e70fc.jpg",
+    "filename": "amb-022_1636178548_jpg.rf.0e65a11e32ec3e2b54995a4d949e70fc.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\amb-022_1636178548_jpg.rf.15fb7b0dede334c3008898f3af3776f5.jpg",
+    "filename": "amb-022_1636178548_jpg.rf.15fb7b0dede334c3008898f3af3776f5.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\amb-022_1636178548_jpg.rf.4e8f2f0b44a1eedfaf27b3fcb2be3b83.jpg",
+    "filename": "amb-022_1636178548_jpg.rf.4e8f2f0b44a1eedfaf27b3fcb2be3b83.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'010/1986' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\amb-022_1636178548_jpg.rf.95da287e689b94f211659d3d549e2ae8.jpg",
+    "filename": "amb-022_1636178548_jpg.rf.95da287e689b94f211659d3d549e2ae8.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\amb-022_1636178548_jpg.rf.d8aaf7cd900d89942946d7579ea746bc.jpg",
+    "filename": "amb-022_1636178548_jpg.rf.d8aaf7cd900d89942946d7579ea746bc.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\b0d100d4275f891c2fbc6d9d56dbd123_jpg.rf.b149d4ed16cd3eab0bdc793ab4ebf069.jpg",
+    "filename": "b0d100d4275f891c2fbc6d9d56dbd123_jpg.rf.b149d4ed16cd3eab0bdc793ab4ebf069.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\b2487cba906731d63c4ca7884bd1a2f0_jpg.rf.9be0bc5c3d4d770cfc78eeed60898740.jpg",
+    "filename": "b2487cba906731d63c4ca7884bd1a2f0_jpg.rf.9be0bc5c3d4d770cfc78eeed60898740.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\b4047be5f6a409a7ac20777d25d5a058_jpg.rf.e4454031b0bfd5ea67730a2b8df6860e.jpg",
+    "filename": "b4047be5f6a409a7ac20777d25d5a058_jpg.rf.e4454031b0bfd5ea67730a2b8df6860e.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\b4ec339af5996addce61a9c73b7162f3-1-_jpg.rf.10e8382b160f27114d3602284e1fa5b3.jpg",
+    "filename": "b4ec339af5996addce61a9c73b7162f3-1-_jpg.rf.10e8382b160f27114d3602284e1fa5b3.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1994' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\b4ec339af5996addce61a9c73b7162f3-1-_jpg.rf.9431f729c14bda68e0c5f46781bee41c.jpg",
+    "filename": "b4ec339af5996addce61a9c73b7162f3-1-_jpg.rf.9431f729c14bda68e0c5f46781bee41c.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "unknown",
+    "ok": false,
+    "is_valid": false,
+    "message": "(PreconditionNotMet) Tensor holds no memory. Call Tensor::mutable_data firstly.\n  [Hint: holder_ should not be null.] (at ..\\paddle\\phi\\core\\dense_tensor_impl.cc:44)\n"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\b4ec339af5996addce61a9c73b7162f3-1-_jpg.rf.c0dae001e0d2f17e10a4ec1f7d73ad99.jpg",
+    "filename": "b4ec339af5996addce61a9c73b7162f3-1-_jpg.rf.c0dae001e0d2f17e10a4ec1f7d73ad99.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1994' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\b4ec339af5996addce61a9c73b7162f3-1-_jpg.rf.d538ddb7b8a3a328355d4de54a1471e9.jpg",
+    "filename": "b4ec339af5996addce61a9c73b7162f3-1-_jpg.rf.d538ddb7b8a3a328355d4de54a1471e9.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1994' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\b4ec339af5996addce61a9c73b7162f3-1-_jpg.rf.da31f89820863cf83fdbe2a24e315bce.jpg",
+    "filename": "b4ec339af5996addce61a9c73b7162f3-1-_jpg.rf.da31f89820863cf83fdbe2a24e315bce.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1994' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\b4ec339af5996addce61a9c73b7162f3_jpg.rf.7503c879fd8e4835f78a23ecc17d294c.jpg",
+    "filename": "b4ec339af5996addce61a9c73b7162f3_jpg.rf.7503c879fd8e4835f78a23ecc17d294c.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'661' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\b4ec339af5996addce61a9c73b7162f3_jpg.rf.b300fd0795ebf4dea5b40a9196265c30.jpg",
+    "filename": "b4ec339af5996addce61a9c73b7162f3_jpg.rf.b300fd0795ebf4dea5b40a9196265c30.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'aadhaar_number' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\b71fb182905bbdeea99549bff81f9c22_jpg.rf.19b5d8b6b42d7823ab0bd868d589d639.jpg",
+    "filename": "b71fb182905bbdeea99549bff81f9c22_jpg.rf.19b5d8b6b42d7823ab0bd868d589d639.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'Pankaj S' is not one of ['Male', 'MALE', 'Female', 'FEMALE', 'Other']"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\b7becd5c330f22d135ef4ffa3b26e65e_jpg.rf.810e1acbf8b4d885a9fcc57b9dd6eebe.jpg",
+    "filename": "b7becd5c330f22d135ef4ffa3b26e65e_jpg.rf.810e1acbf8b4d885a9fcc57b9dd6eebe.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\b7becd5c330f22d135ef4ffa3b26e65e_jpg.rf.84e26e63606ac262a364a08c62ed43db.jpg",
+    "filename": "b7becd5c330f22d135ef4ffa3b26e65e_jpg.rf.84e26e63606ac262a364a08c62ed43db.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\b7becd5c330f22d135ef4ffa3b26e65e_jpg.rf.9b0fdd3b7ffec1bddd42d3aefdacb10a.jpg",
+    "filename": "b7becd5c330f22d135ef4ffa3b26e65e_jpg.rf.9b0fdd3b7ffec1bddd42d3aefdacb10a.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\b9cc3312597d27a7d53152d949674eec_jpg.rf.099b1307a46856a45875052c26efd1c4.jpg",
+    "filename": "b9cc3312597d27a7d53152d949674eec_jpg.rf.099b1307a46856a45875052c26efd1c4.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'2702/199' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\banner_jpg.rf.06338ddbf8fd06d729bd2c6f5267f09e.jpg",
+    "filename": "banner_jpg.rf.06338ddbf8fd06d729bd2c6f5267f09e.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\banner_jpg.rf.6c1d7a68efe886863145f143c6ea7ddb.jpg",
+    "filename": "banner_jpg.rf.6c1d7a68efe886863145f143c6ea7ddb.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\bc2af9550a06aee72c9aa22a3c73f0fa_jpg.rf.6f015bc4407b02d98c90c40201f02882.jpg",
+    "filename": "bc2af9550a06aee72c9aa22a3c73f0fa_jpg.rf.6f015bc4407b02d98c90c40201f02882.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c06a8a5d5214f4545a91b5c35eb7aa43_jpg.rf.45fba5d79d1faac706c02b068a44b194.jpg",
+    "filename": "c06a8a5d5214f4545a91b5c35eb7aa43_jpg.rf.45fba5d79d1faac706c02b068a44b194.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'01/01/-998' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c06a8a5d5214f4545a91b5c35eb7aa43_jpg.rf.72c21f5ced79c5013aabf514fee0a606.jpg",
+    "filename": "c06a8a5d5214f4545a91b5c35eb7aa43_jpg.rf.72c21f5ced79c5013aabf514fee0a606.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c5bc89c6e9cede0ff4d07085c5ce2488-1-_jpg.rf.36959ad20242b023b7724e992946932a.jpg",
+    "filename": "c5bc89c6e9cede0ff4d07085c5ce2488-1-_jpg.rf.36959ad20242b023b7724e992946932a.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1988' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c5bc89c6e9cede0ff4d07085c5ce2488-1-_jpg.rf.61d1c8e1f20288199ded123cdd6aa7f3.jpg",
+    "filename": "c5bc89c6e9cede0ff4d07085c5ce2488-1-_jpg.rf.61d1c8e1f20288199ded123cdd6aa7f3.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c5bc89c6e9cede0ff4d07085c5ce2488-1-_jpg.rf.e50a52bb99b9c1c53d3abf15fcbe74aa.jpg",
+    "filename": "c5bc89c6e9cede0ff4d07085c5ce2488-1-_jpg.rf.e50a52bb99b9c1c53d3abf15fcbe74aa.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1988' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c5bc89c6e9cede0ff4d07085c5ce2488_jpg.rf.15a710b13d87bad20d9b81f75bb0d43d.jpg",
+    "filename": "c5bc89c6e9cede0ff4d07085c5ce2488_jpg.rf.15a710b13d87bad20d9b81f75bb0d43d.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1988' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c5bc89c6e9cede0ff4d07085c5ce2488_jpg.rf.285942035f5685fd93e9dd129000b167.jpg",
+    "filename": "c5bc89c6e9cede0ff4d07085c5ce2488_jpg.rf.285942035f5685fd93e9dd129000b167.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1988' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c5bc89c6e9cede0ff4d07085c5ce2488_jpg.rf.b5836773c43cee7f64e02651ecfb7767.jpg",
+    "filename": "c5bc89c6e9cede0ff4d07085c5ce2488_jpg.rf.b5836773c43cee7f64e02651ecfb7767.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1988' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c5cad996e165b070b99d2b76cdfb39dc_jpg.rf.33760ae6a7248a36f6fc01e04cb27137.jpg",
+    "filename": "c5cad996e165b070b99d2b76cdfb39dc_jpg.rf.33760ae6a7248a36f6fc01e04cb27137.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c5cad996e165b070b99d2b76cdfb39dc_jpg.rf.54522f5fc8c493b61a6da0c2adb1783e.jpg",
+    "filename": "c5cad996e165b070b99d2b76cdfb39dc_jpg.rf.54522f5fc8c493b61a6da0c2adb1783e.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'' is not one of ['Male', 'MALE', 'Female', 'FEMALE', 'Other']"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c5cad996e165b070b99d2b76cdfb39dc_jpg.rf.f4914cb0db1f853dda5b3ad66bae0d87.jpg",
+    "filename": "c5cad996e165b070b99d2b76cdfb39dc_jpg.rf.f4914cb0db1f853dda5b3ad66bae0d87.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c69b7f40144bf1cd4051251754af93ed-1-_jpg.rf.5defaa3f1b6dd4758cee0eea381c1067.jpg",
+    "filename": "c69b7f40144bf1cd4051251754af93ed-1-_jpg.rf.5defaa3f1b6dd4758cee0eea381c1067.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c69b7f40144bf1cd4051251754af93ed-1-_jpg.rf.ae88883b0e97b41228801b203cc402d3.jpg",
+    "filename": "c69b7f40144bf1cd4051251754af93ed-1-_jpg.rf.ae88883b0e97b41228801b203cc402d3.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c69b7f40144bf1cd4051251754af93ed-2-_jpg.rf.3a66b99f8d84e4fc95baf562785e78c4.jpg",
+    "filename": "c69b7f40144bf1cd4051251754af93ed-2-_jpg.rf.3a66b99f8d84e4fc95baf562785e78c4.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "unknown",
+    "ok": false,
+    "is_valid": false,
+    "message": "(PreconditionNotMet) Tensor holds no memory. Call Tensor::mutable_data firstly.\n  [Hint: holder_ should not be null.] (at ..\\paddle\\phi\\core\\dense_tensor_impl.cc:44)\n"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c69b7f40144bf1cd4051251754af93ed-2-_jpg.rf.613e716ceba30b05ff284edd6fac7199.jpg",
+    "filename": "c69b7f40144bf1cd4051251754af93ed-2-_jpg.rf.613e716ceba30b05ff284edd6fac7199.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c69b7f40144bf1cd4051251754af93ed-2-_jpg.rf.6485421bba0cd994fed7fc6a3bcae9ce.jpg",
+    "filename": "c69b7f40144bf1cd4051251754af93ed-2-_jpg.rf.6485421bba0cd994fed7fc6a3bcae9ce.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'Valar' is not one of ['Male', 'MALE', 'Female', 'FEMALE', 'Other']"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c69b7f40144bf1cd4051251754af93ed-2-_jpg.rf.b2cb155aefec41692cc8c944512cd22f.jpg",
+    "filename": "c69b7f40144bf1cd4051251754af93ed-2-_jpg.rf.b2cb155aefec41692cc8c944512cd22f.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c709629e7d00468f6c112daa8ca6c9e8_jpg.rf.9217899d1dce39c0ec8c5c874f36b155.jpg",
+    "filename": "c709629e7d00468f6c112daa8ca6c9e8_jpg.rf.9217899d1dce39c0ec8c5c874f36b155.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "unknown",
+    "ok": false,
+    "is_valid": false,
+    "message": "(PreconditionNotMet) Tensor holds no memory. Call Tensor::mutable_data firstly.\n  [Hint: holder_ should not be null.] (at ..\\paddle\\phi\\core\\dense_tensor_impl.cc:44)\n"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c709629e7d00468f6c112daa8ca6c9e8_jpg.rf.d9943260f6bff7955e195e6b2fc94c01.jpg",
+    "filename": "c709629e7d00468f6c112daa8ca6c9e8_jpg.rf.d9943260f6bff7955e195e6b2fc94c01.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c7d12dabedb1da10342b91dea665a917-1-_jpg.rf.4152c589fc18eeb2ccc62c7fc663f948.jpg",
+    "filename": "c7d12dabedb1da10342b91dea665a917-1-_jpg.rf.4152c589fc18eeb2ccc62c7fc663f948.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c7d12dabedb1da10342b91dea665a917-1-_jpg.rf.908d8d4ecb3f496d651661941bb0b6f9.jpg",
+    "filename": "c7d12dabedb1da10342b91dea665a917-1-_jpg.rf.908d8d4ecb3f496d651661941bb0b6f9.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c7d12dabedb1da10342b91dea665a917_jpg.rf.7a076b18c4ddf5b5e0aa1c0c6cd7f8f7.jpg",
+    "filename": "c7d12dabedb1da10342b91dea665a917_jpg.rf.7a076b18c4ddf5b5e0aa1c0c6cd7f8f7.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c9c6e3b130e3aed890884c240195ec9d_jpg.rf.299f189cd347bb84f141b209523fc82e.jpg",
+    "filename": "c9c6e3b130e3aed890884c240195ec9d_jpg.rf.299f189cd347bb84f141b209523fc82e.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'name' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c9c6e3b130e3aed890884c240195ec9d_jpg.rf.72effb094dba669267f07c0d13efbc3b.jpg",
+    "filename": "c9c6e3b130e3aed890884c240195ec9d_jpg.rf.72effb094dba669267f07c0d13efbc3b.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'name' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\c9c6e3b130e3aed890884c240195ec9d_jpg.rf.c22f15cf28de07a757bc2362e3037543.jpg",
+    "filename": "c9c6e3b130e3aed890884c240195ec9d_jpg.rf.c22f15cf28de07a757bc2362e3037543.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'name' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\cfd6db78024aa90c6166e6873945fa56_jpg.rf.ab7c93cc3522d1515355ee6852726f65.jpg",
+    "filename": "cfd6db78024aa90c6166e6873945fa56_jpg.rf.ab7c93cc3522d1515355ee6852726f65.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1985' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\D8E0Re_VsAEzhCg_jpg.rf.09c8e9596908d06fec3e522ea219ed99.jpg",
+    "filename": "D8E0Re_VsAEzhCg_jpg.rf.09c8e9596908d06fec3e522ea219ed99.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'' is too short"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\D8E0Re_VsAEzhCg_jpg.rf.47d61c720724316b784c3d8bf923966f.jpg",
+    "filename": "D8E0Re_VsAEzhCg_jpg.rf.47d61c720724316b784c3d8bf923966f.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'Smriti Kumari DO' is not one of ['Male', 'MALE', 'Female', 'FEMALE', 'Other']"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\D8E0Re_VsAEzhCg_jpg.rf.f806de5f0596a1058c526c5a7e212265.jpg",
+    "filename": "D8E0Re_VsAEzhCg_jpg.rf.f806de5f0596a1058c526c5a7e212265.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "unknown",
+    "ok": false,
+    "is_valid": false,
+    "message": "(PreconditionNotMet) Tensor holds no memory. Call Tensor::mutable_data firstly.\n  [Hint: holder_ should not be null.] (at ..\\paddle\\phi\\core\\dense_tensor_impl.cc:44)\n"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\d9c5c2aa49da5daf5ab4a18dd030726c_jpg.rf.44856496b30b7c69192f8f1ce471acec.jpg",
+    "filename": "d9c5c2aa49da5daf5ab4a18dd030726c_jpg.rf.44856496b30b7c69192f8f1ce471acec.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'gender' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\dd1b5eeb6239e3d97be96c4fa66a4eb7_jpg.rf.54222ec5163f477e503489b405aae068.jpg",
+    "filename": "dd1b5eeb6239e3d97be96c4fa66a4eb7_jpg.rf.54222ec5163f477e503489b405aae068.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'ISGILLEL' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\dd1b5eeb6239e3d97be96c4fa66a4eb7_jpg.rf.66688219737b3abb8b45511d916ab6f7.jpg",
+    "filename": "dd1b5eeb6239e3d97be96c4fa66a4eb7_jpg.rf.66688219737b3abb8b45511d916ab6f7.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\dd73e0797834fecca12c450729c37fef_jpg.rf.a75dbda8df4cc03c7aa8d67c536135ab.jpg",
+    "filename": "dd73e0797834fecca12c450729c37fef_jpg.rf.a75dbda8df4cc03c7aa8d67c536135ab.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'2001' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\DE8svj0U0AAEnrD_jpg.rf.c7402ff58d5a04a36b15d851a825d486.jpg",
+    "filename": "DE8svj0U0AAEnrD_jpg.rf.c7402ff58d5a04a36b15d851a825d486.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'gender' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\dwRqcW6_jpg.rf.bfdc65a8695e9268048b51249ab2b13f.jpg",
+    "filename": "dwRqcW6_jpg.rf.bfdc65a8695e9268048b51249ab2b13f.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\dwRqcW6_jpg.rf.d085bc70bd6351bc0d987242cc26e8ce.jpg",
+    "filename": "dwRqcW6_jpg.rf.d085bc70bd6351bc0d987242cc26e8ce.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\e383ea165dd6f41b69ef72df10c4c473-1-_jpg.rf.80a505ce20eb9116f855699c651f43d5.jpg",
+    "filename": "e383ea165dd6f41b69ef72df10c4c473-1-_jpg.rf.80a505ce20eb9116f855699c651f43d5.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\e383ea165dd6f41b69ef72df10c4c473-1-_jpg.rf.df9e5a00b836a9a1ff5916257a8407e4.jpg",
+    "filename": "e383ea165dd6f41b69ef72df10c4c473-1-_jpg.rf.df9e5a00b836a9a1ff5916257a8407e4.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\e731587b225d7bad435c4cfb7cbec669_jpg.rf.c1a5b7b4890cb2c3d08c35b494c536b1.jpg",
+    "filename": "e731587b225d7bad435c4cfb7cbec669_jpg.rf.c1a5b7b4890cb2c3d08c35b494c536b1.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'2612/194' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\e731587b225d7bad435c4cfb7cbec669_jpg.rf.c5f84029bfb394906296686430e354b6.jpg",
+    "filename": "e731587b225d7bad435c4cfb7cbec669_jpg.rf.c5f84029bfb394906296686430e354b6.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'TFenke' is not one of ['Male', 'MALE', 'Female', 'FEMALE', 'Other']"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\e731587b225d7bad435c4cfb7cbec669_jpg.rf.e4d14d62a699fbdb385399fc406d2caf.jpg",
+    "filename": "e731587b225d7bad435c4cfb7cbec669_jpg.rf.e4d14d62a699fbdb385399fc406d2caf.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "unknown",
+    "ok": false,
+    "is_valid": false,
+    "message": "(PreconditionNotMet) Tensor holds no memory. Call Tensor::mutable_data firstly.\n  [Hint: holder_ should not be null.] (at ..\\paddle\\phi\\core\\dense_tensor_impl.cc:44)\n"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\efbefce86a6ebb47ef70edd9f85d5324_jpg.rf.77473cf0d72e992991b46aac8cddf7e0.jpg",
+    "filename": "efbefce86a6ebb47ef70edd9f85d5324_jpg.rf.77473cf0d72e992991b46aac8cddf7e0.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\EFdEgzrUYAMutNm_jpg.rf.291b671079539295fd1f1355c5dbd928.jpg",
+    "filename": "EFdEgzrUYAMutNm_jpg.rf.291b671079539295fd1f1355c5dbd928.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\EodP1JyUUAAQ_o2_jpg.rf.52d817f4eb2bbe8e1b0fcff41096f5b5.jpg",
+    "filename": "EodP1JyUUAAQ_o2_jpg.rf.52d817f4eb2bbe8e1b0fcff41096f5b5.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\EWlRgN0UMAEhp1u_jpg.rf.dd1f49d5d6f4380b72a782f3040e3a65.jpg",
+    "filename": "EWlRgN0UMAEhp1u_jpg.rf.dd1f49d5d6f4380b72a782f3040e3a65.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\f6644ae09eb9acfc6a71f01115f917f9_jpg.rf.18f204959b89830f9760a1f959ce5578.jpg",
+    "filename": "f6644ae09eb9acfc6a71f01115f917f9_jpg.rf.18f204959b89830f9760a1f959ce5578.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "unknown",
+    "ok": false,
+    "is_valid": false,
+    "message": "(PreconditionNotMet) Tensor holds no memory. Call Tensor::mutable_data firstly.\n  [Hint: holder_ should not be null.] (at ..\\paddle\\phi\\core\\dense_tensor_impl.cc:44)\n"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\f6644ae09eb9acfc6a71f01115f917f9_jpg.rf.55e6cd60fc421388f02c925dd26f0975.jpg",
+    "filename": "f6644ae09eb9acfc6a71f01115f917f9_jpg.rf.55e6cd60fc421388f02c925dd26f0975.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'aadhaar_number' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\f6644ae09eb9acfc6a71f01115f917f9_jpg.rf.5a95d0ba24f9252066a2afe9b43b9c39.jpg",
+    "filename": "f6644ae09eb9acfc6a71f01115f917f9_jpg.rf.5a95d0ba24f9252066a2afe9b43b9c39.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'of Birth1966' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\f99b3efadece9bde10e251760cc71b1c_jpg.rf.0186b91293f50212eb85125238ab6331.jpg",
+    "filename": "f99b3efadece9bde10e251760cc71b1c_jpg.rf.0186b91293f50212eb85125238ab6331.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\f99b3efadece9bde10e251760cc71b1c_jpg.rf.09233b3649b19e28966f009687c888ee.jpg",
+    "filename": "f99b3efadece9bde10e251760cc71b1c_jpg.rf.09233b3649b19e28966f009687c888ee.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\f99b3efadece9bde10e251760cc71b1c_jpg.rf.77bf68cac693d2fea6505c3e2a285e5b.jpg",
+    "filename": "f99b3efadece9bde10e251760cc71b1c_jpg.rf.77bf68cac693d2fea6505c3e2a285e5b.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "unknown",
+    "ok": false,
+    "is_valid": false,
+    "message": "(PreconditionNotMet) Tensor holds no memory. Call Tensor::mutable_data firstly.\n  [Hint: holder_ should not be null.] (at ..\\paddle\\phi\\core\\dense_tensor_impl.cc:44)\n"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\ff71c3cd26d34f1340a3f410f6e03a3f_jpg.rf.16ca9e5e7470b2d7d19a81201c4596ba.jpg",
+    "filename": "ff71c3cd26d34f1340a3f410f6e03a3f_jpg.rf.16ca9e5e7470b2d7d19a81201c4596ba.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\ff71c3cd26d34f1340a3f410f6e03a3f_jpg.rf.293c6ba6767b16800f89d2ae11c36814.jpg",
+    "filename": "ff71c3cd26d34f1340a3f410f6e03a3f_jpg.rf.293c6ba6767b16800f89d2ae11c36814.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\ff71c3cd26d34f1340a3f410f6e03a3f_jpg.rf.344229d44fc3b7ac54706e5ac18f6554.jpg",
+    "filename": "ff71c3cd26d34f1340a3f410f6e03a3f_jpg.rf.344229d44fc3b7ac54706e5ac18f6554.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\ff71c3cd26d34f1340a3f410f6e03a3f_jpg.rf.4a45edf6a6c3abeb79567546a82eea63.jpg",
+    "filename": "ff71c3cd26d34f1340a3f410f6e03a3f_jpg.rf.4a45edf6a6c3abeb79567546a82eea63.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\ff71c3cd26d34f1340a3f410f6e03a3f_jpg.rf.57584baf6690eb45986247fcd339bba9.jpg",
+    "filename": "ff71c3cd26d34f1340a3f410f6e03a3f_jpg.rf.57584baf6690eb45986247fcd339bba9.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'Fomate' is not one of ['Male', 'MALE', 'Female', 'FEMALE', 'Other']"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\ff71c3cd26d34f1340a3f410f6e03a3f_jpg.rf.700f9f7def6965931e50b38e37bab756.jpg",
+    "filename": "ff71c3cd26d34f1340a3f410f6e03a3f_jpg.rf.700f9f7def6965931e50b38e37bab756.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'Famaie' is not one of ['Male', 'MALE', 'Female', 'FEMALE', 'Other']"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-1-_jpg.rf.7085fbf100f870aeade7f55eacdf8b13.jpg",
+    "filename": "images-1-_jpg.rf.7085fbf100f870aeade7f55eacdf8b13.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-1-_jpg.rf.afe515fce5292fb086b4d7b15f68c64a.jpg",
+    "filename": "images-1-_jpg.rf.afe515fce5292fb086b4d7b15f68c64a.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'aadhaar_number' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-10-_jpg.rf.0f0e39acdec9cb6f6af3e0dc5447072f.jpg",
+    "filename": "images-10-_jpg.rf.0f0e39acdec9cb6f6af3e0dc5447072f.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1532' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-12-_jpg.rf.38c902950fe2ab791ad153c5717544e1.jpg",
+    "filename": "images-12-_jpg.rf.38c902950fe2ab791ad153c5717544e1.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'aadhaar_number' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-13-_jpg.rf.45dafbe21a85c1eb6b318b4e3d6ef051.jpg",
+    "filename": "images-13-_jpg.rf.45dafbe21a85c1eb6b318b4e3d6ef051.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'01001R8' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-13-_jpg.rf.6f93b702aa3cd3b99835c95c38ca7de5.jpg",
+    "filename": "images-13-_jpg.rf.6f93b702aa3cd3b99835c95c38ca7de5.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'0100TRES' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-15-_jpg.rf.03662b61827dd0441441d09df6d829c4.jpg",
+    "filename": "images-15-_jpg.rf.03662b61827dd0441441d09df6d829c4.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1994' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-15-_jpg.rf.655dbcf8860495451dd8065e8d4d6b5a.jpg",
+    "filename": "images-15-_jpg.rf.655dbcf8860495451dd8065e8d4d6b5a.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1994' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-18-_jpg.rf.762d598bfd98ecac5cd5ea377d53d700.jpg",
+    "filename": "images-18-_jpg.rf.762d598bfd98ecac5cd5ea377d53d700.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'' is too short"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-18-_jpg.rf.8d8ed1df1e0bdad90001a6606be0268a.jpg",
+    "filename": "images-18-_jpg.rf.8d8ed1df1e0bdad90001a6606be0268a.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "unknown",
+    "ok": false,
+    "is_valid": false,
+    "message": "(PreconditionNotMet) Tensor holds no memory. Call Tensor::mutable_data firstly.\n  [Hint: holder_ should not be null.] (at ..\\paddle\\phi\\core\\dense_tensor_impl.cc:44)\n"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-18-_jpg.rf.af63fa02705cafc02a08cb6878773156.jpg",
+    "filename": "images-18-_jpg.rf.af63fa02705cafc02a08cb6878773156.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'' is too short"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-19-_jpg.rf.a59636aa24a0e39e0e1cd7fe55c85795.jpg",
+    "filename": "images-19-_jpg.rf.a59636aa24a0e39e0e1cd7fe55c85795.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'' is not one of ['Male', 'MALE', 'Female', 'FEMALE', 'Other']"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-19-_jpg.rf.a954102fdb14d89b0d6a8974f792b9fa.jpg",
+    "filename": "images-19-_jpg.rf.a954102fdb14d89b0d6a8974f792b9fa.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-19-_jpg.rf.b10c93fefadb31a46c9c097b37105c80.jpg",
+    "filename": "images-19-_jpg.rf.b10c93fefadb31a46c9c097b37105c80.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'' is not one of ['Male', 'MALE', 'Female', 'FEMALE', 'Other']"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-20-_jpg.rf.2584309852ab6134224c1f0f68a3f59d.jpg",
+    "filename": "images-20-_jpg.rf.2584309852ab6134224c1f0f68a3f59d.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-20-_jpg.rf.777048d0fa5da3ab6863fec59741613b.jpg",
+    "filename": "images-20-_jpg.rf.777048d0fa5da3ab6863fec59741613b.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-20-_jpg.rf.8f917baf0bfdefd06c9fd90fb17f6c90.jpg",
+    "filename": "images-20-_jpg.rf.8f917baf0bfdefd06c9fd90fb17f6c90.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-20-_jpg.rf.cf8ab04a7f48da9cb21e0c7b8f8f1711.jpg",
+    "filename": "images-20-_jpg.rf.cf8ab04a7f48da9cb21e0c7b8f8f1711.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-20-_jpg.rf.e45fcc7d102c7330c7a221ec70b7032b.jpg",
+    "filename": "images-20-_jpg.rf.e45fcc7d102c7330c7a221ec70b7032b.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-20-_jpg.rf.f445bc901af2259785a0bb57bd0355bb.jpg",
+    "filename": "images-20-_jpg.rf.f445bc901af2259785a0bb57bd0355bb.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-3-_jpg.rf.2e5e05dcffdacc9a0d2aaccba63e9b11.jpg",
+    "filename": "images-3-_jpg.rf.2e5e05dcffdacc9a0d2aaccba63e9b11.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "unknown",
+    "ok": false,
+    "is_valid": false,
+    "message": "(PreconditionNotMet) Tensor holds no memory. Call Tensor::mutable_data firstly.\n  [Hint: holder_ should not be null.] (at ..\\paddle\\phi\\core\\dense_tensor_impl.cc:44)\n"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-3-_jpg.rf.41faa80aab746862ca7bdbf3293645b9.jpg",
+    "filename": "images-3-_jpg.rf.41faa80aab746862ca7bdbf3293645b9.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-4-_jpg.rf.2b67c0811580796f113c253f8d4ef552.jpg",
+    "filename": "images-4-_jpg.rf.2b67c0811580796f113c253f8d4ef552.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'aadhaar_number' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-4-_jpg.rf.d44eb85e24fa6b90c9a1dbd17a582001.jpg",
+    "filename": "images-4-_jpg.rf.d44eb85e24fa6b90c9a1dbd17a582001.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'aadhaar_number' is a required property"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-5-_jpg.rf.90d96dc306c5399358462c6eefe42816.jpg",
+    "filename": "images-5-_jpg.rf.90d96dc306c5399358462c6eefe42816.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'' is too short"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-6-_jpg.rf.c63f554e503953dbb115ef97cfa1aaff.jpg",
+    "filename": "images-6-_jpg.rf.c63f554e503953dbb115ef97cfa1aaff.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-7-_jpg.rf.e86ca3fdfe09ff27848fd2a5d8103a6b.jpg",
+    "filename": "images-7-_jpg.rf.e86ca3fdfe09ff27848fd2a5d8103a6b.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'1/1/2003' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-8-_jpg.rf.6fa76561c678c180068ab8c0172e91cc.jpg",
+    "filename": "images-8-_jpg.rf.6fa76561c678c180068ab8c0172e91cc.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images-9-_jpg.rf.433644029f6a30492dc8fa3a23b625a6.jpg",
+    "filename": "images-9-_jpg.rf.433644029f6a30492dc8fa3a23b625a6.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'151210e9' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images_jpg.rf.71023753189303bcb87b9823c8b60d8e.jpg",
+    "filename": "images_jpg.rf.71023753189303bcb87b9823c8b60d8e.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\images_jpg.rf.964d6694651be90b4b33b7276a4c6d07.jpg",
+    "filename": "images_jpg.rf.964d6694651be90b4b33b7276a4c6d07.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'' is too short"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\img_1628671278092_474_jpg.rf.0555969fcd838698c6f8981b914ed3e9.jpg",
+    "filename": "img_1628671278092_474_jpg.rf.0555969fcd838698c6f8981b914ed3e9.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'' is too short"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\img_1628671278092_474_jpg.rf.27a29a0f0e1857ae9107b85c214e6a72.jpg",
+    "filename": "img_1628671278092_474_jpg.rf.27a29a0f0e1857ae9107b85c214e6a72.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'16/61/1010' does not match '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\img_1628671278092_474_jpg.rf.51568e0b0daf905f69e01410d3810ad8.jpg",
+    "filename": "img_1628671278092_474_jpg.rf.51568e0b0daf905f69e01410d3810ad8.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'FEWALE' is not one of ['Male', 'MALE', 'Female', 'FEMALE', 'Other']"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\IMG_20180723_120159_jpg.rf.1bd728f6f0dcb647ebd0416c709f6756.jpg",
+    "filename": "IMG_20180723_120159_jpg.rf.1bd728f6f0dcb647ebd0416c709f6756.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\IMG_20180723_120159_jpg.rf.f55adbff4a71b0534a0d40a72114526c.jpg",
+    "filename": "IMG_20180723_120159_jpg.rf.f55adbff4a71b0534a0d40a72114526c.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\maxresdefault-1_jpg.rf.266ac3f9489cacad511d4d29a4ea9fcf.jpg",
+    "filename": "maxresdefault-1_jpg.rf.266ac3f9489cacad511d4d29a4ea9fcf.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\meerut-news_1591527061_jpg.rf.18c5d64568f4baadd2cc53280ebfb32f.jpg",
+    "filename": "meerut-news_1591527061_jpg.rf.18c5d64568f4baadd2cc53280ebfb32f.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\meerut-news_1591527061_jpg.rf.1c9077c7a0fd5f93e2f77b17c129ccf1.jpg",
+    "filename": "meerut-news_1591527061_jpg.rf.1c9077c7a0fd5f93e2f77b17c129ccf1.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\product-500x500_jpg.rf.1c9d1fc93c9dbe9b46d5c3a86c8b9850.jpg",
+    "filename": "product-500x500_jpg.rf.1c9d1fc93c9dbe9b46d5c3a86c8b9850.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\product-500x500_jpg.rf.1f827ca6df35d0c3bc6b1a0b08230277.jpg",
+    "filename": "product-500x500_jpg.rf.1f827ca6df35d0c3bc6b1a0b08230277.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\pvc_adhar-card-600x600_jpg.rf.2e137cf42e5355017183696b2c959ece.jpg",
+    "filename": "pvc_adhar-card-600x600_jpg.rf.2e137cf42e5355017183696b2c959ece.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "unknown",
+    "ok": false,
+    "is_valid": false,
+    "message": "(PreconditionNotMet) Tensor holds no memory. Call Tensor::mutable_data firstly.\n  [Hint: holder_ should not be null.] (at ..\\paddle\\phi\\core\\dense_tensor_impl.cc:44)\n"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\sp-42095176-5v4rgi-thumbnail_jpg.rf.ac865eef5ce8e7eb3d93561c73fd62e7.jpg",
+    "filename": "sp-42095176-5v4rgi-thumbnail_jpg.rf.ac865eef5ce8e7eb3d93561c73fd62e7.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\sp-42095176-5v4rgi-thumbnail_jpg.rf.eabbd2b45e714e85cf31ee2b8889954d.jpg",
+    "filename": "sp-42095176-5v4rgi-thumbnail_jpg.rf.eabbd2b45e714e85cf31ee2b8889954d.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": false,
+    "message": "'Mole' is not one of ['Male', 'MALE', 'Female', 'FEMALE', 'Other']"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\sp-42095176-5v4rgi-thumbnail_jpg.rf.f7b0ab297016193b7e31931f11a44236.jpg",
+    "filename": "sp-42095176-5v4rgi-thumbnail_jpg.rf.f7b0ab297016193b7e31931f11a44236.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "unknown",
+    "ok": false,
+    "is_valid": false,
+    "message": "(PreconditionNotMet) Tensor holds no memory. Call Tensor::mutable_data firstly.\n  [Hint: holder_ should not be null.] (at ..\\paddle\\phi\\core\\dense_tensor_impl.cc:44)\n"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\thumb_jpg.rf.aa9aa48dc57aaa8a8568bd7469cb22ea.jpg",
+    "filename": "thumb_jpg.rf.aa9aa48dc57aaa8a8568bd7469cb22ea.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\unnamed_jpg.rf.3120a391053b3c15ddf835188ade4369.jpg",
+    "filename": "unnamed_jpg.rf.3120a391053b3c15ddf835188ade4369.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\unnamed_jpg.rf.84b228e074439b4e1116fb07ea58225f.jpg",
+    "filename": "unnamed_jpg.rf.84b228e074439b4e1116fb07ea58225f.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  },
+  {
+    "src_path": "data\\processed\\aadhar\\images\\test\\unnamed_jpg.rf.dccfe8f9b5700cacfdf59b8bc2fbf01e.jpg",
+    "filename": "unnamed_jpg.rf.dccfe8f9b5700cacfdf59b8bc2fbf01e.jpg",
+    "requested_doc_type": "aadhar",
+    "result_doc_type": "aadhaar",
+    "ok": true,
+    "is_valid": true,
+    "message": "Valid"
+  }
+]

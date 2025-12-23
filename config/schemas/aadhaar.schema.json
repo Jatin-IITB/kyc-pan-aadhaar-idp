@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "aadhaar_number": {
+      "type": "string",
+      "pattern": "^[0-9]{12}$",
+      "description": "12-digit Aadhaar number (with Verhoeff checksum)"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 100,
+      "description": "Full name"
+    },
+    "date_of_birth": {
+      "type": "string",
+      "pattern": "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$",
+      "description": "Date of birth in DD/MM/YYYY format"
+    },
+    "gender": {
+      "type": "string",
+      "enum": ["Male","MALE","Female","FEMALE","Other"],
+      "description": "Gender"
+    },
+    "address": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 500,
+      "description": "Full address"
+    }
+  },
+  "required": ["aadhaar_number", "name", "date_of_birth", "gender"],
+  "additionalProperties": false
+}

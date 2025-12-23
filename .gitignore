@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Generated outputs
+artifacts/
+runs/
+logs/
+
+# Data - regenerate with tools/
+data/processed/
+data/raw/
+data/synthetic/
+
+# Models - download or retrain
+models/yolov8/*/best.pt
+yolov8n.pt
+*.pt
+
+# Misc
+.DS_Store
+.env
