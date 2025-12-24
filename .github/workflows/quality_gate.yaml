@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PYTHONUNBUFFERED: "1"
-      BASELINE_GOLDEN: data/baselines/ci_golden.metrics.json
-      BASELINE_HARD: data/baselines/ci_hard.metrics.json
+      BASELINE_GOLDEN: data/baselines/ci_golden_metrics.json
+      BASELINE_HARD: data/baselines/ci_hard_metrics.json
 
     steps:
       - uses: actions/checkout@v4
@@ -20,19 +20,26 @@ jobs:
         with:
           python-version: "3.10"
 
+      # Optional but often needed if your requirements pull non-headless OpenCV
+      - name: System deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1
+
       - name: Install deps (full stack)
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Start API gateway
+        shell: bash
         run: |
-          nohup python -m uvicorn apps.api_gateway.main:app --host 127.0.0.1 --port 8000 > uvicorn.log 2>&1 &
+          set -euo pipefail
+          nohup python -m uvicorn apps.api_gateway.main:app --host 127.0.0.1 --port 8000 --log-level info > uvicorn.log 2>&1 &
           python - << 'PY'
-          import time, sys
-          import requests
+          import time, sys, requests
           url = "http://127.0.0.1:8000/health"
-          for _ in range(60):
+          for _ in range(90):
               try:
                   r = requests.get(url, timeout=1)
                   if r.status_code == 200:
@@ -44,6 +51,13 @@ jobs:
           print("gateway not ready")
           sys.exit(1)
           PY
+
+      - name: Dump gateway logs (if failed)
+        if: failure()
+        run: |
+          echo "===== uvicorn.log ====="
+          sed -n '1,200p' uvicorn.log || true
+          echo "===== (end) ====="
 
       - name: Eval (golden)
         run: |
