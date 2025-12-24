@@ -9,7 +9,7 @@ from services.ocr_paddle.roi_ocr import ROIOCR
 from services.pipeline import KYCPipeline, PipelineConfig
 
 from apps.api_gateway.app_factory import create_app
-
+from apps.api_gateway.jobs import router as jobs_router
 
 repo_root = Path(__file__).resolve().parents[2]
 PAN_WEIGHTS = repo_root / "models/yolov8/pan_field_detector_v1/best.pt"
@@ -18,7 +18,6 @@ AADHAAR_WEIGHTS = repo_root / "models/yolov8/aadhar_field_detector_v1/best.pt"
 pan_detector = FieldDetector(str(PAN_WEIGHTS), conf=0.25)
 aadhaar_detector = FieldDetector(str(AADHAAR_WEIGHTS), conf=0.25)
 ocr = ROIOCR(lang="en")
-
 doc_classifier = DocClassifier(
     pan_detector=pan_detector,
     aadhaar_detector=aadhaar_detector,
@@ -41,3 +40,5 @@ pipeline = KYCPipeline(
 )
 
 app = create_app(pipeline=pipeline, max_concurrency=4)
+app.include_router(jobs_router)
+
