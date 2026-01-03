@@ -63,28 +63,4 @@ def create_app(
         contents = await file.read()
         return extract_single_from_contents(contents, dt)
 
-    @app.post("/extract/batch")
-    async def extract_kyc_data_batch(
-        doctype: str = Query("auto", alias="doctype"),
-        doc_type: str = Query("", alias="doc_type"),
-        files: List[UploadFile] = File(...),
-    ):
-        # /extract/batch is multipart “files”, consistent with your gateway contract. [file:309]
-        dt = doctype if doctype else (doc_type if doc_type else "auto")
-        sem = asyncio.Semaphore(max_concurrency)
-
-        async def one(f: UploadFile):
-            async with sem:
-                try:
-                    contents = await f.read()
-                    out = await run_in_threadpool(extract_single_from_contents, contents, dt)
-                    return {"filename": f.filename, "ok": True, "result": out}
-                except HTTPException as e:
-                    return {"filename": f.filename, "ok": False, "error": e.detail}
-                except Exception as e:
-                    return {"filename": f.filename, "ok": False, "error": str(e)}
-
-        results = await asyncio.gather(*(one(f) for f in files))
-        return {"count": len(results), "results": results}
-
     return app

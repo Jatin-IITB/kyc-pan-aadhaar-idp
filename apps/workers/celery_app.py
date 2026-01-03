@@ -20,3 +20,4 @@ celery_app.conf.update(
     enable_utc=True,
     result_expires=int(os.getenv("CELERY_RESULT_EXPIRES_S", "86400")),  # 1 day
 )
+celery_app.conf.broker_connection_retry_on_startup=True

@@ -1,4 +1,3 @@
-# tools/eval_harness/build_suites.py
 from __future__ import annotations
 
 import argparse
@@ -8,12 +7,13 @@ import json
 import os
 import random
 import shutil
+import sys
+import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Tuple
 
 import requests
-
 
 IMG_EXTS = {".jpg", ".jpeg", ".png", ".webp"}
 LinkMode = Literal["copy", "hardlink", "symlink"]
@@ -22,7 +22,7 @@ LinkMode = Literal["copy", "hardlink", "symlink"]
 @dataclass(frozen=True)
 class Candidate:
     path: Path
-    doc_type: str  # "pan" or "aadhar" (gateway accepts; normalizes internally)
+    doc_type: str
 
 
 def _iter_images(root: Path) -> List[Path]:
@@ -37,24 +37,122 @@ def _sha256_file(p: Path) -> str:
     return h.hexdigest()
 
 
-def _post_extract_batch(
+def _post_extract_batch_async(
     gateway: str,
-    endpoint: str,
     doc_type: str,
     paths: List[Path],
     timeout_s: int,
 ) -> Dict[str, Any]:
-    url = f"{gateway.rstrip('/')}/{endpoint.lstrip('/')}"
+    """
+    Submits to /batches, polls for completion.
+    On timeout, returns partial results rather than crashing.
+    """
+    # FIX 1: Hardcoded endpoint for safety
+    url = f"{gateway.rstrip('/')}/batches"
+    
     files = []
     opened = []
+    
     try:
         for p in paths:
             fh = open(p, "rb")
             opened.append(fh)
+            # FIX 3: Filename mapping relies on p.name (acceptable for now per guidelines)
             files.append(("files", (p.name, fh, "application/octet-stream")))
-        r = requests.post(url, params={"doc_type": doc_type}, files=files, timeout=timeout_s)
+
+        print(f"  -> Submitting {len(paths)} images to {url}...")
+        r = requests.post(
+            url, 
+            params={"doc_type": doc_type}, 
+            files=files, 
+            timeout=30 
+        )
         r.raise_for_status()
-        return r.json()
+        batch_data = r.json()
+        batch_id = batch_data["batch_id"]
+        print(f"  -> Batch {batch_id} accepted. Polling...")
+
+        # Poll loop
+        start_t = time.time()
+        last_log_t = 0.0
+        is_tty = sys.stdout.isatty()
+        
+        status_data = {}
+
+        while True:
+            # FIX: Timeout semantics - break, don't crash
+            if time.time() - start_t > timeout_s:
+                print(f"\n  [WARN] Batch {batch_id} timed out after {timeout_s}s. Fetching partials...")
+                break
+
+            try:
+                poll_r = requests.get(f"{gateway.rstrip('/')}/batches/{batch_id}", timeout=10)
+                poll_r.raise_for_status()
+                status_data = poll_r.json()
+            except Exception as e:
+                print(f"\n  [WARN] Poll failed: {e}. Retrying...")
+                time.sleep(2)
+                continue
+            
+            status = status_data.get("status", "UNKNOWN")
+            summary = status_data.get("summary", {})
+            
+            done = summary.get("SUCCEEDED", 0) + summary.get("FAILED", 0)
+            total = len(paths)
+
+            # FIX: CI-friendly logging
+            if is_tty:
+                print(f"     Status: {status} [{done}/{total}]", end="\r")
+            else:
+                # In CI, log only every 30s to avoid noise
+                if time.time() - last_log_t > 30:
+                    print(f"     Status: {status} [{done}/{total}]")
+                    last_log_t = time.time()
+
+            if status == "COMPLETED":
+                if is_tty:
+                    print() # Newline after \r
+                print(f"  -> Batch completed.")
+                break
+            
+            time.sleep(2)
+
+        # Fetch results (full or partial)
+        final_results = []
+        jobs_list = status_data.get("jobs", [])
+        
+        # If timeout occurred, jobs_list might be incomplete or contain RUNNING items.
+        # We process whatever we have.
+        for job_summary in jobs_list:
+            # Optimistic: if result is already embedded
+            if "result" in job_summary or "error" in job_summary:
+                final_results.append(job_summary)
+                continue
+
+            # Fetch details
+            job_id = job_summary.get("job_id")
+            if not job_id:
+                continue
+
+            try:
+                job_r = requests.get(f"{gateway.rstrip('/')}/jobs/{job_id}", timeout=10)
+                if job_r.status_code == 200:
+                    final_results.append(job_r.json())
+                else:
+                    final_results.append({
+                        "filename": job_summary.get("filename"),
+                        "ok": False, 
+                        "error": f"fetch_error_{job_r.status_code}"
+                    })
+            except Exception as e:
+                final_results.append({
+                    "filename": job_summary.get("filename"),
+                    "ok": False, 
+                    "error": f"fetch_exception_{str(e)}"
+                })
+
+        return {"count": len(final_results), "results": final_results}
+
     finally:
         for fh in opened:
             try:
@@ -104,25 +202,22 @@ def _materialize(src: Path, dst: Path, mode: LinkMode) -> None:
         os.link(src, dst)
         return
 
-    # symlink
     os.symlink(src, dst)
 
 
 def _stable_sample(paths: List[Path], k: int, seed: int) -> List[Path]:
-    # Deterministic sampling independent of OS path ordering differences:
-    # shuffle by sha256(file) under a seeded PRNG.
     rng = random.Random(seed)
     keyed = [(p, _sha256_file(p)) for p in paths]
     rng.shuffle(keyed)
-    keyed.sort(key=lambda t: t[1])  # stable after shuffle
+    keyed.sort(key=lambda t: t[1])
     return [p for p, _ in keyed[:k]]
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--gateway", default="http://127.0.0.1:8000")
-    ap.add_argument("--endpoint", default="/extract/batch")
-    ap.add_argument("--timeout-s", type=int, default=120)
+    # FIX: Removed --endpoint argument
+    ap.add_argument("--timeout-s", type=int, default=300)
     ap.add_argument("--batch-size", type=int, default=16)
 
     ap.add_argument("--pan-root", default="data/processed/pan/images/test")
@@ -141,18 +236,18 @@ def main() -> None:
     args = ap.parse_args()
 
     gateway = args.gateway.rstrip("/")
-    endpoint = args.endpoint
 
     candidates: List[Candidate] = []
-    for p in _iter_images(Path(args.pan_root)):
-        candidates.append(Candidate(path=p, doc_type="pan"))
-    for p in _iter_images(Path(args.aadhaar_root)):
-        candidates.append(Candidate(path=p, doc_type="aadhar"))  # gateway normalizes to "aadhaar"
+    if Path(args.pan_root).exists():
+        for p in _iter_images(Path(args.pan_root)):
+            candidates.append(Candidate(path=p, doc_type="pan"))
+    if Path(args.aadhaar_root).exists():
+        for p in _iter_images(Path(args.aadhaar_root)):
+            candidates.append(Candidate(path=p, doc_type="aadhar"))
 
     if not candidates:
         raise SystemExit("No candidate images found.")
 
-    # Run inference per doc_type (keeps routing noise out of suite-building)
     by_type: Dict[str, List[Path]] = {"pan": [], "aadhar": []}
     for c in candidates:
         by_type[c.doc_type].append(c.path)
@@ -160,24 +255,25 @@ def main() -> None:
     all_rows: List[Dict[str, Any]] = []
 
     for dt, paths in by_type.items():
+        if not paths:
+            continue
+            
         for batch in _chunk(paths, args.batch_size):
-            resp = _post_extract_batch(
+            resp = _post_extract_batch_async(
                 gateway=gateway,
-                endpoint=endpoint,
+                # endpoint removed
                 doc_type=dt,
                 paths=batch,
                 timeout_s=args.timeout_s,
             )
+            
             for item in resp.get("results", []):
-                # item: {filename, ok, result|error} [from gateway]
                 fname = item.get("filename")
                 ok = bool(item.get("ok", False))
                 is_valid = _get_is_valid(item)
                 msg = _get_message(item)
                 out_dt = _get_doc_type(item)
 
-                # Map back to source path by filename (assumes unique within suite build).
-                # If collisions matter later, add a "client_filename" field and set it explicitly.
                 src = next((p for p in batch if p.name == fname), None)
 
                 all_rows.append(
@@ -192,7 +288,6 @@ def main() -> None:
                     }
                 )
 
-    # Partition
     pan_rows = [r for r in all_rows if r["requested_doc_type"] == "pan" and r["src_path"]]
     aad_rows = [r for r in all_rows if r["requested_doc_type"] == "aadhar" and r["src_path"]]
 
@@ -202,7 +297,6 @@ def main() -> None:
     pan_hard = [Path(r["src_path"]) for r in pan_rows if (not r["ok"]) or (not r["is_valid"])]
     aad_hard = [Path(r["src_path"]) for r in aad_rows if (not r["ok"]) or (not r["is_valid"])]
 
-    # Sample deterministically
     pan_golden = _stable_sample(pan_golden, args.golden_pan, args.seed)
     aad_golden = _stable_sample(aad_golden, args.golden_aadhaar, args.seed + 1)
     pan_hard = _stable_sample(pan_hard, args.hard_pan, args.seed + 2)

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # tools/eval_harness/run_eval.py
+
 import argparse
 import base64
 import csv
@@ -21,12 +22,10 @@ import requests
 @dataclass(frozen=True)
 class EvalConfig:
     gateway_url: str
-    endpoint: str
     test_dir: Path
     name: str
     timeout_s: int
     max_images: Optional[int]
-    allow_base64_fallback: bool
     batch_size: int
     batch_delay_s: float
     doc_type: Optional[str]
@@ -62,10 +61,6 @@ def _pip_freeze() -> Optional[List[str]]:
         return None
 
 
-def _encode_image_b64(path: Path) -> str:
-    return base64.b64encode(path.read_bytes()).decode("ascii")
-
-
 IMG_EXTS = (".jpg", ".jpeg", ".png", ".webp")
 
 
@@ -80,20 +75,92 @@ def _chunk(xs: List[Any], batch_size: int) -> List[List[Any]]:
     return [xs[i : i + batch_size] for i in range(0, len(xs), batch_size)]
 
 
-# --- HTTP posting helpers ---
-def _post_extract_batch_multipart(
-    images: List[Path], url: str, timeout_s: int, params: Optional[Dict[str, Any]] = None
-) -> Dict[str, Any]:
+# --- HTTP Async helpers (Refactored) ---
+def _submit_and_poll_batch(
+    images: List[Path], 
+    gateway_url: str, 
+    timeout_s: int, 
+    params: Optional[Dict[str, Any]] = None
+) -> Tuple[List[Dict[str, Any]], float]:
+    """
+    Submits a batch, polls for completion, and fetches results.
+    Returns: (list_of_results, total_batch_duration_seconds)
+    """
+    submit_url = f"{gateway_url.rstrip('/')}/batches"
+    
     files = []
     opened = []
+    
+    t0 = time.time()
     try:
+        # 1. Prepare Upload
         for p in images:
             f = open(p, "rb")
             opened.append(f)
+            # Filename is key for mapping back results
             files.append(("files", (p.name, f, "application/octet-stream")))
-        r = requests.post(url, files=files, params=params, timeout=timeout_s)
+
+        # 2. Submit
+        r = requests.post(submit_url, files=files, params=params, timeout=30)
         r.raise_for_status()
-        return r.json()
+        batch_id = r.json()["batch_id"]
+        
+        # 3. Poll
+        while True:
+            elapsed = time.time() - t0
+            if elapsed > timeout_s:
+                print(f" [WARN] Batch {batch_id} timed out after {elapsed:.1f}s. Fetching partials...", file=sys.stderr)
+                break
+            
+            # Check status
+            poll_r = requests.get(f"{gateway_url.rstrip('/')}/batches/{batch_id}", timeout=10)
+            poll_r.raise_for_status()
+            status_data = poll_r.json()
+            status = status_data.get("status")
+            
+            if status == "COMPLETED":
+                break
+            
+            # Exponential backoff cap at 2s
+            time.sleep(min(elapsed * 0.1 + 0.5, 2.0))
+
+        # 4. Fetch Results
+        final_results = []
+        
+        # 'jobs' list from /batches/{id} contains statuses. We need full results.
+        jobs_summary = status_data.get("jobs", [])
+        
+        for job_meta in jobs_summary:
+            job_id = job_meta.get("job_id")
+            fname = job_meta.get("filename", "unknown")
+            
+            # If result is somehow embedded (future optimization), use it
+            if "result" in job_meta:
+                 final_results.append(job_meta)
+                 continue
+                 
+            # Fetch single job details
+            try:
+                job_r = requests.get(f"{gateway_url.rstrip('/')}/jobs/{job_id}", timeout=10)
+                if job_r.status_code == 200:
+                    final_results.append(job_r.json())
+                else:
+                    final_results.append({
+                        "filename": fname,
+                        "ok": False,
+                        "error": f"fetch_error_{job_r.status_code}"
+                    })
+            except Exception as e:
+                final_results.append({
+                    "filename": fname,
+                    "ok": False,
+                    "error": f"fetch_exception_{str(e)}"
+                })
+        
+        # Calculate total duration for this batch
+        duration = time.time() - t0
+        return final_results, duration
+
     finally:
         for f in opened:
             try:
@@ -102,16 +169,7 @@ def _post_extract_batch_multipart(
                 pass
 
 
-def _post_extract_batch_base64(
-    images: List[Path], url: str, timeout_s: int, params: Optional[Dict[str, Any]] = None
-) -> Dict[str, Any]:
-    payload = {"images_b64": [_encode_image_b64(p) for p in images]}
-    r = requests.post(url, json=payload, params=params, timeout=timeout_s)
-    r.raise_for_status()
-    return r.json()
-
-
-# --- Result parsing helpers ---
+# --- Result parsing helpers (Unchanged) ---
 def _get_failure_reason(item: Dict[str, Any]) -> str:
     if not item.get("ok", False):
         return f"transport:{item.get('error', 'unknown')}"
@@ -137,7 +195,6 @@ def _extract_doctype(item: Dict[str, Any]) -> str:
     if not item.get("ok", False):
         return "unknown"
     res = item.get("result") or {}
-    # accept either document_type or documenttype (defensive)
     dt = res.get("document_type", res.get("documenttype"))
     return dt if isinstance(dt, str) and dt else "unknown"
 
@@ -252,7 +309,7 @@ def _write_artifacts(
         "duration_s": duration_s,
         "name": cfg.name,
         "gateway_url": cfg.gateway_url,
-        "endpoint": cfg.endpoint,
+        "endpoint": "/batches", # Hardcoded as we enforce async
         "python": sys.version,
         "platform": platform.platform(),
         "git_sha": _git_sha(),
@@ -284,51 +341,45 @@ def _call_batches_for_doctype(
     """
     Returns combined results list and per-image latency records.
     """
-    url = f"{cfg.gateway_url.rstrip('/')}{cfg.endpoint}"
     batches = _chunk(images, cfg.batch_size)
     combined_results: List[Dict[str, Any]] = []
     per_image_latencies: List[Dict[str, Any]] = []
 
-    for batch in batches:
+    print(f"Processing {len(images)} images in {len(batches)} batches (async)...")
+
+    for i, batch in enumerate(batches):
         params = {"doc_type": doc_type} if doc_type else None
-        t0 = time.time()
+        
         try:
-            resp = _post_extract_batch_multipart(batch, url=url, timeout_s=cfg.timeout_s, params=params)
-        except requests.exceptions.HTTPError as e:
-            # If server 422s, dump body for diagnosis and attempt base64 fallback if enabled.
-            resp_text = None
-            try:
-                resp_text = e.response.text
-            except Exception:
-                resp_text = str(e)
-            print(f"HTTPError during multipart post: {e} - response: {resp_text}", file=sys.stderr)
-            if not cfg.allow_base64_fallback:
-                # convert to a minimal response object for consistent downstream handling
-                combined_results.extend([{"filename": p.name, "ok": False, "error": "http_error"} for p in batch])
-                continue
-            try:
-                resp = _post_extract_batch_base64(batch, url=url, timeout_s=cfg.timeout_s, params=params)
-            except Exception as e2:
-                print(f"Base64 fallback also failed: {e2}", file=sys.stderr)
-                combined_results.extend([{"filename": p.name, "ok": False, "error": "fallback_failed"} for p in batch])
-                continue
+            # Call new ASYNC helper
+            batch_results, batch_duration = _submit_and_poll_batch(
+                batch, 
+                gateway_url=cfg.gateway_url, 
+                timeout_s=cfg.timeout_s, 
+                params=params
+            )
+            
+            combined_results.extend(batch_results)
+
+            # Estimate per-image latency (Total Batch Time / N images)
+            # This captures Queue Wait + Processing Time
+            per_image_ms = (batch_duration / max(1, len(batch))) * 1000.0
+            
+            for p in batch:
+                per_image_latencies.append({
+                    "filename": p.name, 
+                    "latency_ms": per_image_ms, 
+                    "doc_type": doc_type or "unspecified"
+                })
+                
+            print(f"  Batch {i+1}/{len(batches)} done. Avg Latency: {per_image_ms:.0f}ms/doc")
+
         except Exception as e:
-            print(f"Transport error for batch: {e}", file=sys.stderr)
-            combined_results.extend([{"filename": p.name, "ok": False, "error": "transport_error"} for p in batch])
-            continue
+            print(f"  Batch {i+1} failed completely: {e}", file=sys.stderr)
+            # Fill with errors so we don't crash stats
+            combined_results.extend([{"filename": p.name, "ok": False, "error": str(e)} for p in batch])
 
-        t1 = time.time()
-        batch_dt = t1 - t0
-        # resp is expected to be dict with "results": [...]
-        batch_results = resp.get("results", []) if isinstance(resp, dict) else []
-        combined_results.extend(batch_results)
-
-        # estimate per-image latency
-        per_image_ms = (batch_dt / max(1, len(batch))) * 1000.0
-        for p in batch:
-            per_image_latencies.append({"filename": p.name, "latency_ms": per_image_ms, "doc_type": doc_type or "unspecified"})
-
-        # optional small pause between batches to avoid overloading
+        # optional small pause
         if cfg.batch_delay_s and cfg.batch_delay_s > 0:
             time.sleep(cfg.batch_delay_s)
 
@@ -338,25 +389,23 @@ def _call_batches_for_doctype(
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--test-dir", required=True, help="Folder containing images (recursively).")
+    ap.add_argument("--out-dir", help="Explicit output directory.")
     ap.add_argument("--gateway", default="http://127.0.0.1:8000", help="Gateway base URL.")
-    ap.add_argument("--endpoint", default="/extract/batch", help="Batch extract endpoint path.")
+    # endpoint arg removed as we enforce /batches
     ap.add_argument("--name", default="gateway_eval", help="Run name suffix.")
-    ap.add_argument("--timeout-s", type=int, default=60, help="HTTP timeout per batch (s).")
+    ap.add_argument("--timeout-s", type=int, default=300, help="Timeout per batch (s).")
     ap.add_argument("--max-images", type=int, default=0, help="Cap number of images (0 = no cap).")
-    ap.add_argument("--no-base64-fallback", action="store_true", help="Disable base64 fallback.")
-    ap.add_argument("--batch-size", type=int, default=4, help="Number of images per batch to send.")
+    ap.add_argument("--batch-size", type=int, default=16, help="Number of images per batch to send.")
     ap.add_argument("--batch-delay-s", type=float, default=0.0, help="Sleep seconds between batches.")
     ap.add_argument("--doc-type", type=str, default=None, help="Optional doc_type to force for all requests.")
     args = ap.parse_args()
 
     cfg = EvalConfig(
         gateway_url=args.gateway.rstrip("/"),
-        endpoint=args.endpoint if args.endpoint.startswith("/") else f"/{args.endpoint}",
         test_dir=Path(args.test_dir),
         name=args.name,
         timeout_s=int(args.timeout_s),
         max_images=(None if int(args.max_images) <= 0 else int(args.max_images)),
-        allow_base64_fallback=(not bool(args.no_base64_fallback)),
         batch_size=int(args.batch_size),
         batch_delay_s=float(args.batch_delay_s),
         doc_type=(args.doc_type.strip() if args.doc_type else None),
@@ -404,10 +453,12 @@ def main() -> None:
     response = {"results": combined_results}
 
     started = _utc_ts_compact()
-    out_dir = Path("artifacts") / "eval_runs" / f"{started}_{cfg.name}"
-    t_total = 0.0  # compute aggregated total time as sum of latencies approximations
+    if args.out_dir:
+         out_dir = Path(args.out_dir)
+    else:
+         out_dir = Path("artifacts") / "eval_runs" / f"{started}_{cfg.name}"
+    t_total = 0.0 
     if combined_latencies:
-        # sum of per-image latencies (ms) -> seconds
         t_total = sum([r["latency_ms"] for r in combined_latencies]) / 1000.0
 
     metrics, rows = _compute_metrics(response)

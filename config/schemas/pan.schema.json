@@ -21,8 +21,8 @@
     },
     "date_of_birth": {
       "type": "string",
-      "pattern": "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$",
-      "description": "Date of birth in DD/MM/YYYY format"
+      "pattern": "^((0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}|[0-9]{4})$",
+      "description": "Date of birth in DD/MM/YYYY or YYYY format"
     }
   },
   "required": ["pan_number", "name", "date_of_birth"],

@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Protocol
 from urllib.parse import urlparse, unquote
-
+from urllib.request import url2pathname
 @dataclass(frozen=True)
 class StoredObject:
     uri: str
@@ -34,8 +34,12 @@ class LocalStorage:
         u = urlparse(uri)
         if u.scheme != "file":
             raise ValueError(f"unsupported uri scheme: {u.scheme}")
-        p = Path(unquote(u.path))
-        return p.read_bytes()
+        path =  url2pathname(unquote(u.path))
+        if len(path) >= 3 and (path[0] in ("\\", "/")) and path[2] == ":":
+            path = path[1:]
+        if u.netloc:
+            path = f"\\\\{u.netloc}{path}"    
+        return Path(path).read_bytes()
 
     def put_json_atomic(self, *, job_id: str, obj: dict, name: str) -> StoredObject:
         out = self._job_dir(job_id) / name
