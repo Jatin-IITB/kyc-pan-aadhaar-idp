@@ -1,3 +1,4 @@
+"/services/validation/schema_validation.py"
 from pathlib import Path
 import json
 import jsonschema
@@ -27,9 +28,11 @@ def validate_with_schema(data: dict, doc_type: str):
         schema = _load_schema(doc_type)
     except Exception as e:
         return False, str(e)
+    
+    validator = jsonschema.Draft7Validator(schema)
+    errors = list(validator.iter_errors(data))
 
-    try:
-        jsonschema.validate(instance=data, schema=schema)
+    if not errors:
         return True, "Valid"
-    except jsonschema.exceptions.ValidationError as e:
-        return False, e.message
+    error_messages = [f"Field '{err.json_path.split('.')[-1]}' {err.message}" for err in errors]
+    return False, " | ".join(error_messages)

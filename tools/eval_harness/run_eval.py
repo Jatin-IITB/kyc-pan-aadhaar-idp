@@ -2,11 +2,9 @@
 # tools/eval_harness/run_eval.py
 
 import argparse
-import base64
 import csv
 import hashlib
 import json
-import os
 import platform
 import subprocess
 import sys
@@ -15,9 +13,9 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
-
+from apps.common.settings import load_settings
 import requests
-
+settings = load_settings()
 # --- Config dataclass ---
 @dataclass(frozen=True)
 class EvalConfig:
@@ -390,7 +388,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--test-dir", required=True, help="Folder containing images (recursively).")
     ap.add_argument("--out-dir", help="Explicit output directory.")
-    ap.add_argument("--gateway", default="http://127.0.0.1:8000", help="Gateway base URL.")
+    ap.add_argument("--gateway", default=settings.gateway_url, help="Gateway base URL.")
     # endpoint arg removed as we enforce /batches
     ap.add_argument("--name", default="gateway_eval", help="Run name suffix.")
     ap.add_argument("--timeout-s", type=int, default=300, help="Timeout per batch (s).")

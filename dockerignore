@@ -1,0 +1,11 @@
+__pycache__
+*.pyc
+.git
+.env
+venv
+logs
+runs
+data
+artifacts
+models/*.pt
+!models/yolov8n.pt

@@ -1,0 +1,14 @@
+Metadata-Version: 2.4
+Name: kyc-idp
+Version: 0.1.0
+Summary: Enterprise KYC IDP System
+Requires-Dist: fastapi
+Requires-Dist: uvicorn
+Requires-Dist: celery
+Requires-Dist: redis
+Requires-Dist: paddlepaddle
+Requires-Dist: paddleocr
+Requires-Dist: ultralytics
+Requires-Dist: opencv-python
+Requires-Dist: streamlit
+Requires-Dist: rich

@@ -7,7 +7,7 @@ from services.card_crop_yolov8.detector import FieldDetector
 from services.doc_classifier.classifier import DocClassifier
 from services.ocr_paddle.roi_ocr import ROIOCR
 from services.pipeline import KYCPipeline, PipelineConfig
-
+from services.extraction.llm_cleaner import LLMKycCleaner
 
 @lru_cache(maxsize=1)
 def get_pipeline() -> KYCPipeline:
@@ -20,7 +20,7 @@ def get_pipeline() -> KYCPipeline:
     aadhaar_detector = FieldDetector(str(aad_w), conf=0.25)
 
     ocr = ROIOCR(lang="en")
-
+    llm_cleaner = LLMKycCleaner()
     doc_classifier = DocClassifier(
         pan_detector=pan_detector,
         aadhaar_detector=aadhaar_detector,
@@ -35,5 +35,6 @@ def get_pipeline() -> KYCPipeline:
         aadhaar_detector=aadhaar_detector,
         ocr=ocr,
         doc_classifier=doc_classifier,
+        llm_cleaner=llm_cleaner,
         config=PipelineConfig(),
     )

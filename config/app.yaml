@@ -1,0 +1,8 @@
+# config/app.yaml
+gateway_url: "http://127.0.0.1:8000"
+eval_results_path: "runs/eval/docker_v5/results.json"
+image_roots:
+  - "data/test_cases_async"
+  - "data/processed/pan_images_test"
+  - "data/processed/aadhar_images_test"
+thresholds_path: "config/thresholds.yaml"

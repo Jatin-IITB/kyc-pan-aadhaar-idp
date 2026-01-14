@@ -1,20 +1,38 @@
-# Confidence thresholds for routing decisions
-confidence:
-  crop_min: 0.80
-  ocr_min: 0.70
-  extraction_min: 0.75
-  validation_min: 0.85
-  face_match_min: 0.60
-  hitl_trigger: 0.85  # If overall < this, route to HITL
+# config/thresholds.yaml
 
-# Quality gates
+# --- 1. Confidence Thresholds (Routing Decisions) ---
+confidence:
+  crop_min: 0.80        # Minimum confidence for YOLO card detection
+  ocr_min: 0.70         # Minimum average OCR confidence per word
+  extraction_min: 0.75  # Minimum confidence for a key-value pair
+  validation_min: 0.85  # Minimum score to auto-approve without HITL
+  face_match_min: 0.60  # Face comparison similarity threshold
+  hitl_trigger: 0.85    # If overall score < this, route to Human Review
+
+# --- 2. Quality Gate (Pre-processing Rejection) ---
+# Used by services/preprocessing/quality.py to reject bad images EARLY
+quality_gate:
+  # Blur Threshold: Lower = More blurry images accepted
+  min_blur_score: 12  
+
+  # Glare Threshold: Higher = More white pixels accepted
+  max_white_ratio: 0.5
+
+  # Dark Threshold: Higher = More black pixels accepted
+  max_black_ratio: 0.15
+
+  # Max Resolution (prevent timeout on 12MP images)
+  max_resolution: 1600
+
+# --- 3. Legacy Quality Config (Deprecated?) ---
+# Kept for backward compatibility if other modules use 'quality' key
 quality:
-  min_resolution: 600  # pixels (shortest side)
-  max_blur_variance: 100  # Laplacian variance
+  min_resolution: 600      # pixels (shortest side)
+  max_blur_variance: 100   # OLD value (Laplacian variance)
   min_brightness: 30
   max_brightness: 240
 
-# Validation rules
+# --- 4. Validation Rules (Business Logic) ---
 validation:
   pan:
     regex: "^[A-Z]{5}[0-9]{4}[A-Z]$"
@@ -23,17 +41,29 @@ validation:
   aadhaar:
     digit_count: 12
     enforce_verhoeff: true
-    allow_masked: false  # Whether to accept XXXX XXXX 1234 format
+    allow_masked: false   # Whether to accept XXXX XXXX 1234 format
 
-# Forensics
+# --- 5. Forensics (Tamper Detection) ---
 forensics:
-  ela_threshold: 0.65  # Higher = more suspicious
+  ela_threshold: 0.65            # Higher = more suspicious
   font_consistency_threshold: 0.70  # Lower = more suspicious
 
-# Field weights for confidence scoring
+# --- 6. Scoring Weights ---
 field_weights:
   ocr_confidence: 0.30
   extraction_agreement: 0.25
   validation_score: 0.30
   spatial_consistency: 0.10
   format_match: 0.05
+  
+# --- 7. Rescue & Partial Logic ---
+rescue_logic:
+  # If a field fails regex, but the LLM fixes it, do we trust it?
+  trust_llm_corrections: true
+  
+  # For 'PARTIAL_SUCCESS' status:
+  # Minimum fields required (e.g., 0.75 = 3 out of 4 fields)
+  min_field_coverage: 0.75
+  
+  # Minimum combined confidence score for partial results
+  min_partial_score: 1.75

@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    restart: always
+
+  api:
+    build: .
+    command: uvicorn apps.api.main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - UPLOAD_DIR=data/uploads
+      - PYTHONPATH=/app
+      - KYC_OLLAMA_URL=http://host.docker.internal:11434
+      - KYC_OLLAMA_MODEL=llama3.2:latest
+      - KYC_OLLAMA_TIMEOUT_S=20
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    working_dir: /app
+    depends_on:
+      - redis
+
+  worker:
+    build: .
+    command: celery -A apps.workers.celery_main.celery_app worker --pool=solo --loglevel=INFO
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+    volumes:
+      - .:/app
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - OMP_NUM_THREADS=2
+      - PYTHONPATH=/app
+      - KYC_OLLAMA_URL=http://host.docker.internal:11434
+      - KYC_OLLAMA_MODEL=llama3.2:latest
+      - KYC_OLLAMA_TIMEOUT_S=20
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    working_dir: /app
+    depends_on:
+      - redis

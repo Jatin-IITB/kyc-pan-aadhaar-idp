@@ -1,3 +1,4 @@
+#'config/models.yaml'
 yolov8:
   pan_fields:
     weights: models/yolov8/pan_field_detector_v1/best.pt
