@@ -12,7 +12,7 @@ from .render_utils import (
     add_diagonal_watermark,
 )
 from .augmentations import apply_augmentations
-from .tempalate_utils import load_template_or_none
+from .template_utils import load_template_or_none
 
 
 class PANCardGenerator:

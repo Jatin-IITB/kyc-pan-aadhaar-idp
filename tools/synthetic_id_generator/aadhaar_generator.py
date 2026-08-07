@@ -16,7 +16,7 @@ from .utils import (
 from .render_utils import draw_text_return_bbox, pack_bbox, draw_microtext
 from .augmentations import apply_augmentations
 from .qr_utils import generate_qr_image, paste_rgb_roi
-from .tempalate_utils import load_template_or_none
+from .template_utils import load_template_or_none
 
 
 class AadhaarCardGenerator:

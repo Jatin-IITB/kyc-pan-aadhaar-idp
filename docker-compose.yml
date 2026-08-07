@@ -1,10 +1,42 @@
-version: '3.8'
-
 services:
   redis:
     image: redis:7-alpine
     ports:
       - "6379:6379"
+    restart: always
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: kyc
+      POSTGRES_PASSWORD: kyc
+      POSTGRES_DB: kyc_idp
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - miniodata:/data
+    restart: always
+
+  qdrant:
+    image: qdrant/qdrant:v1.7.4
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrantdata:/qdrant/storage
     restart: always
 
   api:
@@ -16,6 +48,12 @@ services:
       - "8000:8000"
     environment:
       - REDIS_URL=redis://redis:6379/0
+      - DATABASE_URL=postgresql+asyncpg://kyc:kyc@postgres:5432/kyc_idp
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin
+      - MINIO_BUCKET=kyc-documents
+      - QDRANT_URL=http://qdrant:6333
       - UPLOAD_DIR=data/uploads
       - PYTHONPATH=/app
       - KYC_OLLAMA_URL=http://host.docker.internal:11434
@@ -26,6 +64,8 @@ services:
     working_dir: /app
     depends_on:
       - redis
+      - postgres
+      - minio
 
   worker:
     build: .
@@ -38,6 +78,12 @@ services:
       - .:/app
     environment:
       - REDIS_URL=redis://redis:6379/0
+      - DATABASE_URL=postgresql+asyncpg://kyc:kyc@postgres:5432/kyc_idp
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin
+      - MINIO_BUCKET=kyc-documents
+      - QDRANT_URL=http://qdrant:6333
       - OMP_NUM_THREADS=2
       - PYTHONPATH=/app
       - KYC_OLLAMA_URL=http://host.docker.internal:11434
@@ -48,3 +94,19 @@ services:
     working_dir: /app
     depends_on:
       - redis
+      - postgres
+
+  prometheus:
+    image: prom/prometheus:v2.48.1
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - promdata:/prometheus
+    restart: always
+
+volumes:
+  pgdata:
+  miniodata:
+  qdrantdata:
+  promdata:

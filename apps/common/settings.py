@@ -35,6 +35,12 @@ class AppSettings:
     eval_results_path: Path
     image_roots: List[Path]
     thresholds_path: Path
+    database_url: str
+    minio_endpoint: str
+    minio_access_key: str
+    minio_secret_key: str
+    minio_bucket: str
+    qdrant_url: str
 
 
 def load_settings(config_path: Optional[str] = None) -> AppSettings:
@@ -48,6 +54,9 @@ def load_settings(config_path: Optional[str] = None) -> AppSettings:
       - KYC_EVAL_RESULTS_PATH
       - KYC_IMAGE_ROOTS (comma-separated)
       - KYC_THRESHOLDS_PATH
+      - DATABASE_URL
+      - MINIO_ENDPOINT, MINIO_ACCESS_KEY, MINIO_SECRET_KEY, MINIO_BUCKET
+      - QDRANT_URL
     """
     cfg_path = (
         Path(config_path)
@@ -87,4 +96,24 @@ def load_settings(config_path: Optional[str] = None) -> AppSettings:
         eval_results_path=_as_path(str(eval_results_path)),
         image_roots=_as_paths([str(x) for x in image_roots_raw]),
         thresholds_path=_as_path(str(thresholds_path)),
+        database_url=(
+            _env("DATABASE_URL")
+            or cfg.get("database_url")
+            or "postgresql+asyncpg://kyc:kyc@localhost:5432/kyc_idp"
+        ),
+        minio_endpoint=(
+            _env("MINIO_ENDPOINT") or cfg.get("minio_endpoint") or "localhost:9000"
+        ),
+        minio_access_key=(
+            _env("MINIO_ACCESS_KEY") or cfg.get("minio_access_key") or "minioadmin"
+        ),
+        minio_secret_key=(
+            _env("MINIO_SECRET_KEY") or cfg.get("minio_secret_key") or "minioadmin"
+        ),
+        minio_bucket=(
+            _env("MINIO_BUCKET") or cfg.get("minio_bucket") or "kyc-documents"
+        ),
+        qdrant_url=(
+            _env("QDRANT_URL") or cfg.get("qdrant_url") or "http://localhost:6333"
+        ),
     )

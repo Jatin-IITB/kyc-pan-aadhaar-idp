@@ -1,20 +1,21 @@
-# services/pipeline.py
 from __future__ import annotations
+
 import re
 from difflib import SequenceMatcher
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Tuple
-import numpy as np
+
 import logging
+
+import numpy as np
+
+logger = logging.getLogger(__name__)
 
 from services.extraction.normalize import normalize_extraction
 from services.extraction.llm_cleaner import LLMKycCleaner
 from services.validation.schema_validation import validate_with_schema, get_required_fields
 from services.doc_classifier.classifier import DocClassifier, rotate_bgr
 from services.preprocessing.quality import check_image_quality, resize_if_huge
-
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
 
 class PipelineError(RuntimeError):
     """Non-HTTP error for pipeline failures."""
@@ -274,8 +275,7 @@ class KYCPipeline:
                  return self._finalize_result(dt, rot, clf_info, extraction_norm, meta, "detector_then_schema", quality_meta)
         
         _, rot, extraction, meta, _ = best
-        
-        # Check Back Side Content
+
         critical_count = 0
         if extraction.get("aadhaar_number", {}).get("value"): critical_count += 1
         if extraction.get("pan_number", {}).get("value"): critical_count += 1
@@ -288,28 +288,19 @@ class KYCPipeline:
         return self._finalize_result(dt, rot, clf_info, extraction, meta, "detector_then_schema", quality_meta)
 
     def extract_from_bgr(self, img_bgr: np.ndarray, doc_type: str) -> Dict[str, Any]:
-        # 1. RESIZE
         img_bgr = resize_if_huge(img_bgr)
-        
-        # 2. QUALITY GATE (Conditional)
         is_good, quality_meta = check_image_quality(img_bgr)
-        
-        # SENIOR ENGINEER FIX:
-        # If rejected for GLARE/EXPOSURE only, we perform a "Rescue Attempt".
-        # We proceed to extraction anyway. If extraction is High Confidence, we Override rejection.
-        # If rejected for BLUR, we trust it (Blur kills OCR).
-        
+
+        # Glare/exposure issues are recoverable — attempt extraction anyway.
+        # Blur is not (kills OCR accuracy), so hard-reject.
         attempt_rescue = False
         if not is_good:
             reason = quality_meta.get("rejection_reason", "")
             if "overexposed" in reason or "dark" in reason:
-                # Glare often doesn't hide text (black text on white card). We try to read it.
                 attempt_rescue = True
             else:
-                # Blur or other issues -> Hard Reject
                 return self._make_reject_result(doc_type, quality_meta, "REJECTED_QUALITY")
 
-        # 3. EXTRACTION (Proceed if Good OR Rescue Attempt)
         dt = self._normalize_doc_type(doc_type)
         base_rots = list(self.config.base_rotations)
         clf_info = None
@@ -336,23 +327,20 @@ class KYCPipeline:
             else:
                 final_res = self._extract_directed(img_bgr, dt, base_rots, chosen_rotation_hint, clf_info, quality_meta)
                 
-        except PipelineError as e:
-            # If pipeline failed completely, we can't rescue
-             return self._make_reject_result(doc_type, quality_meta, "REJECTED_QUALITY")
+        except PipelineError:
+            return self._make_reject_result(doc_type, quality_meta, "REJECTED_QUALITY")
+
         if not final_res["validation"]["is_valid"]:
-            final_res = self._apply_llm_rescue(dt,final_res,schema_message=final_res["validation"]["message"])
-        # 4. RESCUE DECISION
+            final_res = self._apply_llm_rescue(dt, final_res, schema_message=final_res["validation"]["message"])
+
         if attempt_rescue:
-            # If we extracted valid data, we Override the Quality Rejection
             if final_res["validation"]["is_valid"]:
-                # Success! The text was readable despite glare.
                 existing = final_res.get("quality_check", {}).get("rejection_reason")
                 suffix = "RESCUED: Readable Content"
                 final_res["quality_check"]["rejection_reason"] = f"{existing} | {suffix}" if existing else suffix
-                final_res["status"] = "SUCCESS" 
+                final_res["status"] = "SUCCESS"
                 return final_res
             else:
-                # Rescue failed (still invalid data). Revert to Original Quality Rejection.
                 return self._make_reject_result(doc_type, quality_meta, "REJECTED_QUALITY")
         
         return final_res

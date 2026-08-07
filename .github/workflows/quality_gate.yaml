@@ -60,7 +60,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          nohup python -m uvicorn apps.api_gateway.main:app \
+          nohup python -m uvicorn apps.api.main:app \
             --host 127.0.0.1 \
             --port 8000 \
             --log-level info \

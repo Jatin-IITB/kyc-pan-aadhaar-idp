@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "passport_number": {
+      "type": "string",
+      "pattern": "^[A-Z][0-9]{7}$",
+      "description": "8-character Indian passport number"
+    },
+    "surname": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 100,
+      "description": "Surname as on passport"
+    },
+    "given_names": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 100,
+      "description": "Given names as on passport"
+    },
+    "nationality": {
+      "type": "string",
+      "description": "Nationality"
+    },
+    "date_of_birth": {
+      "type": "string",
+      "pattern": "^((0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}|[0-9]{4})$",
+      "description": "Date of birth in DD/MM/YYYY or YYYY format"
+    },
+    "date_of_issue": {
+      "type": "string",
+      "pattern": "^((0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}|[0-9]{4})$",
+      "description": "Date of issue in DD/MM/YYYY or YYYY format"
+    },
+    "date_of_expiry": {
+      "type": "string",
+      "pattern": "^((0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}|[0-9]{4})$",
+      "description": "Date of expiry in DD/MM/YYYY or YYYY format"
+    },
+    "place_of_birth": {
+      "type": "string",
+      "description": "Place of birth"
+    },
+    "sex": {
+      "type": "string",
+      "enum": ["M", "F"],
+      "description": "Sex"
+    }
+  },
+  "required": ["passport_number", "surname", "given_names", "date_of_birth", "date_of_expiry"],
+  "additionalProperties": false
+}

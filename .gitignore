@@ -1,23 +1,41 @@
 # Python
 __pycache__/
 *.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
 .pytest_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+
+# Virtual environments
+venv/
+.venv/
+env/
 
 # Generated outputs
 artifacts/
 runs/
 logs/
-models/
-# Data - regenerate with tools/
+
+# Data (regenerate with tools/)
 data/
-data/processed/
-data/raw/
-data/synthetic/
 
-# Models - download or retrain
-yolov8n.pt
+# ML model weights (download or retrain)
+models/
 *.pt
+*.onnx
 
-# Misc
+# IDE
+.vscode/
+.idea/
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Environment
 .env
+.env.local

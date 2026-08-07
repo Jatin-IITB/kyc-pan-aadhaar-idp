@@ -1,4 +1,3 @@
-#'config/models.yaml'
 yolov8:
   pan_fields:
     weights: models/yolov8/pan_field_detector_v1/best.pt
@@ -8,3 +7,8 @@ yolov8:
     weights: models/yolov8/aadhar_field_detector_v1/best.pt
     imgsz: 640
     conf: 0.25
+
+vlm:
+  model: "llama3.2-vision:11b"
+  timeout_s: 30
+  yolo_confidence_threshold: 0.60

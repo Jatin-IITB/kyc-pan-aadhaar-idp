@@ -1,10 +1,13 @@
 # apps/review_ui/adapters.py
 import json
+import logging
 import os
 import tempfile
 from pathlib import Path
 from typing import List, Set
 from apps.review_ui.domain import ReviewJob, ReviewResult
+
+logger = logging.getLogger(__name__)
 
 class FileSystemAdapter:
     def __init__(self, eval_results_path: str, eval_images_roots: List[str]):
@@ -38,6 +41,7 @@ class FileSystemAdapter:
         try:
             data = json.loads(self.results_path.read_text(encoding="utf-8"))
         except Exception:
+            logger.exception("Failed to read results file %s", self.results_path)
             return []
 
         reviewed_ids = self._get_reviewed_ids()
@@ -48,10 +52,8 @@ class FileSystemAdapter:
             fname = item.get("filename", "unknown")
             safe_id_check = str(fname).replace("\\", "_").replace("/", "_")
 
-            # if safe_id_check in reviewed_ids:
-                # continue
-
             # --- STATUS LOGIC START ---
+            error = None
             ok = item.get("ok", False)
             res = item.get("result", {}) or {}
             
@@ -95,7 +97,7 @@ class FileSystemAdapter:
     def save_review(self, review: ReviewResult) -> str:
         safe_id = str(review.job_id).replace("\\", "_").replace("/", "_")
         out_path = self.gt_dir / f"gt_{safe_id}.json"
-        
+
         payload = {
             "job_id": review.job_id,
             "reviewer": review.reviewer,
@@ -103,10 +105,43 @@ class FileSystemAdapter:
             "correction": review.corrected_data,
             "notes": review.notes
         }
-        
+
         with tempfile.NamedTemporaryFile("w", delete=False, dir=str(self.gt_dir), encoding="utf-8") as tf:
             tf.write(json.dumps(payload, indent=2))
             tmpname = tf.name
         Path(tmpname).replace(out_path)
-        
+
+        self._ingest_to_ground_truth(review)
+
         return str(out_path)
+
+    def _resolve_doc_type(self, job_id: str) -> str:
+        if not self.results_path.exists():
+            return "unknown"
+        try:
+            data = json.loads(self.results_path.read_text(encoding="utf-8"))
+            items = data.get("results", []) if isinstance(data, dict) else data
+            for item in items:
+                if item.get("filename") == job_id:
+                    return (item.get("result") or {}).get("document_type", "unknown")
+        except Exception:
+            logger.debug("Could not resolve doc_type for %s", job_id)
+        return "unknown"
+
+    def _ingest_to_ground_truth(self, review: ReviewResult) -> None:
+        try:
+            from services.active_learning.ground_truth_db import GroundTruthDB
+            gt_db = GroundTruthDB()
+            doc_type = self._resolve_doc_type(review.job_id)
+            corrections = review.corrected_data or {}
+            for field_name, corrected_value in corrections.items():
+                gt_db.ingest_correction(
+                    document_id=str(review.job_id),
+                    doc_type=doc_type,
+                    field_name=field_name,
+                    original_value="",
+                    corrected_value=str(corrected_value),
+                    reviewer=review.reviewer or "anonymous",
+                )
+        except Exception:
+            logger.exception("Failed to ingest correction for job %s", review.job_id)

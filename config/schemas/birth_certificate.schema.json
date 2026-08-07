@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "registration_number": {
+      "type": "string",
+      "description": "Registration number"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 100,
+      "description": "Full name"
+    },
+    "date_of_birth": {
+      "type": "string",
+      "pattern": "^((0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}|[0-9]{4})$",
+      "description": "Date of birth in DD/MM/YYYY or YYYY format"
+    },
+    "place_of_birth": {
+      "type": "string",
+      "description": "Place of birth"
+    },
+    "father_name": {
+      "type": "string",
+      "description": "Father's name"
+    },
+    "mother_name": {
+      "type": "string",
+      "description": "Mother's name"
+    },
+    "gender": {
+      "type": "string",
+      "enum": ["Male", "Female", "Other"],
+      "description": "Gender"
+    }
+  },
+  "required": ["name", "date_of_birth", "registration_number"],
+  "additionalProperties": false
+}

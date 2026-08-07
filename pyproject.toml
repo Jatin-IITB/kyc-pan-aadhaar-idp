@@ -4,21 +4,48 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kyc-idp"
-version = "0.1.0"
-description = "Enterprise KYC IDP System"
+version = "2.0.0"
+description = "Intelligent Document Processing for Indian KYC (PAN & Aadhaar)"
+requires-python = ">=3.9"
+license = {text = "MIT"}
 dependencies = [
-    "fastapi",
-    "uvicorn",
-    "celery",
-    "redis",
-    "paddlepaddle",
-    "paddleocr",
-    "ultralytics",
-    "opencv-python",
-    "streamlit",
-    "rich"
+    "fastapi>=0.109",
+    "uvicorn[standard]>=0.27",
+    "pydantic>=2.5",
+    "celery>=5.3",
+    "redis>=5.0",
+    "paddlepaddle>=2.6",
+    "paddleocr>=2.7",
+    "ultralytics>=8.1",
+    "opencv-python-headless>=4.6",
+    "Pillow>=10.2",
+    "numpy>=1.26",
+    "pyyaml>=6.0",
+    "jsonschema>=4.20",
+    "loguru>=0.7",
+    "streamlit>=1.30",
+    "sqlalchemy[asyncio]>=2.0",
+    "asyncpg>=0.29",
+    "alembic>=1.13",
+    "minio>=7.2",
+    "langgraph>=0.0.50",
+    "qdrant-client>=1.7",
+    "sentence-transformers>=2.3",
+    "rank-bm25>=0.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4",
+    "pytest-asyncio>=0.23",
+    "pytest-cov>=4.1",
+    "httpx>=0.26",
 ]
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["apps*", "services*", "config*"]
+include = ["apps*", "services*", "config*", "tools*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

@@ -1,0 +1,5 @@
+from __future__ import annotations
+
+SPOOF_REJECT_THRESHOLD = 0.7
+SPOOF_AUTO_CLEAR_OVERRIDE = 0.5
+SPOOF_REVIEW_THRESHOLD = 0.4

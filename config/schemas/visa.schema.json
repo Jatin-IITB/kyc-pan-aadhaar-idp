@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "visa_number": {
+      "type": "string",
+      "description": "Visa number"
+    },
+    "visa_type": {
+      "type": "string",
+      "description": "Type of visa"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 100,
+      "description": "Full name as on visa"
+    },
+    "nationality": {
+      "type": "string",
+      "description": "Nationality"
+    },
+    "date_of_issue": {
+      "type": "string",
+      "pattern": "^((0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}|[0-9]{4})$",
+      "description": "Date of issue in DD/MM/YYYY or YYYY format"
+    },
+    "date_of_expiry": {
+      "type": "string",
+      "pattern": "^((0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}|[0-9]{4})$",
+      "description": "Date of expiry in DD/MM/YYYY or YYYY format"
+    },
+    "port_of_entry": {
+      "type": "string",
+      "description": "Port of entry"
+    }
+  },
+  "required": ["visa_number", "name", "date_of_expiry"],
+  "additionalProperties": false
+}

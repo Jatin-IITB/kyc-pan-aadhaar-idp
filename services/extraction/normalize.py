@@ -134,15 +134,53 @@ def normalize_name(raw: str) -> Optional[str]:
     s = re.sub(r"\s+", " ", s).strip()
     return s if s else None
 
+from services.extraction.normalize_extended import (
+    normalize_passport_number,
+    normalize_dl_number,
+    normalize_voter_id,
+    normalize_ifsc,
+    normalize_address_india,
+    normalize_amount,
+)
+
 NORMALIZERS = {
     "gender": normalize_gender,
+    "sex": normalize_gender,
     "date_of_birth": normalize_date,
     "dob": normalize_date,
+    "date_of_issue": normalize_date,
+    "date_of_expiry": normalize_date,
+    "date_of_joining": normalize_date,
+    "date_of_marriage": normalize_date,
+    "bill_date": normalize_date,
+    "due_date": normalize_date,
+    "filing_date": normalize_date,
     "aadhaar_number": normalize_aadhaar_number,
     "pan_number": normalize_pan_number,
     "pan_num": normalize_pan_number,
+    "passport_number": normalize_passport_number,
+    "dl_number": normalize_dl_number,
+    "epic_number": normalize_voter_id,
+    "ifsc_code": normalize_ifsc,
     "name": normalize_name,
     "father_name": normalize_name,
+    "mother_name": normalize_name,
+    "surname": normalize_name,
+    "given_names": normalize_name,
+    "customer_name": normalize_name,
+    "account_holder": normalize_name,
+    "employee_name": normalize_name,
+    "employer_name": normalize_name,
+    "insured_name": normalize_name,
+    "insurer_name": normalize_name,
+    "bride_name": normalize_name,
+    "groom_name": normalize_name,
+    "address": normalize_address_india,
+    "billing_address": normalize_address_india,
+    "amount_due": normalize_amount,
+    "total_income": normalize_amount,
+    "tax_paid": normalize_amount,
+    "sum_insured": normalize_amount,
 }
 
 def normalize_extraction(extraction: Extraction, doc_type: str) -> Extraction:

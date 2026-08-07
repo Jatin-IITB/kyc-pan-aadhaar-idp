@@ -1,4 +1,3 @@
-"/services/validation/schema_validation.py"
 from pathlib import Path
 import json
 import jsonschema

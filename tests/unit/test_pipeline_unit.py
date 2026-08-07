@@ -3,6 +3,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
+cv2 = pytest.importorskip("cv2")
 import services.pipeline as pipeline_mod
 
 

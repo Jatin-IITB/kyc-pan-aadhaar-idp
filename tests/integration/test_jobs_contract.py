@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from fastapi.testclient import TestClient
 
-from apps.api_gateway.jobs import create_jobs_router
+from apps.api.jobs import create_jobs_router
 from services.ingestion.storage import LocalStorage
 
 
@@ -25,7 +25,7 @@ class FakeCelery:
 
 def test_jobs_submit_and_poll(monkeypatch, tmp_path):
     # Monkeypatch module globals used by jobs router
-    import apps.api_gateway.jobs as jobs_mod
+    import apps.api.jobs as jobs_mod
 
     fake_celery = FakeCelery()
     monkeypatch.setattr(jobs_mod, "celery_app", fake_celery)

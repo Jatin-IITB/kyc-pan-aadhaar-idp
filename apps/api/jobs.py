@@ -194,6 +194,3 @@ def create_jobs_router(*, storage: LocalStorage) -> APIRouter:
         }
 
     return router
-
-# default router instance
-router = create_jobs_router(storage=LocalStorage(root_dir="data/raw/uploads"))

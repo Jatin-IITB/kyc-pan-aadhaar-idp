@@ -31,7 +31,7 @@ def normalize_key(field_name: str) -> str:
 
 @dataclass
 class DocRoute:
-    doc_type: str  # "pan" | "aadhaar" | "unknown"
+    doc_type: str  # "pan" | "aadhaar" | "unknown" (VLM handles other types)
     rotation: str
     best_score: float
     score_pan: float

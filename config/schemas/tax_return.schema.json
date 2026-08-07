@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "pan_number": {
+      "type": "string",
+      "pattern": "^[A-Z]{5}[0-9]{4}[A-Z]$",
+      "description": "10-character PAN number"
+    },
+    "assessment_year": {
+      "type": "string",
+      "description": "Assessment year"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 100,
+      "description": "Full name as on tax return"
+    },
+    "filing_date": {
+      "type": "string",
+      "pattern": "^((0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}|[0-9]{4})$",
+      "description": "Filing date in DD/MM/YYYY or YYYY format"
+    },
+    "total_income": {
+      "type": "string",
+      "description": "Total income"
+    },
+    "tax_paid": {
+      "type": "string",
+      "description": "Tax paid"
+    }
+  },
+  "required": ["pan_number", "name", "assessment_year"],
+  "additionalProperties": false
+}
