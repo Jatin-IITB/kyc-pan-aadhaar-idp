@@ -7,7 +7,7 @@ from datetime import datetime
 class ReviewJob:
     id: str
     source: str          # "LIVE" or "EVAL"
-    status: str          # "VALID" or "INVALID"
+    status: str          # "VALID", "INVALID", or "REJECTED"
     document_type: str
     image_path: str      # Local path or Presigned URL
     extraction: Dict[str, Any]

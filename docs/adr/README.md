@@ -31,3 +31,4 @@ Each ADR follows the standard format:
 | [013](013-sse-progress-streaming.md) | Server-Sent Events for case progress | Accepted | 9 |
 | [014](014-spoof-threshold-consolidation.md) | Consolidate spoof score thresholds into single module | Accepted | Audit |
 | [015](015-ollama-chat-api.md) | Use Ollama /api/chat instead of hardcoded prompt tokens | Accepted | Audit |
+| [016](016-evidence-based-review-ui.md) | Evidence-based review UI with tabbed deep inspection | Accepted | 10 |

@@ -52,6 +52,9 @@ class FileSystemAdapter:
             fname = item.get("filename", "unknown")
             safe_id_check = str(fname).replace("\\", "_").replace("/", "_")
 
+            if safe_id_check in reviewed_ids:
+                continue
+
             # --- STATUS LOGIC START ---
             error = None
             ok = item.get("ok", False)
@@ -68,8 +71,16 @@ class FileSystemAdapter:
             elif pipeline_status == "REJECTED_CONTENT":
                 status = "REJECTED"
                 error = "Back side or Empty Content"
+            elif pipeline_status in ("REJECTED_SPOOF", "REJECTED_CALIBRATION"):
+                status = "REJECTED"
+                error = f"Rejected: {pipeline_status.replace('REJECTED_', '').lower()}"
+            elif pipeline_status in ("REVIEW", "REVIEW_SPOOF"):
+                status = "INVALID"
+                error = f"Needs review: {pipeline_status.replace('REVIEW_', '').lower()}"
+            elif pipeline_status == "AUTO_CLEARED":
+                is_valid = validation.get("is_valid", False)
+                status = "VALID" if is_valid else "INVALID"
             else:
-                # Normal validation logic
                 is_valid = validation.get("is_valid", False)
                 status = "VALID" if (ok and is_valid) else "INVALID"
             # --- STATUS LOGIC END ---

@@ -126,6 +126,7 @@ def decide_node(state: CaseState) -> CaseState:
         "routing_mode": extraction_path,
         "calibration": {
             "calibrated_confidence": calibration["calibrated_confidence"],
+            "raw_scores": calibration.get("raw_scores", {}),
             "recommendation": final_rec,
             "overrides": auto_clear_result.get("overrides_applied", []),
         },
