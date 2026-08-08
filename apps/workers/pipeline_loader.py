@@ -10,13 +10,19 @@ from services.card_crop_yolov8.detector import FieldDetector
 from services.doc_classifier.classifier import DocClassifier
 from services.ocr_paddle.roi_ocr import ROIOCR
 from services.pipeline import KYCPipeline, PipelineConfig
-from services.extraction.llm_cleaner import LLMKycCleaner
+from services.extraction.llm_cleaner import LLMKycCleaner, LLMCleanerConfig
 from services.extraction.vlm_extractor import VLMConfig, VLMExtractor
 from services.graph.deps import PipelineDeps
 from services.graph.workflow import build_kyc_graph
 
 logger = logging.getLogger(__name__)
 REPO_ROOT = Path(__file__).resolve().parents[2]
+
+
+class _NullDetector:
+    """Stand-in when YOLO weights are missing — returns no detections, forcing VLM fallback."""
+    def detect(self, image_bgr):
+        return []
 
 
 def _load_models_config() -> dict:
@@ -38,11 +44,28 @@ def _build_deps() -> PipelineDeps:
     pan_conf = float(pan_cfg.get("conf", 0.25))
     aad_conf = float(aad_cfg.get("conf", 0.25))
 
-    pan_detector = FieldDetector(str(pan_w), conf=pan_conf)
-    aadhaar_detector = FieldDetector(str(aad_w), conf=aad_conf)
+    if pan_w.exists():
+        pan_detector = FieldDetector(str(pan_w), conf=pan_conf)
+    else:
+        logger.warning("PAN YOLO weights not found at %s — using null detector (VLM-only mode)", pan_w)
+        pan_detector = _NullDetector()
 
-    ocr = ROIOCR(lang="en")
-    llm_cleaner = LLMKycCleaner()
+    if aad_w.exists():
+        aadhaar_detector = FieldDetector(str(aad_w), conf=aad_conf)
+    else:
+        logger.warning("Aadhaar YOLO weights not found at %s — using null detector (VLM-only mode)", aad_w)
+        aadhaar_detector = _NullDetector()
+
+    try:
+        ocr = ROIOCR(lang="en")
+    except Exception:
+        logger.warning("PaddleOCR unavailable — VLM-only extraction mode")
+        ocr = None
+    llm_cfg = cfg.get("llm", {})
+    llm_cleaner = LLMKycCleaner(config=LLMCleanerConfig(
+        model=llm_cfg.get("model", "qwen3:8b"),
+        timeout_s=float(llm_cfg.get("timeout_s", 20)),
+    ))
     doc_classifier = DocClassifier(
         pan_detector=pan_detector,
         aadhaar_detector=aadhaar_detector,
@@ -63,6 +86,13 @@ def _build_deps() -> PipelineDeps:
     except Exception:
         vlm_extractor = None
 
+    rotation_classifier = None
+    try:
+        from services.doc_classifier.rotation_model import RotationClassifier
+        rotation_classifier = RotationClassifier()
+    except Exception:
+        logger.debug("RotationClassifier unavailable — using brute-force rotation search")
+
     policy_verifier = None
     try:
         from services.rag.policy_verifier import PolicyVerifier
@@ -78,6 +108,7 @@ def _build_deps() -> PipelineDeps:
         llm_cleaner=llm_cleaner,
         vlm_extractor=vlm_extractor,
         policy_verifier=policy_verifier,
+        rotation_classifier=rotation_classifier,
         config=PipelineConfig(),
     )
 

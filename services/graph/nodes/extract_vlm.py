@@ -13,7 +13,7 @@ from services.graph.state import CaseState
 def extract_vlm_node(state: CaseState) -> CaseState:
     deps = get_deps()
     if deps.vlm_extractor is None:
-        return {**state, "vlm_extraction": {}, "vlm_confidence": 0.0}
+        return {"vlm_extraction": {}, "vlm_confidence": 0.0}
 
     dt = state.get("doc_type", "unknown")
     img = state["image_bgr"]
@@ -23,14 +23,13 @@ def extract_vlm_node(state: CaseState) -> CaseState:
         img_rotated = rotate_bgr(img, rot)
         extraction = deps.vlm_extractor.extract_fields(img_rotated, dt)
         if not extraction:
-            return {**state, "vlm_extraction": {}, "vlm_confidence": 0.0}
+            return {"vlm_extraction": {}, "vlm_confidence": 0.0}
 
         score, meta, flat, extraction_norm = _score_candidate(extraction, dt)
         return {
-            **state,
             "vlm_extraction": extraction_norm,
             "vlm_confidence": score,
         }
     except Exception as e:
-        logger.warning("VLM extraction failed: {}", e)
-        return {**state, "vlm_extraction": {}, "vlm_confidence": 0.0}
+        logger.warning("VLM extraction failed: %s", e)
+        return {"vlm_extraction": {}, "vlm_confidence": 0.0}

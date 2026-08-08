@@ -14,7 +14,6 @@ def ensemble_node(state: CaseState) -> CaseState:
 
     if not vlm_ext:
         return {
-            **state,
             "chosen_extraction": yolo_ext,
             "extraction_path": state.get("extraction_path", "yolo"),
         }
@@ -25,7 +24,6 @@ def ensemble_node(state: CaseState) -> CaseState:
     if path != state.get("extraction_path", "yolo"):
         score_val, meta, flat, extraction_norm = _score_candidate(chosen, dt)
         return {
-            **state,
             "chosen_extraction": extraction_norm,
             "extraction_path": path,
             "extraction_normalized": extraction_norm,
@@ -36,7 +34,6 @@ def ensemble_node(state: CaseState) -> CaseState:
         }
 
     return {
-        **state,
         "chosen_extraction": chosen,
         "extraction_path": path,
     }

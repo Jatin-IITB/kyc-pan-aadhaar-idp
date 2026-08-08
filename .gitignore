@@ -20,13 +20,18 @@ artifacts/
 runs/
 logs/
 
-# Data (regenerate with tools/)
+# Data and datasets (regenerate with tools/ or download from Kaggle)
 data/
+rotation-angle-detection/
 
 # ML model weights (download or retrain)
 models/
 *.pt
 *.onnx
+
+# Next.js
+dashboard/.next/
+dashboard/node_modules/
 
 # IDE
 .vscode/

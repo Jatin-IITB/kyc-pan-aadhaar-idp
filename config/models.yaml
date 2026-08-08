@@ -8,7 +8,17 @@ yolov8:
     imgsz: 640
     conf: 0.25
 
+rotation:
+  architecture: "mobilenet_v3_small"
+  weights: models/rotation_classifier/best.pt
+  input_size: 224
+  classes: ["rot0", "rot90", "rot180", "rot270"]
+
 vlm:
-  model: "llama3.2-vision:11b"
-  timeout_s: 30
+  model: "minicpm-v"
+  timeout_s: 120
   yolo_confidence_threshold: 0.60
+
+llm:
+  model: "qwen3:8b"
+  timeout_s: 20

@@ -6,7 +6,10 @@ from typing import Dict, List
 
 class ROIOCR:
     def __init__(self, lang="en"):
-        self.ocr = PaddleOCR(use_angle_cls=True, lang=lang, show_log=False)
+        try:
+            self.ocr = PaddleOCR(use_angle_cls=True, lang=lang, show_log=False)
+        except (TypeError, ValueError):
+            self.ocr = PaddleOCR(lang=lang)
 
     def _preprocess(self, crop: np.ndarray) -> np.ndarray:
         h, w = crop.shape[:2]

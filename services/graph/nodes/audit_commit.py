@@ -15,4 +15,4 @@ def audit_commit_node(state: CaseState) -> CaseState:
 
     logger.info("audit_commit: %d events, head=%s", len(events), ledger.head_hash[:12])
 
-    return {**state, "audit_events": events}
+    return {"audit_events": events}

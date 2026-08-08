@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 def cross_doc_node(state: CaseState) -> CaseState:
     packet_docs: List[Dict[str, Any]] = state.get("packet_documents", [])
     if len(packet_docs) < 2:
-        return {**state, "cross_doc_result": {"skipped": True, "reason": "single_document"}}
+        return {"cross_doc_result": {"skipped": True, "reason": "single_document"}}
 
     detector = ContradictionDetector()
     addr_norm = IndianAddressNormalizer()
@@ -58,4 +58,4 @@ def cross_doc_node(state: CaseState) -> CaseState:
     logger.info("cross_doc: %d docs, consistency=%.2f, addr=%.2f, rec=%s",
                 len(packet_docs), result["consistency_score"], address_consistency, result["recommendation"])
 
-    return {**state, "cross_doc_result": result}
+    return {"cross_doc_result": result}

@@ -34,7 +34,6 @@ def validate_node(state: CaseState) -> CaseState:
     score = (2.0 if is_valid else 0.0) + coverage + avg_conf
 
     return {
-        **state,
         "extraction_normalized": extraction_norm,
         "flat_fields": flat,
         "schema_valid": is_valid,

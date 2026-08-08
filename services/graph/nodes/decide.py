@@ -38,7 +38,7 @@ def decide_node(state: CaseState) -> CaseState:
             "validation": {"is_valid": False, "message": quality_meta.get("rejection_reason", "Rejected")},
             "status": status,
         }
-        return {**state, "decision": status, "final_result": result}
+        return {"decision": status, "final_result": result}
 
     if spoof_score > SPOOF_REJECT_THRESHOLD:
         status = "REJECTED_SPOOF"
@@ -50,7 +50,7 @@ def decide_node(state: CaseState) -> CaseState:
             "validation": {"is_valid": False, "message": "Document flagged as spoofed/tampered"},
             "status": status,
         }
-        return {**state, "decision": status, "final_result": result}
+        return {"decision": status, "final_result": result}
 
     if not is_valid and critical_count < 2:
         status = "REJECTED_CONTENT"
@@ -61,7 +61,7 @@ def decide_node(state: CaseState) -> CaseState:
             "validation": {"is_valid": False, "message": "Insufficient content"},
             "status": status,
         }
-        return {**state, "decision": status, "final_result": result}
+        return {"decision": status, "final_result": result}
 
     if attempt_rescue:
         if is_valid:
@@ -78,7 +78,7 @@ def decide_node(state: CaseState) -> CaseState:
                 "validation": {"is_valid": False, "message": quality_meta.get("rejection_reason", "Rejected")},
                 "status": status,
             }
-            return {**state, "decision": status, "final_result": result}
+            return {"decision": status, "final_result": result}
     else:
         status = "SUCCESS" if is_valid else "PARTIAL_SUCCESS"
 
@@ -141,7 +141,6 @@ def decide_node(state: CaseState) -> CaseState:
         result["llm_rescue"] = rescue_result
 
     return {
-        **state,
         "decision": status,
         "final_confidence": calibration["calibrated_confidence"],
         "calibration_result": calibration,

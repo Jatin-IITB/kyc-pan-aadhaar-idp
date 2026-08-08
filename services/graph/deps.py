@@ -18,6 +18,7 @@ class PipelineDeps:
     llm_cleaner: Optional[LLMKycCleaner]
     vlm_extractor: Optional[Any] = None
     policy_verifier: Optional[Any] = None
+    rotation_classifier: Optional[Any] = None
     config: PipelineConfig = PipelineConfig()
 
 

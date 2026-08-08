@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, Optional
 
 
-DEFAULT_OLLAMA_BASE_URL = (os.getenv("KYC_OLLAMA_URL") or "http://host.docker.internal:11434").strip()
+DEFAULT_OLLAMA_BASE_URL = (os.getenv("KYC_OLLAMA_URL") or "http://localhost:11434").strip()
 DEFAULT_OLLAMA_MODEL = (os.getenv("KYC_OLLAMA_MODEL") or "llama3.2:3b").strip()
 DEFAULT_TIMEOUT_S = float((os.getenv("KYC_OLLAMA_TIMEOUT_S") or "20").strip() or "20")
 

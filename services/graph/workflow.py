@@ -25,6 +25,13 @@ def _quality_router(state: CaseState) -> str:
     return "continue"
 
 
+def _yolo_confidence_router(state: CaseState) -> str:
+    conf = state.get("yolo_confidence", 0.0)
+    if conf < 0.60:
+        return "vlm"
+    return "ensemble"
+
+
 def _cross_doc_router(state: CaseState) -> str:
     if len(state.get("packet_documents", [])) >= 2:
         return "cross_doc"
@@ -70,7 +77,12 @@ def build_kyc_graph(pipeline_deps: PipelineDeps) -> StateGraph:
     graph.add_edge("classify", "extract_yolo")
     graph.add_edge("classify", "forensics")
 
-    graph.add_edge("extract_yolo", "ensemble")
+    graph.add_conditional_edges(
+        "extract_yolo",
+        _yolo_confidence_router,
+        {"vlm": "extract_vlm", "ensemble": "ensemble"},
+    )
+    graph.add_edge("extract_vlm", "ensemble")
     graph.add_edge("ensemble", "validate")
     graph.add_edge("validate", "policy_verify")
 

@@ -14,11 +14,14 @@ from services.validation.schema_validation import validate_with_schema
 def llm_rescue_node(state: CaseState) -> CaseState:
     deps = get_deps()
     if deps.llm_cleaner is None:
-        return {**state, "llm_rescue_result": {}}
+        return {"llm_rescue_result": {}}
+
+    if state.get("schema_valid", False):
+        return {"llm_rescue_result": {"attempted": False, "reason": "already_valid"}}
 
     extraction = state.get("extraction_normalized", {})
     if not extraction:
-        return {**state, "llm_rescue_result": {}}
+        return {"llm_rescue_result": {}}
 
     dt = state["doc_type"]
     flat_before = {
@@ -33,11 +36,11 @@ def llm_rescue_node(state: CaseState) -> CaseState:
             failure_reason=state.get("validation_message", ""),
         )
     except Exception as e:
-        logger.warning("LLM rescue failed: {}", e)
-        return {**state, "llm_rescue_result": {"attempted": True, "error": str(e)}}
+        logger.warning("LLM rescue failed: %s", e)
+        return {"llm_rescue_result": {"attempted": True, "error": str(e)}}
 
     if not isinstance(suggestions, dict) or not suggestions:
-        return {**state, "llm_rescue_result": {"attempted": True, "updated": {}}}
+        return {"llm_rescue_result": {"attempted": True, "updated": {}}}
 
     updated = {}
     rejected = {}
@@ -81,7 +84,6 @@ def llm_rescue_node(state: CaseState) -> CaseState:
 
     if not updated:
         return {
-            **state,
             "llm_rescue_result": {
                 "attempted": True,
                 "updated": {},
@@ -97,7 +99,6 @@ def llm_rescue_node(state: CaseState) -> CaseState:
     is_valid_after, msg_after = validate_with_schema(flat_after, dt)
 
     return {
-        **state,
         "extraction_normalized": extraction_norm,
         "flat_fields": flat_after,
         "schema_valid": is_valid_after,

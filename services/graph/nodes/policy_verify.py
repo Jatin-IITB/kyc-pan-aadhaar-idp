@@ -13,11 +13,11 @@ def policy_verify_node(state: CaseState) -> CaseState:
     policy_verifier = getattr(deps, "policy_verifier", None)
 
     if policy_verifier is None:
-        return {**state, "policy_result": {}}
+        return {"policy_result": {}}
 
     flat_fields = state.get("flat_fields", {})
     if not flat_fields:
-        return {**state, "policy_result": {}}
+        return {"policy_result": {}}
 
     case_data = {
         "doc_type": state.get("doc_type", "unknown"),
@@ -30,4 +30,4 @@ def policy_verify_node(state: CaseState) -> CaseState:
         logger.exception("Policy verification failed")
         result = {"overall_status": "REQUIRES_REVIEW", "checks": [], "error": "verification_failed"}
 
-    return {**state, "policy_result": result}
+    return {"policy_result": result}

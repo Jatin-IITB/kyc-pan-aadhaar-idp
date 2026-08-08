@@ -29,7 +29,6 @@ def forensics_node(state: CaseState) -> CaseState:
         result = {"spoof_score": 0.0, "risk_level": "LOW", "evidence": [], "recommendation": "PASS"}
 
     return {
-        **state,
         "forensics_result": result,
         "spoof_score": result.get("spoof_score", 0.0),
     }

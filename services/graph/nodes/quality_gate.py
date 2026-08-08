@@ -14,7 +14,6 @@ def quality_gate_node(state: CaseState) -> CaseState:
             attempt_rescue = True
 
     return {
-        **state,
         "quality_passed": is_good or attempt_rescue,
         "quality_meta": quality_meta,
         "attempt_rescue": attempt_rescue,

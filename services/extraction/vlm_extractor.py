@@ -71,7 +71,7 @@ DEFAULT_PROMPT = (
 
 @dataclass(frozen=True)
 class VLMConfig:
-    base_url: str = (os.getenv("KYC_OLLAMA_URL") or "http://host.docker.internal:11434").strip()
+    base_url: str = (os.getenv("KYC_OLLAMA_URL") or "http://localhost:11434").strip()
     model: str = (os.getenv("KYC_VLM_MODEL") or "llama3.2-vision:11b").strip()
     timeout_s: float = float((os.getenv("KYC_VLM_TIMEOUT_S") or "30").strip() or "30")
 

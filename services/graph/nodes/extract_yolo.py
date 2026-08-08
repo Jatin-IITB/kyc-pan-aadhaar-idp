@@ -60,6 +60,8 @@ def _run_once(img_bgr: np.ndarray, doc_type: str) -> Dict[str, Any]:
     deps = get_deps()
     detector = deps.pan_detector if doc_type == "pan" else deps.aadhaar_detector
     fields = detector.detect(img_bgr)
+    if not fields or deps.ocr is None:
+        return {}
     results = deps.ocr.extract(img_bgr, fields)
     return _collapse_best_per_field(results)
 
@@ -101,7 +103,6 @@ def extract_yolo_node(state: CaseState) -> CaseState:
                 chosen_dt = "aadhaar"
                 score, rot, extraction_norm, meta, flat = aad_best
             return {
-                **state,
                 "doc_type": chosen_dt,
                 "yolo_extraction": extraction_norm,
                 "yolo_confidence": score,
@@ -115,7 +116,6 @@ def extract_yolo_node(state: CaseState) -> CaseState:
             }
         # doc type without YOLO model — skip, let VLM handle
         return {
-            **state,
             "yolo_extraction": {},
             "yolo_confidence": 0.0,
         }
@@ -142,7 +142,6 @@ def extract_yolo_node(state: CaseState) -> CaseState:
     score, rot, extraction_norm, meta, flat = best  # type: ignore[misc]
 
     return {
-        **state,
         "yolo_extraction": extraction_norm,
         "yolo_confidence": score,
         "extraction_normalized": extraction_norm,

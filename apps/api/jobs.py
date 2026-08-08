@@ -75,8 +75,8 @@ def create_jobs_router(*, storage: LocalStorage) -> APIRouter:
         stored = storage.put_bytes(job_id=job_id, blob=blob)
         
         async_result = celery_app.send_task(
-            "kyc.extract_from_uri",
-            args=[job_id, stored.uri, doc_type],
+            "kyc.process_case",
+            args=[job_id, job_id, stored.uri, doc_type],
         )
 
         storage.put_json_atomic(
