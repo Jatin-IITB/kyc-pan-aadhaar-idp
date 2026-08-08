@@ -21,6 +21,7 @@ VLM_PROMPTS: Dict[str, str] = {
         "Extract fields from this Indian PAN card image.\n"
         "Return ONLY a JSON object with these exact keys: pan_number, name, father_name, date_of_birth\n"
         "For each key, provide the value as a string exactly as it appears on the card.\n"
+        "Names MUST have proper spacing between words (e.g., 'RAMESH GUPTA' not 'RAMESHGUPTA').\n"
         "If a field is not visible or unreadable, use empty string \"\".\n"
         "Dates must be in DD/MM/YYYY format.\n"
         "PAN number format: 5 letters + 4 digits + 1 letter (e.g., ABCDE1234F).\n"

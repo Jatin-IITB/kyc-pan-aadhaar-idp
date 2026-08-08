@@ -22,3 +22,27 @@ celery_app.conf.update(
     result_expires=int(os.getenv("CELERY_RESULT_EXPIRES_S", "86400")),  # 1 day
 )
 celery_app.conf.broker_connection_retry_on_startup=True
+
+
+@celery_app.on_after_finalize.connect
+def warm_up_models(sender, **kwargs):
+    """Pre-load the pipeline graph and VLM model on worker startup."""
+    import logging
+    _log = logging.getLogger(__name__)
+    try:
+        from apps.workers.pipeline_loader import get_graph
+        graph, deps = get_graph()
+        _log.info("Pipeline graph loaded on worker startup")
+        if deps.vlm_extractor:
+            import urllib.request
+            import json
+            url = deps.vlm_extractor.config.base_url.rstrip("/") + "/api/generate"
+            payload = json.dumps({"model": deps.vlm_extractor.config.model, "prompt": "hello", "stream": False}).encode()
+            req = urllib.request.Request(url, data=payload, headers={"Content-Type": "application/json"}, method="POST")
+            try:
+                urllib.request.urlopen(req, timeout=60)
+                _log.info("VLM model %s warmed up", deps.vlm_extractor.config.model)
+            except Exception:
+                _log.debug("VLM warm-up skipped — Ollama may not be running")
+    except Exception as e:
+        _log.warning("Worker warm-up failed: %s", e)

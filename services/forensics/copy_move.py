@@ -9,9 +9,10 @@ import numpy as np
 class CopyMoveDetector:
     """Detect duplicated/copy-move regions using DCT-based block matching."""
 
-    def __init__(self, block_size: int = 16, min_matches: int = 5) -> None:
+    def __init__(self, block_size: int = 16, min_matches: int = 10, similarity_threshold: float = 0.995) -> None:
         self.block_size = block_size
         self.min_matches = min_matches
+        self.similarity_threshold = similarity_threshold
 
     def detect(self, image_bgr: np.ndarray) -> Dict[str, Any]:
         gray = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY)
@@ -49,7 +50,7 @@ class CopyMoveDetector:
 
         for i in indices:
             sims = features_norm[i] @ features_norm.T
-            close = np.where(sims > 0.98)[0]
+            close = np.where(sims > self.similarity_threshold)[0]
             for j in close:
                 if j <= i:
                     continue
@@ -57,7 +58,7 @@ class CopyMoveDetector:
                     (positions[i][0] - positions[j][0]) ** 2
                     + (positions[i][1] - positions[j][1]) ** 2
                 )
-                if dist > bs * 2:
+                if dist > bs * 4:
                     matched_pairs.append({
                         "block1": list(positions[i]),
                         "block2": list(positions[j]),
