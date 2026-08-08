@@ -7,12 +7,24 @@ import numpy as np
 
 
 class CopyMoveDetector:
-    """Detect duplicated/copy-move regions using DCT-based block matching."""
+    """Detect duplicated/copy-move regions using DCT-based block matching.
 
-    def __init__(self, block_size: int = 16, min_matches: int = 10, similarity_threshold: float = 0.995) -> None:
+    Uses larger block size (32px) and higher DCT feature dimension to reduce
+    false positives from repetitive document backgrounds (watermarks, guilloches).
+    Low-texture blocks are filtered by variance threshold.
+    """
+
+    def __init__(
+        self,
+        block_size: int = 32,
+        min_matches: int = 8,
+        similarity_threshold: float = 0.9997,
+        min_block_variance: float = 500.0,
+    ) -> None:
         self.block_size = block_size
         self.min_matches = min_matches
         self.similarity_threshold = similarity_threshold
+        self.min_block_variance = min_block_variance
 
     def detect(self, image_bgr: np.ndarray) -> Dict[str, Any]:
         gray = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY)
@@ -24,12 +36,14 @@ class CopyMoveDetector:
         bs = self.block_size
         blocks: List[Tuple[np.ndarray, int, int]] = []
 
-        step = max(bs // 2, 4)
+        step = max(bs // 2, 8)
         for y in range(0, h - bs, step):
             for x in range(0, w - bs, step):
                 block = gray[y : y + bs, x : x + bs].astype(np.float32)
+                if np.var(block) < self.min_block_variance:
+                    continue
                 dct_block = cv2.dct(block)
-                feature = dct_block[:4, :4].flatten()
+                feature = dct_block[:6, :6].flatten()
                 blocks.append((feature, x, y))
 
         if len(blocks) < 2:
@@ -46,7 +60,10 @@ class CopyMoveDetector:
         n = len(features_norm)
 
         sample_size = min(n, 500)
-        indices = np.random.default_rng(42).choice(n, size=sample_size, replace=False)
+        if n > sample_size:
+            indices = np.random.default_rng(42).choice(n, size=sample_size, replace=False)
+        else:
+            indices = np.arange(n)
 
         for i in indices:
             sims = features_norm[i] @ features_norm.T
@@ -58,7 +75,7 @@ class CopyMoveDetector:
                     (positions[i][0] - positions[j][0]) ** 2
                     + (positions[i][1] - positions[j][1]) ** 2
                 )
-                if dist > bs * 4:
+                if dist > bs * 3:
                     matched_pairs.append({
                         "block1": list(positions[i]),
                         "block2": list(positions[j]),
