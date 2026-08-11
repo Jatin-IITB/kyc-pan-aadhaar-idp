@@ -9,7 +9,12 @@ import numpy as np
 class ScreenRecaptureDetector:
     """Detect Moire patterns indicating the document was photographed from a screen."""
 
-    def __init__(self, freq_threshold: float = 0.3) -> None:
+    # Calibrated on synthetic renders (genuine max ~0.13) with a conservative
+    # margin so a real phone-captured card at ~0.19 is not false-flagged; real
+    # captures carry more mid-band energy than clean renders, so the threshold
+    # errs toward not rejecting genuine customers (ADR-024). A real-capture
+    # validation set (W4/W5) would let this tighten.
+    def __init__(self, freq_threshold: float = 0.25) -> None:
         self.freq_threshold = freq_threshold
 
     def detect(self, image_bgr: np.ndarray) -> Dict[str, Any]:
@@ -49,12 +54,22 @@ class ScreenRecaptureDetector:
         if mid_freq_count == 0:
             return {"is_recaptured": False, "moire_score": 0.0, "dominant_frequencies": []}
 
-        peak_threshold = 0.7
+        # Moire from a screen grid is a few SHARP peaks standing well above the
+        # diffuse mid-band energy of print guilloche. Score by peak prominence
+        # (top peak vs local mean), not raw density, which cannot separate a
+        # spike from broadband texture.
+        band_vals = mid_freq[mask > 0]
+        band_mean = float(band_vals.mean()) if band_vals.size else 0.0
+        band_std = float(band_vals.std()) if band_vals.size else 0.0
+
+        peak_threshold = max(0.55, band_mean + 4.0 * band_std)
         peaks = np.where(mid_freq > peak_threshold)
         n_peaks = len(peaks[0])
 
-        peak_density = n_peaks / max(1, mid_freq_count)
-        moire_score = min(1.0, peak_density * 100)
+        top = float(mid_freq.max())
+        prominence = (top - band_mean) / max(band_std, 1e-6)
+        # Map prominence (~4 sigma noise floor, ~10+ sigma for a real grid).
+        moire_score = float(min(1.0, max(0.0, (prominence - 4.0) / 8.0)))
 
         dominant_frequencies: List[Dict[str, Any]] = []
         if n_peaks > 0:

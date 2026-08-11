@@ -9,7 +9,7 @@ import numpy as np
 class ELADetector:
     """Error Level Analysis — detect tampered regions by re-compression difference."""
 
-    def __init__(self, quality: int = 90, threshold: float = 0.15) -> None:
+    def __init__(self, quality: int = 90, threshold: float = 0.11) -> None:
         self.quality = quality
         self.threshold = threshold
 

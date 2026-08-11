@@ -53,8 +53,17 @@ Every attack parameterized by severity so we can plot recall-vs-subtlety curves.
 ## W4 — Forensic precision pass
 
 - ✅ Copy-move v2: DC removal + repetition filter + shift-vector clustering (ADR-022)
-- Threshold sweeps for ELA / font / screen driven by W2+W3 output, not intuition
-- Recalibrate `SpoofScorer` weights on the labeled forge set
+- ✅ Noisy-OR aggregation replacing weighted-average dilution (ADR-024)
+- ✅ Screen detector rescored by peak prominence; conservative threshold
+- Data-driven backlog surfaced by the tamper forge (recall still under target):
+  - **text_splice** — block-wise ELA to localize a recompression seam; global
+    mean ELA cannot (0% recall today)
+  - **regenerate** — clean re-render defeats ELA/font; needs no-capture-noise /
+    PRNU sensor analysis (0% recall today)
+  - **font_swap** — stroke-width consistency has no separating power on
+    multi-font cards; needs OCR field-region context (blocked on W5 PaddleOCR)
+  - **screen** — recall traded down (67%) for real-capture safety; retune once
+    a real phone-capture validation set exists
 
 ## W5 — Dual path restored
 

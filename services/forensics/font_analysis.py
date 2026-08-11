@@ -75,15 +75,29 @@ class FontConsistencyAnalyzer:
 
         consistency = max(0.0, 1.0 - (stroke_cv + height_cv) / 2)
 
-        inconsistent = []
-        if stroke_widths:
-            mean_sw = np.mean(stroke_widths)
-            std_sw = np.std(stroke_widths)
-            for m in region_metrics:
-                if abs(m["stroke_width"] - mean_sw) > 2 * std_sw and std_sw > 0:
-                    inconsistent.append(m["bbox"])
+        # Flag outlier regions by robust (median/IQR) stroke-width deviation.
+        # Robust stats resist a single spliced field skewing mean/std, so one
+        # mismatched-font value stands out instead of hiding in inflated spread.
+        inconsistent = self._outliers(region_metrics, stroke_widths)
 
         return {
             "font_consistency_score": consistency,
             "inconsistent_regions": inconsistent,
         }
+
+    @staticmethod
+    def _outliers(region_metrics, stroke_widths) -> List[List[int]]:
+        if len(stroke_widths) < 3:
+            return []
+        arr = np.array(stroke_widths)
+        med = float(np.median(arr))
+        q1, q3 = np.percentile(arr, [25, 75])
+        iqr = float(q3 - q1)
+        # Scale: use IQR when there is spread, else a fraction of the median.
+        scale = max(iqr, 0.15 * med, 1e-6)
+        flagged = []
+        for m in region_metrics:
+            sw = m["stroke_width"]
+            if sw > 0 and abs(sw - med) > 1.8 * scale:
+                flagged.append(m["bbox"])
+        return flagged
