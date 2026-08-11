@@ -1,11 +1,12 @@
-name: Quality Gate (Nightly)
+name: Quality Gate (Nightly, legacy)
 
+# DISABLED (ADR-026): this workflow depends on data/test_cases/ and
+# data/baselines/ committed artifacts that do not exist (data/ is gitignored),
+# and calls tools/eval_harness/ which the Truth Engine (tools/eval/, seed-based,
+# no committed data) supersedes. Kept for reference; runs only on manual
+# dispatch so it cannot post a permanent red check on every push to main.
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "30 2 * * *"   # daily 02:30 UTC
-  push:
-    branches: [ main ]
 
 jobs:
   quality-gates:

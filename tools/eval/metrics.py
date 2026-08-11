@@ -107,6 +107,9 @@ def check_gates(metrics: Dict[str, Any], thresholds: Dict[str, Any]) -> Dict[str
     if "undetected_autoclear_max" in dth:
         gate("decision.undetected_autoclear", decision.get("undetected_autoclear"),
              dth["undetected_autoclear_max"], "max")
+    if "genuine_auto_clear_min" in dth:
+        gate("decision.genuine_auto_clear", decision.get("genuine_auto_clear_rate"),
+             dth["genuine_auto_clear_min"], "min")
 
     extraction = metrics.get("extraction")
     eth = thresholds.get("extraction", {})

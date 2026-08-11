@@ -47,27 +47,45 @@ class AttackLabel:
 
 
 def _rand_field_box(truth: dict, rng: np.random.Generator) -> Tuple[str, Region]:
-    field_name = str(rng.choice(list(truth["boxes"].keys())))
+    fields = [k for k in truth["boxes"] if not k.startswith("_")]
+    field_name = str(rng.choice(fields))
     return field_name, truth["boxes"][field_name]
 
 
 def attack_copy_move(img, truth, rng, severity) -> Tuple[np.ndarray, AttackLabel]:
-    """Duplicate a textured patch to another grid-aligned location."""
+    """Duplicate the photo region to an ARBITRARY location.
+
+    The canonical ID copy-move hides or replaces content with the holder's
+    photo/stamp — 2-D textured content. The destination offset is drawn with
+    single-pixel jitter so it is never aligned to any detector sampling grid
+    (the v2 detector's blindness to non-aligned offsets was audit finding C2).
+    """
     h, w = img.shape[:2]
-    size = {"low": 96, "med": 128, "high": 160}[severity]
-    size = min(size, h // 2, w // 2)
-    # Source: the photo region if present, else a random field box.
-    field_name, box = _rand_field_box(truth, rng)
-    sx = max(0, min(box[0], w - size))
-    sy = max(0, min(box[1], h - size))
-    # Destination shifted horizontally, grid-aligned, non-overlapping.
-    dx = sx + size * 2 if sx + size * 3 <= w else max(0, sx - size * 2)
-    dy = sy
+    box = truth["boxes"].get("_photo")
+    if box is None:  # fallback: largest field box
+        box = max((b for k, b in truth["boxes"].items() if not k.startswith("_")),
+                  key=lambda b: (b[2] - b[0]) * (b[3] - b[1]))
+    # Duplicate the whole photo region (the realistic "clone the face" forgery);
+    # severity trims how much of it, but never below a detectable region size.
+    bw, bh = box[2] - box[0], box[3] - box[1]
+    frac = {"low": 0.75, "med": 0.9, "high": 1.0}[severity]
+    rw, rh = int(bw * frac), int(bh * frac)
+    rw, rh = min(rw, w // 2), min(rh, h // 2)
+    sx, sy = box[0], box[1]
+
+    # Arbitrary non-overlapping destination with sub-block jitter, so the
+    # offset is never aligned to any detector sampling grid (audit C2).
+    for _ in range(50):
+        dx = int(rng.integers(0, w - rw))
+        dy = int(rng.integers(0, h - rh))
+        if abs(dx - sx) > rw or abs(dy - sy) > rh:
+            break
     out = img.copy()
-    out[dy:dy + size, dx:dx + size] = img[sy:sy + size, sx:sx + size]
+    out[dy:dy + rh, dx:dx + rw] = img[sy:sy + rh, sx:sx + rw]
     return out, AttackLabel(
-        "copy_move", severity, [dx, dy, dx + size, dy + size],
-        ["copy_move"], {"src": [sx, sy], "size": size},
+        "copy_move", severity, [dx, dy, dx + rw, dy + rh],
+        ["copy_move"], {"src": [sx, sy], "size": [rw, rh],
+                        "offset": [dx - sx, dy - sy]},
     )
 
 
@@ -107,24 +125,26 @@ def attack_text_splice(img, truth, rng, severity) -> Tuple[np.ndarray, AttackLab
 
 
 def attack_font_swap(img, truth, rng, severity, doc_type) -> Tuple[np.ndarray, AttackLabel]:
-    """Re-render the whole document with mismatched value typography."""
+    """Re-render the SAME card (via its recorded render seed) with mismatched
+    value typography — the only delta from the genuine document is the fonts."""
     swaps = {"low": {"bold": "serif"}, "med": {"bold": "serif", "mono": "regular"},
              "high": {"bold": "mono", "mono": "serif", "regular": "serif"}}[severity]
-    person = _person_from_truth(truth)
+    render_rng = np.random.default_rng(truth.get("render_seed", 0))
     with font_override(swaps):
-        out, _ = RENDERERS[doc_type](truth["fields"], np.random.default_rng(0))
+        out, _ = RENDERERS[doc_type](truth["fields"], render_rng)
     return out, AttackLabel("font_swap", severity, None, ["font"], {"swaps": swaps})
 
 
 def attack_screen_recapture(img, truth, rng, severity) -> Tuple[np.ndarray, AttackLabel]:
     """Simulate a photo-of-screen: Moire beat + glare.
 
-    Period is chosen in the mid-frequency band (~6-14 px) where real
-    screen-door Moire lives and where the FFT detector looks; sub-4px grids
-    sit above the detector's high-frequency cutoff and are killed by JPEG.
+    Severity maps to crudeness — and "low" is a deliberate EVASION case
+    (audit C2): a 3 px grid sits above the FFT detector's mid-band cutoff, so
+    the eval's recall curve includes attacks the detector cannot see, instead
+    of only generating detector-visible periods.
     """
     h, w = img.shape[:2]
-    period = {"low": 13, "med": 10, "high": 7}[severity]
+    period = {"low": 3, "med": 13, "high": 7}[severity]
     amp = {"low": 12, "med": 18, "high": 26}[severity]
     yy, xx = np.mgrid[0:h, 0:w]
     # Anisotropic beat: strong vertical scanline + weaker horizontal.
@@ -185,10 +205,6 @@ def _perturb_value(value: str, rng: np.random.Generator) -> str:
     for i in rng.choice(pool, size=min(2, len(pool)), replace=False):
         chars[i] = str(rng.integers(0, 10)) if chars[i].isdigit() else chr(int(rng.integers(65, 91)))
     return "".join(chars)
-
-
-def _person_from_truth(truth: dict) -> dict:
-    return truth["fields"]
 
 
 ATTACKS = ["copy_move", "text_splice", "font_swap", "screen_recapture", "exif_edit", "regenerate"]

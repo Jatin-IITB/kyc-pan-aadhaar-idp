@@ -20,15 +20,18 @@ class SpoofScorer:
     verdict from that detector should weigh toward "forged".
     """
 
-    # Font is corroboration-only (prior < the 0.2 flag threshold): stroke-width
-    # analysis has no separating power on legitimately multi-font ID cards
-    # (measured genuine 0.22-0.71 vs attack 0.20-0.71, fully overlapping), so it
-    # must never flag a genuine document on its own. It reinforces other signals
-    # via noisy-OR. True font forensics needs OCR field-region context (W5).
+    # Font is DIAGNOSTIC-ONLY (prior 0, ADR-026): stroke-width analysis has no
+    # separating power on legitimately multi-font ID cards (measured genuine
+    # 0.22-0.71 vs attack 0.20-0.71, fully overlapping), and even a small
+    # corroboration prior fired on nearly every genuine render — silently
+    # collapsing the genuine auto-clear rate to 26.7% and confounding the
+    # blind-spot leakage metric (audit S2). Its result is still computed and
+    # reported for reviewers, but contributes nothing to the score until
+    # OCR-context font forensics exists (W5).
     DEFAULT_PRIORS = {
         "ela": 0.55,
         "copy_move": 0.90,
-        "font": 0.18,
+        "font": 0.0,
         "metadata": 0.55,
         "screen": 0.65,
     }
@@ -67,9 +70,9 @@ class SpoofScorer:
                 detail += f", shift {tuple(shift)}"
             evidence.append({"type": "copy_move", "score": gated["copy_move"], "detail": detail})
 
-        # --- Font: gate on inconsistent regions ---
+        # --- Font: gate on inconsistent regions (diagnostic unless prior > 0) ---
         inconsistent = font_result.get("inconsistent_regions") or []
-        if inconsistent:
+        if inconsistent and self.priors["font"] > 0:
             consistency = font_result.get("font_consistency_score", 1.0)
             strength = min(1.0, 0.7 + (1.0 - consistency) * 0.6)
             gated["font"] = self.priors["font"] * strength

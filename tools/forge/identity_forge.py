@@ -63,7 +63,11 @@ def generate(doc_type: str, n: int, out_root: Path, seed: int, augment_level: st
         person = make_person(rng, fake)
         fields = fieldgen(person, rng)
 
-        img, boxes = render(fields, rng)
+        # Per-sample render seed, recorded in truth: lets the tamper forge
+        # re-render the SAME card (photo, guilloche, signature) varying only
+        # what an attack changes (audit remediation, ADR-026).
+        render_seed = int(rng.integers(0, 2**31))
+        img, boxes = render(fields, np.random.default_rng(render_seed))
         img, boxes, applied = augment(img, boxes, augment_level, rng)
         h, w = img.shape[:2]
 
@@ -74,6 +78,7 @@ def generate(doc_type: str, n: int, out_root: Path, seed: int, augment_level: st
             "doc_type": doc_type,
             "fields": fields,
             "boxes": boxes,
+            "render_seed": render_seed,
             "augmentations": applied,
             "image_size": [w, h],
             "synthetic": True,

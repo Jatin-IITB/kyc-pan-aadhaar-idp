@@ -43,13 +43,16 @@ def test_font_alone_cannot_flag():
     assert r["recommendation"] == "PASS"
 
 
-def test_font_corroborates_a_weak_second_signal():
-    weak_screen = {"is_recaptured": True, "moire_score": 0.16}
-    alone = _score(screen_result=weak_screen)["spoof_score"]
-    withfont = _score(screen_result=weak_screen,
-                      font_result={"font_consistency_score": 0.4,
-                                   "inconsistent_regions": [[0, 0, 9, 9]]})["spoof_score"]
-    assert withfont > alone
+def test_font_is_diagnostic_only():
+    # Font analysis has no separating power on multi-font ID cards (ADR-026),
+    # so it must contribute NOTHING to the score — even a strong font verdict
+    # cannot move the spoof score or flag a document on its own.
+    base = _score()["spoof_score"]
+    withfont = _score(font_result={"font_consistency_score": 0.2,
+                                   "inconsistent_regions": [[0, 0, 9, 9]] * 5})
+    assert withfont["spoof_score"] == base
+    assert withfont["recommendation"] == "PASS"
+    assert withfont["component_scores"]["font"] == 0.0
 
 
 def test_noisy_or_is_monotonic_and_bounded():

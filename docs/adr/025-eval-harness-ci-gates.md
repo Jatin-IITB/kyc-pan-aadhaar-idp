@@ -41,13 +41,19 @@ up only when the report proves an improvement.
 The harness's first full run surfaced a real end-to-end exposure: 41 of 180
 forgeries would AUTO_CLEAR. Dissection split the metric in two:
 
-- **`flagged_leakage` = 0** — anything forensics flags (spoof ≥ 0.15 after
-  calibration) never auto-clears. The decision layer is correct.
-- **`undetected_autoclear` = 41** — forgeries forensics cannot see (font_swap
-  20, regenerate 11, text_splice 9, screen 1) arrive with spoof ≈ 0,
-  indistinguishable from genuine, and clear. This is the end-to-end price of
-  the W4 recall gap, now measured. Its gate is a ceiling (45) that ratchets
-  down as W4 closes each blind spot.
+- **`flagged_leakage` = 0** — any document forensics flags (spoof ≥ 0.2,
+  i.e. recommendation ≠ PASS) never auto-clears. The decision layer is correct.
+- **`undetected_autoclear` = 41** — forgeries forensics cannot see arrive with
+  spoof ≈ 0, indistinguishable from genuine, and clear. This is the end-to-end
+  price of the W4 recall gap. Its gate is a ceiling that ratchets down as W4
+  closes each blind spot.
+
+> **Corrected by ADR-026.** This 41 was partly illusory: incidental font-gate
+> noise was flagging ~59 forgeries for the wrong reason while also collapsing
+> the genuine auto-clear rate to 26.7%. With font de-scored, the honest
+> blind-spot count is ~128/180 and genuine auto-clear returns to ~100%. The
+> flagged-leakage threshold is spoof ≥ 0.2 (matching the PASS boundary), not
+> 0.15.
 
 Conflating these two numbers would have either hidden a decision-layer bug
 class (gate too loose) or made the gate permanently red (gate impossible).

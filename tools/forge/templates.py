@@ -78,9 +78,18 @@ def _photo(rng: np.random.Generator, w: int, h: int) -> Image.Image:
     ey = cy - int(fh * 0.08)
     for ex in (cx - fw // 5, cx + fw // 5):
         d.ellipse([ex - 4, ey - 3, ex + 4, ey + 3], fill=(30, 30, 30))
+        d.arc([ex - 8, ey - 12, ex + 8, ey - 4], start=180, end=360, fill=hair, width=2)  # brow
     d.line([cx - fw // 8, cy + fh // 5, cx + fw // 8, cy + fh // 5], fill=(90, 50, 50), width=3)
+    d.line([cx, ey + 2, cx, cy + fh // 8], fill=(max(0, skin[0] - 30),) * 3, width=2)  # nose
+
+    # Photographic micro-texture: real portraits are rich in fine detail, which
+    # a forensic keypoint detector relies on. Speckle + a faint grid give the
+    # region ORB-detectable corners (without it, a duplicated smooth patch is
+    # invisible to copy-move analysis — and unrealistic).
     arr = np.array(img).astype(np.int16)
-    arr += rng.integers(-8, 9, arr.shape, dtype=np.int16)
+    arr += rng.integers(-22, 23, arr.shape, dtype=np.int16)
+    speck = rng.random((h, w)) < 0.06
+    arr[speck] += rng.integers(-60, 61, (int(speck.sum()), 1), dtype=np.int16)
     return Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8))
 
 
@@ -136,6 +145,7 @@ def render_pan(fields: Dict[str, str], rng: np.random.Generator) -> Tuple[np.nda
 
     img.paste(_photo(rng, 170, 200), (w - 230, 190))
     d.rectangle([w - 230, 190, w - 60, 390], outline=(120, 120, 130), width=2)
+    boxes["_photo"] = [w - 230, 190, w - 60, 390]  # non-field; tamper target
     d.rectangle([60, h - 90, 330, h - 40], outline=(160, 160, 170), width=1)
     _signature(d, (75, h - 85, 315, h - 45), rng)
     _text(d, (60, h - 36), "Signature", load_font("regular", 16), (110, 110, 120))
@@ -160,7 +170,7 @@ def render_aadhaar(fields: Dict[str, str], rng: np.random.Generator) -> Tuple[np
     img.paste(_photo(rng, 190, 230), (46, 110))
     d.rectangle([46, 110, 236, 340], outline=(150, 150, 160), width=2)
 
-    boxes: Dict[str, BBox] = {}
+    boxes: Dict[str, BBox] = {"_photo": [46, 110, 236, 340]}
     label_f, value_f = load_font("regular", 19), load_font("bold", 27)
     x, y = 270, 120
     for key, label in (("name", "Name"), ("date_of_birth", "DOB"), ("gender", "Gender")):
@@ -211,6 +221,7 @@ def render_dl(fields: Dict[str, str], rng: np.random.Generator) -> Tuple[np.ndar
 
     img.paste(_photo(rng, 170, 205), (w - 220, 120))
     d.rectangle([w - 220, 120, w - 50, 325], outline=(120, 130, 125), width=2)
+    boxes["_photo"] = [w - 220, 120, w - 50, 325]  # non-field; tamper target
 
     y = 190
     rows = (("name", "Name"), ("date_of_birth", "Date of Birth"), ("blood_group", "Blood Group"),

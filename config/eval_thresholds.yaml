@@ -5,23 +5,34 @@
 # floor only after the eval report proves the improvement is real.
 
 forensics:
-  # A KYC system must never flag a genuine customer's document. Hard invariant.
+  # A KYC system must never flag a genuine customer's document. Hard invariant,
+  # confirmed 0/60 across the tuning AND held-out seed pairs (ADR-026).
   genuine_fpr_max: 0.0
-  # Honest current recall on the 6-attack red team (ADR-024). Target is 0.97;
-  # raising this floor is the W4 workstream's exit criterion.
-  overall_recall_min: 0.40
+  # HONEST recall on the 6-attack red team after de-gaming (ADR-026): copy-move
+  # offsets no longer aligned to the detector grid, screen includes an
+  # undetectable evasion case, font de-scored. Floors sit below the held-out
+  # measurement (the lower of tuning/holdout), not the tuning number. Target
+  # remains 0.97 overall — raising these floors is the W4/W5 exit criterion.
+  overall_recall_min: 0.25
   per_attack_recall_min:
-    copy_move: 0.95
-    exif_edit: 0.95
-    screen_recapture: 0.60
+    copy_move: 0.40        # tuning 0.47 / holdout 0.53
+    exif_edit: 0.90        # tuning 1.00 / holdout 1.00
+    screen_recapture: 0.15 # tuning 0.23 / holdout 0.40 (evasion case is by-design undetectable)
 
 decision:
   # Forensically-FLAGGED documents that still AUTO_CLEAR through the real
   # calibrator + override engine: a decision-layer bug. Zero, always.
   flagged_leakage_max: 0
   # Forgeries forensics cannot see (blind spots) that therefore auto-clear.
-  # Ceiling ratchets DOWN as W4 closes each blind spot; measured 41 at W3.
-  undetected_autoclear_max: 45
+  # Now measured with font de-scored (ADR-026): no incidental font noise masks
+  # blind spots, so this reflects the TRUE recall gap (128/180 today, up from
+  # the illusory 41 when font noise was accidentally catching forgeries).
+  # Ratchets DOWN as W4/W5 close each blind spot.
+  undetected_autoclear_max: 135
+  # Genuine docs (perfect extraction) that auto-clear. Guards against a
+  # detector regression silently tanking the auto-clear rate (audit S2 caught
+  # font noise collapsing it to 26.7%).
+  genuine_auto_clear_min: 0.90
 
 extraction:
   # Applied only when the VLM extraction tier runs (requires Ollama).

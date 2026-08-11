@@ -92,6 +92,11 @@ def run_forensics(root: Path) -> Dict[str, Any]:
         ip = ap.replace("/attacks/", "/images/").replace(".json", ".jpg")
         per_attack[rec["attack"]].append(sweep(ip))
 
+    if not genuine or not per_attack:
+        raise SystemExit(
+            f"eval dataset empty (genuine={len(genuine)}, "
+            f"attack_classes={len(per_attack)}) — regenerate with `make forge`")
+
     genuine_fp = sum(1 for r in genuine if r["recommendation"] != "PASS")
     attack_stats = {}
     hits = total = 0
@@ -184,11 +189,20 @@ def run_extraction(root: Path, n: int) -> Optional[Dict[str, Any]]:
         print(f"  extraction tier unavailable ({e}) — skipping", file=sys.stderr)
         return None
 
-    truth_files = sorted(glob.glob(str(root / "synthetic" / "*" / "truth" / "*.json")))
-    step = max(1, len(truth_files) // n)
-    sampled = truth_files[::step][:n]
+    # Balanced round-robin across doc types so no single type dominates the F1
+    # (audit MINOR: sorted-stride skewed PAN to 2/12).
+    by_type: Dict[str, List[str]] = defaultdict(list)
+    for tp in sorted(glob.glob(str(root / "synthetic" / "*" / "truth" / "*.json"))):
+        by_type[Path(tp).parent.parent.name].append(tp)
+    sampled: List[str] = []
+    idx = 0
+    while len(sampled) < n and any(idx < len(v) for v in by_type.values()):
+        for t in sorted(by_type):
+            if idx < len(by_type[t]) and len(sampled) < n:
+                sampled.append(by_type[t][idx])
+        idx += 1
 
-    samples, lat, failed = [], [], 0
+    samples, lat, failed = [], [], []
     for tp in sampled:
         truth = json.loads(Path(tp).read_text())
         ip = tp.replace("/truth/", "/images/").replace(".json", ".jpg")
@@ -197,8 +211,8 @@ def run_extraction(root: Path, n: int) -> Optional[Dict[str, Any]]:
         try:
             ext = vlm.extract_fields(img, truth["doc_type"])
         except Exception as e:
-            failed += 1
-            print(f"  {truth['sample_id']} failed ({e}) — continuing", file=sys.stderr)
+            failed.append(truth["fields"])
+            print(f"  {truth['sample_id']} failed ({e}) — counts as all-FN", file=sys.stderr)
             continue
         lat.append(time.perf_counter() - t0)
         samples.append({
@@ -207,15 +221,21 @@ def run_extraction(root: Path, n: int) -> Optional[Dict[str, Any]]:
         })
         print(f"  extracted {truth['sample_id']} ({lat[-1]:.1f}s)")
 
-    if len(samples) < max(4, len(sampled) // 3):
-        print(f"  only {len(samples)}/{len(sampled)} extractions succeeded — tier skipped",
-              file=sys.stderr)
+    if not samples:
+        print("  no extractions succeeded — tier skipped", file=sys.stderr)
         return None
 
-    result = score_extraction(samples)
-    result["n_failed"] = failed
-    result["latency_s"] = {"p50": round(_pctl(lat, 50), 2), "p95": round(_pctl(lat, 95), 2)}
-    return result
+    # Honest scoring (C3): a timeout/failure is not a free pass — each failed
+    # doc counts as all-fields-missed (empty predictions => FN). This is the
+    # number the gate checks; F1-on-succeeded is reported alongside for context.
+    honest = score_extraction(samples + [{"truth": t, "predicted": {}} for t in failed])
+    succeeded = score_extraction(samples)
+    honest["micro_succeeded"] = succeeded["micro"]
+    honest["micro_fuzzy_succeeded"] = succeeded["micro_fuzzy"]
+    honest["n_failed"] = len(failed)
+    honest["n_attempted"] = len(sampled)
+    honest["latency_s"] = {"p50": round(_pctl(lat, 50), 2), "p95": round(_pctl(lat, 95), 2)}
+    return honest
 
 
 def render_report(metrics: Dict[str, Any], out: Path) -> None:
@@ -227,15 +247,22 @@ def render_report(metrics: Dict[str, Any], out: Path) -> None:
         return (f'<div class="card"><div class="label">{label}</div>'
                 f'<div class="value" style="color:{color}">{value}</div></div>')
 
+    def pct(x):
+        return f'{x*100:.0f}%' if x is not None else "n/a"
+
     cards = ""
     if f:
-        cards += card("Genuine FPR", f'{f["genuine_fpr"]*100:.0f}%', f["genuine_fpr"] == 0)
-        cards += card("Tamper Recall", f'{f["overall_recall"]*100:.0f}%', f["overall_recall"] >= 0.4)
+        cards += card("Genuine FPR", pct(f["genuine_fpr"]), (f["genuine_fpr"] or 0) == 0)
+        cards += card("Tamper Recall", pct(f["overall_recall"]), (f["overall_recall"] or 0) >= 0.4)
     if d:
         cards += card("Flagged Leakage", d["flagged_leakage"], d["flagged_leakage"] == 0)
+        cards += card("Genuine Auto-Clear", pct(d.get("genuine_auto_clear_rate")),
+                      (d.get("genuine_auto_clear_rate") or 0) >= 0.5)
         cards += card("Blind-Spot Clears", d["undetected_autoclear"], d["undetected_autoclear"] <= 45)
     if e:
-        cards += card("Field F1 (exact)", f'{e["micro"]["f1"]*100:.0f}%', e["micro"]["f1"] >= 0.85)
+        cards += card("Field F1 (honest)", pct(e["micro"]["f1"]), e["micro"]["f1"] >= 0.85)
+        if e.get("n_failed"):
+            cards += card("Extract Failures", f'{e["n_failed"]}/{e["n_attempted"]}', e["n_failed"] == 0)
 
     attack_rows = "".join(
         f'<tr><td>{a}</td><td>{s["recall"]*100:.0f}%</td><td>{s["flagged"]}/{s["n"]}</td></tr>'

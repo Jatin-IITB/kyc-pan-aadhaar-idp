@@ -66,5 +66,12 @@ are concrete HITL evidence.
 and honesty requires stating so — `text_splice` needs block-wise ELA to localize
 a recompression seam (global mean ELA cannot); `regenerate` (clean re-render)
 needs no-capture-noise / PRNU analysis; `font_swap` needs OCR region context.
-The 97% recall target is **not yet met** (currently 54% on the synthetic red
-team) and remains aspirational pending W4.
+The 97% recall target is **not yet met** and remains aspirational pending W4.
+
+> **Superseded by ADR-026 (audit remediation).** The recall figures first
+> reported here were measured against a red team whose copy-move offsets were
+> grid-aligned to the detector and whose screen periods were all in-band, and
+> with font noise incidentally catching forgeries. After de-gaming, the honest
+> held-out overall recall is ~30% (copy-move ~50%, exif 100%, screen ~30%,
+> text_splice/font_swap/regenerate ~0%). See ADR-026 for the corrected
+> methodology and numbers.
