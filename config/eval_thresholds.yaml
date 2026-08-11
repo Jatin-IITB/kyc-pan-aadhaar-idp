@@ -1,0 +1,29 @@
+# CI gates for `make eval` (Phase 11 W3, ADR-025).
+#
+# Values encode the CURRENT measured floor, not aspirations: the build is green
+# today and goes red the moment a change degrades a certified metric. Raise a
+# floor only after the eval report proves the improvement is real.
+
+forensics:
+  # A KYC system must never flag a genuine customer's document. Hard invariant.
+  genuine_fpr_max: 0.0
+  # Honest current recall on the 6-attack red team (ADR-024). Target is 0.97;
+  # raising this floor is the W4 workstream's exit criterion.
+  overall_recall_min: 0.40
+  per_attack_recall_min:
+    copy_move: 0.95
+    exif_edit: 0.95
+    screen_recapture: 0.60
+
+decision:
+  # Forensically-FLAGGED documents that still AUTO_CLEAR through the real
+  # calibrator + override engine: a decision-layer bug. Zero, always.
+  flagged_leakage_max: 0
+  # Forgeries forensics cannot see (blind spots) that therefore auto-clear.
+  # Ceiling ratchets DOWN as W4 closes each blind spot; measured 41 at W3.
+  undetected_autoclear_max: 45
+
+extraction:
+  # Applied only when the VLM extraction tier runs (requires Ollama).
+  micro_f1_min: 0.85
+  fuzzy_f1_min: 0.90
