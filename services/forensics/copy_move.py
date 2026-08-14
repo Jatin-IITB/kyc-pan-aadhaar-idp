@@ -95,7 +95,8 @@ class CopyMoveDetector:
 
         # k is a measurement window: promiscuity must be countable up to well
         # past the exclusion threshold, or truncation hides repeating texture.
-        k = min(self.max_neighbor_matches + 5, n)
+        # +1 compensates for the self-match slot (knnMatch includes identity).
+        k = min(self.max_neighbor_matches + 6, n)
         matcher = cv2.BFMatcher(cv2.NORM_HAMMING)
         knn = matcher.knnMatch(descriptors, descriptors, k=k)
 

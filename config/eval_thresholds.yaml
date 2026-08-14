@@ -18,6 +18,9 @@ forensics:
     copy_move: 0.40        # tuning 0.47 / holdout 0.53
     exif_edit: 0.90        # tuning 1.00 / holdout 1.00
     screen_recapture: 0.15 # tuning 0.23 / holdout 0.40 (evasion case is by-design undetectable)
+    text_splice: 0.0       # 0% today — needs block-wise ELA (W4 backlog)
+    font_swap: 0.0         # 0% today — font prior is 0, needs OCR context (W5)
+    regenerate: 0.0        # 0% today — needs PRNU / sensor analysis (W4 backlog)
 
 decision:
   # Forensically-FLAGGED documents that still AUTO_CLEAR through the real

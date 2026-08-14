@@ -27,10 +27,15 @@ import yaml
 
 from tools.eval.metrics import check_gates, score_extraction
 
-GENUINE_SEED, TAMPER_SEED, PER_TYPE = 42, 123, 10
+SEED_PAIRS = {
+    "tuning": (42, 123),
+    "holdout": (777, 888),
+}
+PER_TYPE = 10
 
 
-def ensure_datasets(root: Path, regen: bool) -> None:
+def ensure_datasets(root: Path, regen: bool,
+                    genuine_seed: int = 42, tamper_seed: int = 123) -> None:
     from tools.forge.identity_forge import generate
     from tools.forge.tamper_forge import ATTACKS, forge_dataset
     from tools.forge.templates import RENDERERS
@@ -38,10 +43,10 @@ def ensure_datasets(root: Path, regen: bool) -> None:
     syn, tam = root / "synthetic", root / "tamper"
     for doc_type in RENDERERS:
         if regen or not (syn / doc_type / "manifest.jsonl").exists():
-            generate(doc_type, PER_TYPE, syn, seed=GENUINE_SEED, augment_level="light")
+            generate(doc_type, PER_TYPE, syn, seed=genuine_seed, augment_level="light")
     if regen or not (tam / "manifest.jsonl").exists():
         forge_dataset(syn, tam, list(RENDERERS), ATTACKS, per_doc=1,
-                      severity="mixed", seed=TAMPER_SEED)
+                      severity="mixed", seed=tamper_seed)
 
 
 def _pctl(values: List[float], q: float) -> float:
@@ -309,43 +314,65 @@ def main() -> int:
     ap.add_argument("--check", action="store_true", help="exit non-zero if any gate fails")
     args = ap.parse_args()
 
-    print("[1/5] ensuring datasets...")
-    ensure_datasets(args.data_root, args.regen)
-
-    print("[2/5] forensic sweep (genuine + tampered)...")
-    forensics = run_forensics(args.data_root)
-
-    print("[3/5] decision layer (calibrator + overrides)...")
-    decision = run_decision(forensics)
+    # Run forensics + decision on BOTH seed pairs independently (audit C1:
+    # held-out confirmation must be automated, not a manual one-off).
+    pass_metrics: Dict[str, Dict[str, Any]] = {}
+    for i, (pass_name, (gen_seed, tam_seed)) in enumerate(SEED_PAIRS.items(), 1):
+        pass_root = args.data_root / pass_name
+        print(f"[{i}a/4] ensuring {pass_name} datasets (seeds {gen_seed}/{tam_seed})...")
+        ensure_datasets(pass_root, args.regen, gen_seed, tam_seed)
+        print(f"[{i}b/4] {pass_name} forensic sweep...")
+        forensics = run_forensics(pass_root)
+        print(f"[{i}c/4] {pass_name} decision layer...")
+        decision = run_decision(forensics)
+        pass_metrics[pass_name] = {"forensics": forensics, "decision": decision}
 
     extraction = None
     if not args.no_extraction:
-        print(f"[4/5] VLM extraction tier (n={args.extraction_n})...")
-        extraction = run_extraction(args.data_root, args.extraction_n)
+        print(f"[3/4] VLM extraction tier (n={args.extraction_n})...")
+        extraction = run_extraction(args.data_root / "tuning", args.extraction_n)
     else:
-        print("[4/5] VLM extraction tier skipped")
+        print("[3/4] VLM extraction tier skipped")
+
+    # Gate BOTH passes independently; ALL must pass.
+    thresholds = yaml.safe_load(Path("config/eval_thresholds.yaml").read_text()) or {}
+    all_gate_results: List[Dict[str, Any]] = []
+    all_ok = True
+    for pass_name, pm in pass_metrics.items():
+        m = {**pm, "extraction": extraction if pass_name == "tuning" else None}
+        gates = check_gates(m, thresholds)
+        for r in gates["results"]:
+            r["pass"] = pass_name
+        all_gate_results.extend(gates["results"])
+        if not gates["passed"]:
+            all_ok = False
+        pm["gates"] = gates
 
     metrics: Dict[str, Any] = {
-        "dataset": f"seeds genuine={GENUINE_SEED} tamper={TAMPER_SEED}, {PER_TYPE}/type",
-        "forensics": forensics,
-        "decision": decision,
+        "dataset": (f"tuning={SEED_PAIRS['tuning']}, "
+                    f"holdout={SEED_PAIRS['holdout']}, {PER_TYPE}/type"),
+        "forensics": pass_metrics["tuning"]["forensics"],
+        "decision": pass_metrics["tuning"]["decision"],
+        "holdout": {
+            "forensics": pass_metrics["holdout"]["forensics"],
+            "decision": pass_metrics["holdout"]["decision"],
+        },
         "extraction": extraction,
+        "gates": {"passed": all_ok, "results": all_gate_results},
     }
-    thresholds = yaml.safe_load(Path("config/eval_thresholds.yaml").read_text()) or {}
-    metrics["gates"] = check_gates(metrics, thresholds)
 
     args.out.mkdir(parents=True, exist_ok=True)
     (args.out / "metrics.json").write_text(json.dumps(metrics, indent=2))
     render_report(metrics, args.out)
 
-    print(f"[5/5] wrote {args.out}/metrics.json and {args.out}/report.html")
+    print(f"[4/4] wrote {args.out}/metrics.json and {args.out}/report.html")
     print()
-    for r in metrics["gates"]["results"]:
-        print(f'  {r["status"]:<8} {r["gate"]:<32} limit={r["limit"]} actual={r["actual"]}')
+    for r in all_gate_results:
+        tag = f"[{r.get('pass', '?')}]"
+        print(f'  {r["status"]:<8} {tag:<10} {r["gate"]:<32} limit={r["limit"]} actual={r["actual"]}')
     print()
-    ok = metrics["gates"]["passed"]
-    print("ALL GATES PASS" if ok else "GATE FAILURES — see eval/report.html")
-    return 0 if ok or not args.check else 1
+    print("ALL GATES PASS" if all_ok else "GATE FAILURES — see eval/report.html")
+    return 0 if all_ok or not args.check else 1
 
 
 if __name__ == "__main__":

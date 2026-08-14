@@ -127,11 +127,19 @@ def attack_text_splice(img, truth, rng, severity) -> Tuple[np.ndarray, AttackLab
 def attack_font_swap(img, truth, rng, severity, doc_type) -> Tuple[np.ndarray, AttackLabel]:
     """Re-render the SAME card (via its recorded render seed) with mismatched
     value typography — the only delta from the genuine document is the fonts."""
+    from tools.forge.augment import augment
+
     swaps = {"low": {"bold": "serif"}, "med": {"bold": "serif", "mono": "regular"},
              "high": {"bold": "mono", "mono": "serif", "regular": "serif"}}[severity]
-    render_rng = np.random.default_rng(truth.get("render_seed", 0))
+    render_seed = truth.get("render_seed", 0)
+    render_rng = np.random.default_rng(render_seed)
     with font_override(swaps):
-        out, _ = RENDERERS[doc_type](truth["fields"], render_rng)
+        out, boxes = RENDERERS[doc_type](truth["fields"], render_rng)
+    # Apply augmentation so the forged image has the same capture-condition
+    # noise as the genuine (which was augmented in identity_forge). Without
+    # this, the delta includes augmentation artifacts, not just fonts.
+    aug_rng = np.random.default_rng(render_seed + 1)
+    out, _, _ = augment(out, boxes, "light", aug_rng)
     return out, AttackLabel("font_swap", severity, None, ["font"], {"swaps": swaps})
 
 
@@ -185,7 +193,8 @@ def attack_exif_edit(img, truth, rng, severity) -> Tuple[np.ndarray, AttackLabel
 
 def attack_regenerate(img, truth, rng, severity, doc_type) -> Tuple[np.ndarray, AttackLabel]:
     """Re-render the same identity, then double-JPEG at low quality (ELA seam)."""
-    out, _ = RENDERERS[doc_type](truth["fields"], np.random.default_rng(999))
+    out, _ = RENDERERS[doc_type](truth["fields"],
+                                 np.random.default_rng(truth.get("render_seed", 0)))
     q = {"low": 75, "med": 60, "high": 45}[severity]
     for _ in range(2):
         ok, buf = cv2.imencode(".jpg", out, [cv2.IMWRITE_JPEG_QUALITY, q])
