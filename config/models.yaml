@@ -4,18 +4,24 @@ yolov8:
     imgsz: 640
     conf: 0.25
     field_map:
+      # Classes emitted by our trained model (Roboflow pancard-info-detection v1).
+      # Verify with: YOLO(weights).names — unmapped classes are dropped, not renamed.
+      pan: pan_number
+      name: name
+      fathername: father_name
+      dob: dob
+      # Tolerated aliases from other PAN datasets / retrains
       PAN_NUMBER: pan_number
       NAME: name
       FATHER_NAME: father_name
       DOB: dob
       DATE_OF_BIRTH: dob
-      SIGNATURE: signature
-      PHOTO: photo
-      # Roboflow pancard-info-detection classes (lowercase variants)
       pan_number: pan_number
       holder_name: name
       father_name: father_name
       date_of_birth: dob
+      SIGNATURE: signature
+      PHOTO: photo
 
   aadhar_fields:
     weights: models/yolov8/aadhar_field_detector_v1/best.pt

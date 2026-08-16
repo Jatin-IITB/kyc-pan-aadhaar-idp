@@ -101,12 +101,23 @@ Per attack class:
 
 ### Field detection
 
-| Model | Status | mAP@50 |
-|---|---|---|
-| Aadhaar (`YOLOv8-nano-aadhar-card`) | Integrated | 0.963 † |
-| PAN | Training pipeline ready | — |
+| Model | Source | mAP@50 | mAP@50-95 |
+|---|---|---|---|
+| Aadhaar (`YOLOv8-nano-aadhar-card`) | Pre-trained, HuggingFace | 0.963 † | 0.748 † |
+| PAN (YOLOv8n, 50 epochs) | Trained here on Roboflow data | 0.919 ‡ | 0.643 ‡ |
 
 † Published by the upstream model author; not independently re-measured here.
+
+‡ **Treat as provisional.** The PAN detector was trained on 71 images and validated on **6** — far too small for the aggregate to be meaningful. Per-class results show the weakness the average hides:
+
+| Class | Precision | Recall | mAP@50 |
+|---|---|---|---|
+| `name` | 0.992 | 1.000 | 0.995 |
+| `fathername` | 0.933 | 1.000 | 0.995 |
+| `dob` | 1.000 | 0.806 | 0.931 |
+| **`pan`** (the PAN number) | 0.901 | **0.600** | **0.757** |
+
+The single most important field is the worst-performing one — it misses 40% of PAN numbers on an already-tiny validation set. A real deployment needs a substantially larger annotated set before this detector carries traffic; the VLM fallback covers the gap today.
 
 ### Scope of these numbers
 
@@ -248,15 +259,14 @@ docs/adr/           30 architecture decision records
 
 ## Current state & roadmap
 
-**Working:** LangGraph pipeline, forensics suite, RAG policy engine, cross-doc intelligence, calibrated decisioning, audit ledger, active-learning scaffolding, synthetic forge, eval harness with CI gates, Aadhaar field detection.
-
-**In progress:** PAN field detector training (pipeline ready, awaiting run). End-to-end validation of the YOLO+PaddleOCR fast path.
+**Working:** LangGraph pipeline, forensics suite, RAG policy engine, cross-doc intelligence, calibrated decisioning, audit ledger, active-learning scaffolding, synthetic forge, eval harness with CI gates, both field detectors wired and emitting correctly-mapped fields.
 
 **Known gaps — stated deliberately:**
+- **PAN detector is under-trained** — 71 train / 6 val images; `pan` class recall 0.60. Needs a materially larger annotated set before it should carry traffic.
 - `font_swap` undetected (0% recall) — needs OCR-context font forensics.
 - `text_splice` / `regenerate` detection is metadata-only and evadable; robust detection needs frequency-domain work (double-JPEG ghosts, DCT histogram analysis, or a learned localizer).
-- No production-traffic calibration — all numbers are synthetic-set numbers.
-- Extraction F1 and end-to-end p95 not yet benchmarked.
+- No production-traffic calibration — all forensics numbers are synthetic-set numbers.
+- End-to-end extraction F1 and p95 latency not yet benchmarked across the full graph.
 
 ---
 

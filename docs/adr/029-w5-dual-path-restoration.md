@@ -182,6 +182,48 @@ unaffected, and the cleared flag is a no-op there.
 | S5 | Significant | Unmapped labels silently pass through | Fixed: unmapped labels dropped + logged |
 | S6 | Significant | Hardcoded HuggingFace filename | Fixed: dynamic .pt file discovery |
 
-## Measured Results
+## Measured Results (2026-08-16)
 
-TBD — pending model download and end-to-end evaluation.
+| Model | Source | mAP@50 | mAP@50-95 |
+|---|---|---|---|
+| Aadhaar | Pre-trained (HuggingFace) | 0.963 (upstream-reported) | 0.748 (upstream-reported) |
+| PAN | Trained here, YOLOv8n, 50 epochs | 0.919 | 0.643 |
+
+PAN per-class on the validation split:
+
+| Class | P | R | mAP@50 |
+|---|---|---|---|
+| `name` | 0.992 | 1.000 | 0.995 |
+| `fathername` | 0.933 | 1.000 | 0.995 |
+| `dob` | 1.000 | 0.806 | 0.931 |
+| `pan` | 0.901 | 0.600 | 0.757 |
+
+**These PAN numbers are provisional and should not be quoted as-is.** The
+Roboflow `pancard-info-detection` v1 dataset yielded only 71 training and 6
+validation images (23 instances). An aggregate mAP computed over 6 images has
+very wide error bars. Worse, the aggregate masks the operationally important
+result: `pan` — the PAN number itself, the primary key of the document — has
+the *lowest* recall at 0.60. Training converged (box loss 2.21 → 0.93) so the
+limit is data volume, not schedule.
+
+Next step for a credible PAN detector: combine multiple Roboflow PAN datasets
+(`pan-1.8k`, `pancard-info-detection`, `pan_card_detection`) into a single
+training set with reconciled class names, targeting ≥500 annotated images.
+
+### E3: field_map / model-class drift (caught during this work)
+
+The trained PAN model emits classes `dob`, `fathername`, `name`, `pan`. The
+field_map written *before* training anticipated `PAN_NUMBER`, `FATHER_NAME`,
+`DOB`, `NAME` — none of which matched. Because D3's unmapped-label handling
+drops rather than passes through, **the PAN detector produced zero fields** and
+the pipeline silently degraded to VLM-only.
+
+This failure mode is invisible at runtime: no exception, no error metric — just
+an empty detection list and a quiet fallback. `TestFieldMapCoversInstalledModels`
+in `tests/unit/test_field_detector.py` now asserts every class a locally-present
+model emits has a field_map entry, and skips when weights are absent so CI stays
+green. Verified to fail against the broken mapping before being committed.
+
+Both detectors were then confirmed end-to-end to emit correctly-mapped pipeline
+field names (`pan_number`, `father_name`, `dob`, `name`, `aadhaar_number`,
+`address`).
