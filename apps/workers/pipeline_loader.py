@@ -86,12 +86,21 @@ def _build_deps() -> PipelineDeps:
     except Exception:
         vlm_extractor = None
 
+    # Disabled by default: the v1 model (trained on the Kaggle rotation set) does not
+    # transfer to PAN/Aadhaar cards — it scored 0/4 on real PAN rotations and was
+    # confidently wrong (rot180 read as rot0 at 0.99). Until a model clears
+    # tools/train/eval_rotation.py on in-domain data, the detector-based rotation
+    # search stays authoritative. Opt in via rotation.enabled in config/models.yaml.
     rotation_classifier = None
-    try:
-        from services.doc_classifier.rotation_model import RotationClassifier
-        rotation_classifier = RotationClassifier()
-    except Exception:
-        logger.debug("RotationClassifier unavailable — using brute-force rotation search")
+    rot_cfg = cfg.get("rotation", {})
+    if rot_cfg.get("enabled", False):
+        try:
+            from services.doc_classifier.rotation_model import RotationClassifier
+            rotation_classifier = RotationClassifier()
+        except Exception:
+            logger.warning("RotationClassifier failed to load — using brute-force rotation search")
+    else:
+        logger.info("Rotation classifier disabled — using brute-force rotation search")
 
     policy_verifier = None
     try:

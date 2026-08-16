@@ -42,10 +42,12 @@ def get_device() -> torch.device:
 
 
 def build_transforms():
+    # NOTE: no flips here. A horizontal flip turns a rot90 document into something
+    # visually indistinguishable from rot270, which injects label noise into a task
+    # whose whole signal is orientation. Only orientation-preserving augs are safe.
     train_tf = transforms.Compose([
         transforms.Resize((224, 224)),
-        transforms.RandomHorizontalFlip(p=0.3),
-        transforms.ColorJitter(brightness=0.2, contrast=0.2),
+        transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.1),
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
     ])
@@ -105,6 +107,7 @@ def main():
     parser.add_argument("--lr", type=float, default=1e-4)
     parser.add_argument("--val-split", type=float, default=0.15)
     parser.add_argument("--workers", type=int, default=2)
+    parser.add_argument("--pretrained", action="store_true", help="Use ImageNet pretrained weights")
     args = parser.parse_args()
 
     if not DATASET_DIR.exists():
@@ -133,7 +136,7 @@ def main():
     val_loader = DataLoader(val_ds, batch_size=args.batch_size, shuffle=False, num_workers=args.workers, pin_memory=(device.type == "cuda"))
     logger.info("Train: %d, Val: %d", train_size, val_size)
 
-    model = build_model(num_classes=4).to(device)
+    model = build_model(num_classes=4, pretrained=args.pretrained).to(device)
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=1e-4)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs)
@@ -167,6 +170,9 @@ def main():
         "folder_mapping": folder_to_rot,
         "best_val_acc": best_acc,
         "epochs": args.epochs,
+        "pretrained": args.pretrained,
+        "lr": args.lr,
+        "batch_size": args.batch_size,
         "input_size": 224,
         "normalize_mean": [0.485, 0.456, 0.406],
         "normalize_std": [0.229, 0.224, 0.225],

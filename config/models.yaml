@@ -9,10 +9,14 @@ yolov8:
     conf: 0.25
 
 rotation:
+  # Off until a model passes tools/train/eval_rotation.py on in-domain PAN/Aadhaar
+  # images. The v1 Kaggle-trained model scored 0/4 on real PAN rotations.
+  enabled: false
   architecture: "mobilenet_v3_small"
   weights: models/rotation_classifier/best.pt
   input_size: 224
   classes: ["rot0", "rot90", "rot180", "rot270"]
+  min_confidence: 0.90
 
 vlm:
   model: "minicpm-v"

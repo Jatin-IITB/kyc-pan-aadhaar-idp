@@ -1,7 +1,7 @@
 # ADR-019: Trained Rotation Classifier
 
-**Status:** Accepted  
-**Date:** 2026-08-08
+**Status:** Superseded by the "Outcome" section below — model trained but **disabled in production**  
+**Date:** 2026-08-08 (outcome recorded 2026-08-15)
 
 ## Context
 
@@ -32,6 +32,49 @@ Kaggle dataset moved from repo root to `data/datasets/rotation-angle-detection/`
 
 ## Consequences
 
-- **Pros**: Single-pass rotation detection (~5ms vs ~200ms), works without YOLO weights, trained on 31K real document images
+- **Pros**: Single-pass rotation detection (~5ms vs ~200ms), works without YOLO weights
 - **Cons**: Requires separate training step; model weights not in git (must retrain or download)
-- **Training**: `python -m tools.train.train_rotation --epochs 10 --batch-size 64 --lr 1e-3`
+- **Training**: `python -m tools.train.train_rotation --epochs 10 --batch-size 64 --lr 1e-3 --pretrained`
+
+## Outcome (2026-08-15) — model rejected, feature disabled
+
+The v1 model was trained and **failed validation**. It is disabled via
+`rotation.enabled: false` in `config/models.yaml`.
+
+**What happened:**
+
+1. Trained 10 epochs, reaching **74.2% held-out accuracy** on the Kaggle split.
+   Well above the 25% chance baseline, but far short of what this task needs.
+2. Spot-checked against a real PAN card at all four rotations: **0/4 correct**, and
+   *confidently* wrong — rot180 was predicted as rot0 at 0.993 confidence.
+
+**Root causes:**
+
+- **Domain gap (primary).** The Kaggle rotation set is not PAN/Aadhaar cards. 74% in-
+  distribution accuracy did not transfer at all to the documents this pipeline sees.
+- **No pretrained weights.** The ImageNet download failed at training time and the
+  `--pretrained` flag was never wired to argparse, so the run silently used random init.
+- **Harmful augmentation.** `RandomHorizontalFlip` was in the training transform. Mirroring
+  a rot90 document makes it look like rot270, injecting label noise into a task whose only
+  signal is orientation. Removed.
+
+**Why a confidence threshold is not sufficient on its own:** the model was wrong at 0.993
+confidence, so thresholding alone cannot rescue a model with this domain gap. A confidence
+gate (`rotation.min_confidence`, default 0.90) was added as defense-in-depth, but the
+feature stays off until a model earns it.
+
+**Bug this exposed:** `classify_node` originally overrode the detector-based rotation
+search unconditionally and ignored the returned confidence entirely. Any loaded model won,
+however bad. This shipped in `858c771` and was live on `main` for a week. Now the model must
+be explicitly enabled *and* clear `min_confidence`, otherwise the detector search wins.
+
+**Re-entry criteria.** Before flipping `rotation.enabled` back on, a model must:
+
+1. Train with `--pretrained` on **in-domain** PAN/Aadhaar images, not the Kaggle set.
+2. Pass `python -m tools.train.eval_rotation` with strong **per-class** accuracy — overall
+   accuracy hides the rot90/rot270 confusion that matters most.
+3. Score 4/4 on the real-PAN rotation spot-check that v1 failed.
+
+**Dataset note.** The 6.2GB Kaggle dataset at `data/datasets/rotation-angle-detection/` was
+deleted at some point during the week of 2026-08-08→15. It is under gitignored `data/` and
+is not recoverable from git; re-download from Kaggle to retrain.
