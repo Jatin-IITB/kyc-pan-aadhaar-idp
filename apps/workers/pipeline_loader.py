@@ -43,15 +43,17 @@ def _build_deps() -> PipelineDeps:
     aad_w = REPO_ROOT / aad_cfg.get("weights", "models/yolov8/aadhar_field_detector_v1/best.pt")
     pan_conf = float(pan_cfg.get("conf", 0.25))
     aad_conf = float(aad_cfg.get("conf", 0.25))
+    pan_field_map = pan_cfg.get("field_map")
+    aad_field_map = aad_cfg.get("field_map")
 
     if pan_w.exists():
-        pan_detector = FieldDetector(str(pan_w), conf=pan_conf)
+        pan_detector = FieldDetector(str(pan_w), conf=pan_conf, field_map=pan_field_map)
     else:
         logger.warning("PAN YOLO weights not found at %s — using null detector (VLM-only mode)", pan_w)
         pan_detector = _NullDetector()
 
     if aad_w.exists():
-        aadhaar_detector = FieldDetector(str(aad_w), conf=aad_conf)
+        aadhaar_detector = FieldDetector(str(aad_w), conf=aad_conf, field_map=aad_field_map)
     else:
         logger.warning("Aadhaar YOLO weights not found at %s — using null detector (VLM-only mode)", aad_w)
         aadhaar_detector = _NullDetector()

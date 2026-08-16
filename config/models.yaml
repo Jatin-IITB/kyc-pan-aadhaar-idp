@@ -3,10 +3,38 @@ yolov8:
     weights: models/yolov8/pan_field_detector_v1/best.pt
     imgsz: 640
     conf: 0.25
+    field_map:
+      PAN_NUMBER: pan_number
+      NAME: name
+      FATHER_NAME: father_name
+      DOB: dob
+      DATE_OF_BIRTH: dob
+      SIGNATURE: signature
+      PHOTO: photo
+      # Roboflow pancard-info-detection classes (lowercase variants)
+      pan_number: pan_number
+      holder_name: name
+      father_name: father_name
+      date_of_birth: dob
+
   aadhar_fields:
     weights: models/yolov8/aadhar_field_detector_v1/best.pt
     imgsz: 640
     conf: 0.25
+    field_map:
+      # arnabdhar/YOLOv8-nano-aadhar-card classes
+      AADHAR_NUMBER: aadhaar_number
+      NAME: name
+      DATE_OF_BIRTH: dob
+      GENDER: gender
+      ADDRESS: address
+      # Roboflow AADHAAR-CARD-DETAILS classes
+      aadhaar_no: aadhaar_number
+      aadhaar_holder_name: name
+      aadhaar_dob: dob
+      aadhaar_gender: gender
+      aadhaar_address: address
+      aadhaar_photo: photo
 
 rotation:
   # Off until a model passes tools/train/eval_rotation.py on in-domain PAN/Aadhaar
