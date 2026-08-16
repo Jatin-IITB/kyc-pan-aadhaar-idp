@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import Any, Dict, List
 
+from services.forensics.metadata import MetadataForensics
+
 
 class SpoofScorer:
     """Aggregate forensic signals into a single spoof score.
@@ -82,7 +84,7 @@ class SpoofScorer:
                 "detail": f"{len(inconsistent)} inconsistent region(s)",
             })
 
-        # --- Metadata: gate on editor software or date anomaly ---
+        # --- Metadata: gate on editor software, date anomaly, or low JPEG quality ---
         if metadata_result.get("software_edited"):
             gated["metadata"] = self.priors["metadata"]
             evidence.append({
@@ -97,6 +99,19 @@ class SpoofScorer:
                 "score": gated["metadata"],
                 "detail": "EXIF date mismatch",
             })
+
+        jq = metadata_result.get("jpeg_quality")
+        qt = MetadataForensics.LOW_QUALITY_THRESHOLD
+        if jq is not None and jq < qt:
+            strength = min(1.0, max(0.5, (qt - jq) / 40.0))
+            score = self.priors["metadata"] * strength
+            if score > gated["metadata"]:
+                gated["metadata"] = score
+                evidence.append({
+                    "type": "low_jpeg_quality",
+                    "score": score,
+                    "detail": f"JPEG quality {jq} (genuine ID scans are ≥88)",
+                })
 
         # --- Screen recapture: gate on Moire verdict ---
         if screen_result.get("is_recaptured"):

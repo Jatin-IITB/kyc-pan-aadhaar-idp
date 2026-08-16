@@ -32,6 +32,8 @@ class ELADetector:
         ela_score = float(normalized.mean())
 
         suspicious_regions: List[List[int]] = []
+
+        # Method 1: fixed-threshold contours (gross tampering).
         _, binary = cv2.threshold(
             gray_diff, int(255 * self.threshold), 255, cv2.THRESH_BINARY
         )

@@ -5,7 +5,7 @@ from services.forensics.spoof_scorer import SpoofScorer
 CLEAN_ELA = {"ela_score": 0.001, "suspicious_regions": []}
 CLEAN_CM = {"detected": False, "confidence": 0.0, "matched_pairs": []}
 CLEAN_FONT = {"font_consistency_score": 0.9, "inconsistent_regions": []}
-CLEAN_META = {"software_edited": False, "metadata_flags": []}
+CLEAN_META = {"software_edited": False, "metadata_flags": [], "jpeg_quality": 92}
 CLEAN_SCREEN = {"is_recaptured": False, "moire_score": 0.05}
 
 
@@ -53,6 +53,21 @@ def test_font_is_diagnostic_only():
     assert withfont["spoof_score"] == base
     assert withfont["recommendation"] == "PASS"
     assert withfont["component_scores"]["font"] == 0.0
+
+
+def test_low_jpeg_quality_triggers_review():
+    r = _score(metadata_result={"software_edited": False, "metadata_flags": [],
+                                "jpeg_quality": 70})
+    assert r["recommendation"] != "PASS"
+    assert r["spoof_score"] > 0.2
+    assert any(e["type"] == "low_jpeg_quality" for e in r["evidence"])
+
+
+def test_high_jpeg_quality_is_clean():
+    r = _score(metadata_result={"software_edited": False, "metadata_flags": [],
+                                "jpeg_quality": 92})
+    assert r["spoof_score"] == 0.0
+    assert r["recommendation"] == "PASS"
 
 
 def test_noisy_or_is_monotonic_and_bounded():

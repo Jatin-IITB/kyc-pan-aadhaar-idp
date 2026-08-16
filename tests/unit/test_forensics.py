@@ -61,3 +61,41 @@ def test_spoof_scorer_suspicious_multi_signal():
 def test_metadata_forensics_handles_empty():
     result = MetadataForensics().analyze(b"")
     assert result["software_edited"] is False
+
+
+def test_metadata_jpeg_quality_estimation():
+    """MetadataForensics estimates JPEG quality from quantization tables."""
+    img = _noise(seed=42, h=512, w=768)
+    ok, buf_high = cv2.imencode(".jpg", img, [cv2.IMWRITE_JPEG_QUALITY, 92])
+    ok, buf_low = cv2.imencode(".jpg", img, [cv2.IMWRITE_JPEG_QUALITY, 50])
+
+    mf = MetadataForensics()
+    result_high = mf.analyze(bytes(buf_high))
+    result_low = mf.analyze(bytes(buf_low))
+    assert result_high["jpeg_quality"] >= 88
+    assert result_low["jpeg_quality"] <= 60
+    assert "low_jpeg_quality" not in result_high["metadata_flags"]
+    assert "low_jpeg_quality" in result_low["metadata_flags"]
+
+
+def test_metadata_png_has_no_quality():
+    """PNG images have no JPEG quantization tables — quality should be None."""
+    img = _noise(seed=99, h=200, w=300)
+    ok, buf = cv2.imencode(".png", img)
+    result = MetadataForensics().analyze(bytes(buf))
+    assert result["jpeg_quality"] is None
+    assert "low_jpeg_quality" not in result["metadata_flags"]
+
+
+def test_spoof_scorer_low_jpeg_quality_flags():
+    """Low JPEG quality in metadata triggers the metadata gate."""
+    result = SpoofScorer().compute(
+        ela_result={"ela_score": 0.01, "suspicious_regions": []},
+        copy_move_result={"detected": False, "confidence": 0.0, "matched_pairs": []},
+        font_result={"font_consistency_score": 0.9, "inconsistent_regions": []},
+        metadata_result={"software_edited": False, "metadata_flags": [],
+                         "jpeg_quality": 50},
+        screen_result={"is_recaptured": False, "moire_score": 0.05},
+    )
+    assert result["spoof_score"] > 0.2
+    assert any(e["type"] == "low_jpeg_quality" for e in result["evidence"])

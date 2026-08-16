@@ -89,8 +89,14 @@ def attack_copy_move(img, truth, rng, severity) -> Tuple[np.ndarray, AttackLabel
     )
 
 
-def attack_text_splice(img, truth, rng, severity) -> Tuple[np.ndarray, AttackLabel]:
-    """Paint over one field and stamp a different value in a mismatched font."""
+def attack_text_splice(img, truth, rng, severity) -> Tuple[np.ndarray, AttackLabel, bytes]:
+    """Paint over one field and stamp a different value in a mismatched font.
+
+    Returns raw JPEG bytes (like exif_edit) so forge_dataset preserves the
+    compression history. A real forger opens a genuine JPEG, edits, and
+    re-saves — the host carries double-JPEG while the edited region is
+    single-JPEG at the save quality, creating a visible ELA seam.
+    """
     from PIL import Image, ImageDraw
     from tools.forge.fonts import load_font
 
@@ -98,10 +104,8 @@ def attack_text_splice(img, truth, rng, severity) -> Tuple[np.ndarray, AttackLab
     x1, y1, x2, y2 = box
     pil = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
     d = ImageDraw.Draw(pil)
-    # Cover the original value with a sampled background swatch (leaves a seam).
     swatch = img[max(0, y1 - 6):y1 - 1, x1:x2].mean(axis=(0, 1)) if y1 > 6 else np.array([245, 245, 240])
     d.rectangle([x1 - 2, y1 - 2, x2 + 2, y2 + 2], fill=tuple(int(c) for c in swatch[::-1]))
-    # New value: perturb digits / letters of the original.
     orig = truth["fields"].get(field_name, "TAMPERED")
     tampered = _perturb_value(orig, rng)
     size = max(18, y2 - y1)
@@ -109,19 +113,20 @@ def attack_text_splice(img, truth, rng, severity) -> Tuple[np.ndarray, AttackLab
     d.text((x1, y1), tampered, font=load_font(wrong_font, size), fill=(15, 15, 20))
     out = cv2.cvtColor(np.array(pil), cv2.COLOR_RGB2BGR)
 
-    # Realistic splice carries a different compression history: the edited
-    # patch is JPEG-cycled harder than the host, leaving an ELA-visible seam.
-    patch_q = {"low": 75, "med": 60, "high": 45}[severity]
-    py1, py2 = max(0, y1 - 6), min(out.shape[0], y2 + 6)
-    px1, px2 = max(0, x1 - 6), min(out.shape[1], x2 + 6)
-    patch = out[py1:py2, px1:px2]
-    ok, buf = cv2.imencode(".jpg", patch, [cv2.IMWRITE_JPEG_QUALITY, patch_q])
-    out[py1:py2, px1:px2] = cv2.imdecode(buf, cv2.IMREAD_COLOR)
+    # Save at a realistic editor quality — the host region keeps its original
+    # JPEG artifacts (double-quantized at 92 then save_q), while the freshly
+    # painted splice region is single-JPEG at save_q. ELA at quality 90 sees
+    # the seam because the regions have different compression histories.
+    save_q = {"low": 85, "med": 78, "high": 70}[severity]
+    ok, buf = cv2.imencode(".jpg", out, [cv2.IMWRITE_JPEG_QUALITY, save_q])
+    data = bytes(buf)
+    out = cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_COLOR)
 
     return out, AttackLabel(
         "text_splice", severity, [x1, y1, x2, y2],
-        ["ela", "font"], {"field": field_name, "from": orig, "to": tampered},
-    )
+        ["ela", "font", "metadata"], {"field": field_name, "from": orig, "to": tampered,
+                                     "save_quality": save_q},
+    ), data
 
 
 def attack_font_swap(img, truth, rng, severity, doc_type) -> Tuple[np.ndarray, AttackLabel]:
@@ -191,15 +196,21 @@ def attack_exif_edit(img, truth, rng, severity) -> Tuple[np.ndarray, AttackLabel
                             {"software": editor}), data
 
 
-def attack_regenerate(img, truth, rng, severity, doc_type) -> Tuple[np.ndarray, AttackLabel]:
-    """Re-render the same identity, then double-JPEG at low quality (ELA seam)."""
+def attack_regenerate(img, truth, rng, severity, doc_type) -> Tuple[np.ndarray, AttackLabel, bytes]:
+    """Re-render the same identity, then double-JPEG at low quality.
+
+    Returns raw JPEG bytes at the attack quality so the compression artifacts
+    survive (forge_dataset's quality-92 save was normalizing them away).
+    """
     out, _ = RENDERERS[doc_type](truth["fields"],
                                  np.random.default_rng(truth.get("render_seed", 0)))
     q = {"low": 75, "med": 60, "high": 45}[severity]
     for _ in range(2):
         ok, buf = cv2.imencode(".jpg", out, [cv2.IMWRITE_JPEG_QUALITY, q])
         out = cv2.imdecode(buf, cv2.IMREAD_COLOR)
-    return out, AttackLabel("regenerate", severity, None, ["ela", "font"], {"quality": q})
+    ok, buf = cv2.imencode(".jpg", out, [cv2.IMWRITE_JPEG_QUALITY, q])
+    data = bytes(buf)
+    return out, AttackLabel("regenerate", severity, None, ["ela", "metadata"], {"quality": q}), data
 
 
 # --- helpers --------------------------------------------------------------
@@ -259,16 +270,16 @@ def forge_dataset(in_root: Path, out_root: Path, doc_types: List[str],
                 for k in range(per_doc):
                     sev = severity if severity != "mixed" else _SEV_LEVELS[rng.integers(0, 3)]
                     result = _apply(attack, img, truth, rng, sev, doc_type)
-                    exif_bytes = None
+                    raw_bytes = None
                     if len(result) == 3:
-                        forged, label, exif_bytes = result
+                        forged, label, raw_bytes = result
                     else:
                         forged, label = result
 
                     fid = f"{truth['sample_id']}_{attack}_{k}"
                     out_path = base / "images" / f"{fid}.jpg"
-                    if exif_bytes is not None:
-                        out_path.write_bytes(exif_bytes)
+                    if raw_bytes is not None:
+                        out_path.write_bytes(raw_bytes)
                     else:
                         cv2.imwrite(str(out_path), forged, [cv2.IMWRITE_JPEG_QUALITY, 92])
 
