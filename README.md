@@ -72,7 +72,7 @@ All forensics numbers below come from `make eval`, scored on a **held-out seed p
 | Metric | Result |
 |---|---|
 | **Genuine false-positive rate** | **0/30 (0.0%)** |
-| Overall tamper recall | 63.9% |
+| Overall tamper recall | 75.6% |
 | Decision-layer leakage (flagged docs that auto-cleared) | **0** |
 | Genuine auto-clear rate | 100% |
 
@@ -83,11 +83,13 @@ Per attack class:
 | `exif_edit` | 100% | EXIF software tags, date anomalies |
 | `text_splice` | 100% \* | JPEG quantization-table quality |
 | `regenerate` | 100% \* | JPEG quantization-table quality |
-| `screen_recapture` | 40% | FFT Moiré analysis |
-| `copy_move` | 43% | ORB keypoint matching (alignment-free) |
-| `font_swap` | 0% | Not yet detectable — needs OCR-context forensics |
+| `copy_move` | 63% | ORB keypoint matching, alignment-free ([ADR-031](docs/adr/031-copy-move-negative-result.md)) |
+| `font_swap` | 47% † | Template-conformance typography ([ADR-030](docs/adr/030-template-font-forensics.md)) |
+| `screen_recapture` | 43% | FFT Moiré analysis |
 
 > **\* Read these two honestly.** The 100% is *tautological*: the detector fires on "saved at Q<88," which is an artifact of how the forge writes these attacks — not evidence of tampering. An attacker who re-saves at Q=92 evades it completely. Documented in full in [ADR-028](docs/adr/028-w4-forensic-precision.md). They're gated at 0.90 to catch regressions, **not** as a claim of adversarial robustness.
+
+> **† font_swap went 0% → 47% by changing the question.** The attack re-renders the whole card with permuted fonts, so internal-consistency checks are blind *by construction* — no region is an outlier when everything shifts together. The new detector tests conformance to per-doc-type typographic envelopes (corner density, stroke modulation, advance uniformity) calibrated on genuine documents, with leave-one-out threshold selection, interior-point stability margins, and a content hash binding the shipped profile to its calibration data. Validated at 0% FPR on seeds never used for calibration. Known gap: Aadhaar recall is 6% ([ADR-030 L1](docs/adr/030-template-font-forensics.md)).
 
 ### Forensics latency (p95, per detector)
 
@@ -263,10 +265,11 @@ docs/adr/           30 architecture decision records
 
 **Known gaps — stated deliberately:**
 - **PAN detector is under-trained** — 71 train / 6 val images; `pan` class recall 0.60. Needs a materially larger annotated set before it should carry traffic.
-- `font_swap` undetected (0% recall) — needs OCR-context font forensics.
+- Aadhaar font conformance is near-zero (6% vs 75–81% for PAN/DL) — its number-dominant layout needs an ID-line-specific feature ([ADR-030 L1](docs/adr/030-template-font-forensics.md)).
+- `copy_move` plateaus at 63%: ORB finds too few keypoints on low-texture pasted regions. Two candidate fixes were built, measured, and rejected for violating the zero-FPR invariant — the honest path forward is region descriptors ([ADR-031](docs/adr/031-copy-move-negative-result.md)).
 - `text_splice` / `regenerate` detection is metadata-only and evadable; robust detection needs frequency-domain work (double-JPEG ghosts, DCT histogram analysis, or a learned localizer).
 - No production-traffic calibration — all forensics numbers are synthetic-set numbers.
-- End-to-end extraction F1 and p95 latency not yet benchmarked across the full graph.
+- Extraction F1 is measured for the VLM tier only (94.2% micro / 96.8% fuzzy, 12 synthetic docs); the YOLO+OCR fast path and full-graph p95 latency are not yet benchmarked.
 
 ---
 

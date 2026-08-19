@@ -237,7 +237,7 @@ def story():
     meta = table([
         ["Author", "Jatin Gupta"],
         ["Document", "Technical Documentation"],
-        ["Version", "Phase 11 — W5 complete"],
+        ["Version", "Phase 11 — W6 complete"],
         ["Date", BUILD_DATE],
         ["Repository", REPO_URL],
     ], [38 * mm, 92 * mm], header=False, zebra=False, font=9.2)
@@ -284,7 +284,7 @@ def story():
     F.append(Paragraph("1.2 &nbsp;At a glance", S["h2"]))
     F.append(table([
         ["Graph nodes", "Unit tests", "ADRs", "Attack classes", "Doc schemas"],
-        ["13", "105", "29", "6", "12+"],
+        ["13", "123", "31", "6", "12+"],
     ], [33.6 * mm] * 5,
         align={0: "CENTER", 1: "CENTER", 2: "CENTER", 3: "CENTER", 4: "CENTER"}))
 
@@ -363,7 +363,8 @@ def story():
             ["regenerate", pct(pa["regenerate"]["recall"]) + "  *", "JPEG quantization-table quality"],
             ["screen_recapture", pct(pa["screen_recapture"]["recall"]), "FFT Moiré analysis"],
             ["copy_move", pct(pa["copy_move"]["recall"]), "ORB keypoint matching (alignment-free)"],
-            ["font_swap", pct(pa["font_swap"]["recall"]), "Not yet detectable"],
+            ["font_swap", pct(pa["font_swap"]["recall"]),
+             "Template-conformance typography (ADR-030)"],
         ], [34 * mm, 22 * mm, 112 * mm], align={1: "CENTER"}),
         Spacer(1, 2 * mm),
         callout(
@@ -382,6 +383,8 @@ def story():
             ["Detector", "p50 (ms)", "p95 (ms)"],
             ["metadata", f"{lat['metadata']['p50']:.1f}", f"{lat['metadata']['p95']:.1f}"],
             ["font", f"{lat['font']['p50']:.1f}", f"{lat['font']['p95']:.1f}"],
+            ["template font (ADR-030)",
+             f"{lat['font_template']['p50']:.1f}", f"{lat['font_template']['p95']:.1f}"],
             ["ELA", f"{lat['ela']['p50']:.1f}", f"{lat['ela']['p95']:.1f}"],
             ["screen recapture", f"{lat['screen']['p50']:.1f}", f"{lat['screen']['p95']:.1f}"],
             ["copy-move (ORB)", f"{lat['copy_move']['p50']:.1f}", f"{lat['copy_move']['p95']:.1f}"],
@@ -437,7 +440,7 @@ def story():
         "cross-document scores are held at 1.0.",
         "PAN detection metrics rest on a six-image validation split and should be treated "
         "as directional only.",
-        "End-to-end extraction F1 and full-graph p95 latency are <b>not yet benchmarked</b>.",
+        "Extraction F1 is measured for the VLM tier only (94.2% micro / 96.8% fuzzy on 12 synthetic docs); the YOLO fast path and full-graph p95 latency are <b>not yet benchmarked</b>.",
     ])
     F.append(Spacer(1, 2 * mm))
     F.append(Paragraph(
@@ -477,7 +480,7 @@ def story():
 
     F.append(Paragraph("6.1 &nbsp;Decision records", S["h2"]))
     F.append(Paragraph(
-        "Twenty-nine ADRs capture every non-obvious decision, including the ones that "
+        "Thirty-one ADRs capture every non-obvious decision, including the ones that "
         "failed. ADR-019 documents a rotation classifier that scored 0/4 on real cards "
         "and was disabled behind a config flag rather than shipped. ADR-028 documents "
         "the tautological detector in §3.2. Recording negative results is deliberate: it "
@@ -517,14 +520,17 @@ def story():
         ["Gap", "Required work"],
         ["PAN detector under-trained (71/6 split, pan recall 0.60)",
          "Merge available PAN datasets to ≥500 annotated images; re-train and re-validate"],
-        ["font_swap undetected (0% recall)",
-         "OCR-context font forensics — stroke-width and glyph-metric consistency"],
+        ["Aadhaar font conformance near-zero (6% vs 75–81% PAN/DL)",
+         "ID-line-specific typographic feature for number-dominant layouts (ADR-030 L1)"],
+        ["copy_move plateaus at 63% — ORB starves on low-texture regions",
+         "Region descriptors (Zernike / polar-cosine moments); two candidate fixes "
+         "measured and rejected for violating zero-FPR (ADR-031)"],
         ["text_splice / regenerate detection evadable",
          "Frequency-domain work: double-JPEG ghosts, DCT histogram analysis, learned localizer"],
         ["No production-traffic calibration",
          "Calibrate quality thresholds against real scan-quality distributions"],
-        ["Extraction F1 / end-to-end p95 unbenchmarked",
-         "Extend the eval harness across the full graph"],
+        ["YOLO fast-path F1 / full-graph p95 unbenchmarked",
+         "Extend the eval harness across the full graph (VLM tier: 94.2% micro-F1 measured)"],
     ], [62 * mm, 106 * mm], font=8.3))
 
     F.append(KeepTogether([
