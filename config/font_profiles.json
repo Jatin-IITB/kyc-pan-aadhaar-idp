@@ -1,5 +1,8 @@
 {
   "_comment": "Calibrated by tools/forge/calibrate_font.py \u2014 see ADR-030. Fit on calibration seed only; held-out numbers below are out-of-sample.",
+  "extractor_version": "tf-1",
+  "calibration_data_hash": "2eca2989dc523e5d",
+  "calibration_n_per_type": 16,
   "calibration_seed": 9001,
   "holdout_seed": 24601,
   "margin": 8.0,
@@ -10,7 +13,7 @@
     "adv_cv_min": "high"
   },
   "measured_holdout": {
-    "recall": 0.6042,
+    "recall": 0.5417,
     "fpr": 0.0,
     "per_doc_type": {
       "pan": {
@@ -26,7 +29,7 @@
         "n_gen": 16
       },
       "driving_license": {
-        "recall": 0.9375,
+        "recall": 0.75,
         "fpr": 0.0,
         "n_swap": 16,
         "n_gen": 16
@@ -51,11 +54,11 @@
     "aadhaar": {
       "corner_top": {
         "side": "high",
-        "bound": 0.6311899163087995
+        "bound": 0.6093980587116565
       },
       "mod_top": {
         "side": "low",
-        "bound": 0.2980922584732373
+        "bound": 0.307379923760891
       },
       "adv_cv_min": {
         "side": "high",
@@ -65,11 +68,11 @@
     "driving_license": {
       "corner_top": {
         "side": "high",
-        "bound": 0.8045696201812521
+        "bound": 0.8105072082028958
       },
       "mod_top": {
         "side": "low",
-        "bound": 0.23726260165373486
+        "bound": 0.19262651105721823
       },
       "adv_cv_min": {
         "side": "high",

@@ -26,6 +26,14 @@ class TestSignature:
     def test_empty_input_is_safe(self):
         assert signature(np.zeros((0, 0, 3), dtype=np.uint8)) is None
 
+    def test_grayscale_input_does_not_crash(self):
+        # Audit S1: 2-D input formerly raised cv2.error, which the forensics
+        # node's blanket except converted into a silent PASS (fail-open).
+        assert signature(np.full((400, 640), 255, dtype=np.uint8)) is None
+
+    def test_bgra_input_does_not_crash(self):
+        assert signature(np.full((400, 640, 4), 255, dtype=np.uint8)) is None
+
     def test_signature_keys_when_text_present(self):
         import cv2
         img = _blank()
@@ -74,6 +82,54 @@ class TestTemplateFontForensics:
         assert out["template_mismatch"] is True
         assert out["breaches"][0]["feature"] == "corner_top"
         assert 0.0 < out["strength"] <= 1.0
+
+    def test_malformed_spec_is_skipped_not_crashed(self, tmp_path):
+        # Audit S1: a config typo (missing "bound") formerly raised KeyError,
+        # zeroing the entire forensics result via the node's blanket except.
+        prof = tmp_path / "p.json"
+        prof.write_text(json.dumps({
+            "vote": 1,
+            "profiles": {"pan": {"corner_top": {"side": "high"},          # no bound
+                                 "mod_top": {"bound": 0.1},               # no side
+                                 "adv_cv_min": "not-a-dict"}},
+        }))
+        det = TemplateFontForensics(prof)
+        import cv2
+        img = _blank()
+        for i in range(6):
+            cv2.putText(img, "SAMPLE TEXT 12345", (20, 90 + i * 45),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 0), 2)
+        out = det.analyze(img, "pan")
+        assert out["template_mismatch"] is False
+
+    def test_low_side_value_above_bound_does_not_fire(self, tmp_path):
+        # Direction semantics: a "low"-side envelope flags values BELOW the
+        # bound; a value above it is inside the genuine envelope.
+        prof = tmp_path / "p.json"
+        prof.write_text(json.dumps({
+            "vote": 1,
+            "profiles": {"pan": {"mod_top": {"side": "low", "bound": -100.0}}},
+        }))
+        det = TemplateFontForensics(prof)
+        import cv2
+        img = _blank()
+        for i in range(6):
+            cv2.putText(img, "SAMPLE TEXT 12345", (20, 90 + i * 45),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 0), 2)
+        out = det.analyze(img, "pan")
+        assert out["template_mismatch"] is False
+
+    def test_extractor_version_mismatch_refuses_profile(self, tmp_path):
+        # Audit S3: envelopes are only valid for the extractor that produced
+        # them; a version mismatch must disable, not silently mis-score.
+        prof = tmp_path / "p.json"
+        prof.write_text(json.dumps({
+            "extractor_version": "tf-0-ancient",
+            "vote": 1,
+            "profiles": {"pan": {"corner_top": {"side": "high", "bound": -1.0}}},
+        }))
+        det = TemplateFontForensics(prof)
+        assert not det.available
 
     def test_vote_threshold_requires_multiple_breaches(self, tmp_path):
         prof = tmp_path / "p.json"

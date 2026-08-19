@@ -13,7 +13,9 @@ forensics:
   # lazy real-world attacks, but is trivially evadable by a competent adversary
   # saving at Q≥88. Robust detection needs pixel/frequency-domain approaches (W5+).
   # Ratcheted after W6 template-font forensics (ADR-030): holdout overall
-  # recall 63.9% -> 76.7%, with genuine FPR held at 0 on both passes.
+  # recall 63.9% -> 75.6% with genuine FPR held at 0 on both passes. Values
+  # reflect the REPRODUCIBLE profile (post-audit re-emit, ADR-030 C1) — the
+  # first emit was fit on stale cached data and measured higher.
   overall_recall_min: 0.70
   per_attack_recall_min:
     copy_move: 0.50        # tuning 0.60 / holdout 0.63
@@ -22,8 +24,10 @@ forensics:
     text_splice: 0.90      # W4: JPEG quality gate (tautological on forge — see ADR-028 L1-L2)
     # W6: template-conformance typography. NOT tautological — envelopes are
     # calibrated on a disjoint seed and validated against this eval's own
-    # independent genuine set. See ADR-030.
-    font_swap: 0.45        # tuning 0.53 / holdout 0.53
+    # independent genuine set. See ADR-030. Floor sits one sample (3.3pp)
+    # below measured, not at it — a gate on the measurement boundary flips
+    # red on single-sample noise (same interior-point rule as ADR-030 D3).
+    font_swap: 0.40        # tuning 0.47 / holdout 0.47
     regenerate: 0.90       # W4: JPEG quality gate (tautological on forge — see ADR-028 L1-L2)
 
 decision:
@@ -32,7 +36,7 @@ decision:
   flagged_leakage_max: 0
   # Forgeries forensics cannot see (blind spots) that therefore auto-clear.
   # W4 closed text_splice/regenerate (135 -> 75); W6 closed most of the
-  # font_swap blind spot (tuning 46 / holdout 42).
+  # font_swap blind spot (tuning 48 / holdout 44 with the reproducible profile).
   undetected_autoclear_max: 50
   # Genuine docs (perfect extraction) that auto-clear. With clean forensics
   # (0% FPR), this should be 1.0.

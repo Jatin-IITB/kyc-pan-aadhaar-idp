@@ -32,6 +32,12 @@ PROFILE_PATH = REPO_ROOT / "config" / "font_profiles.json"
 # Including it widens the genuine envelope enough to swallow the swap signal.
 HEADER_FRACTION = 0.18
 
+# Bump whenever signature()'s features change meaning (filters, Harris params,
+# HEADER_FRACTION, ...). Calibrated envelopes are only valid for the extractor
+# that produced them; a profile carrying a different version is refused at
+# load rather than silently mis-scoring every document (audit S3).
+EXTRACTOR_VERSION = "tf-1"
+
 
 def _text_lines(gray: np.ndarray):
     _, binv = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
@@ -88,7 +94,12 @@ def signature(image_bgr: np.ndarray) -> Optional[Dict[str, float]]:
     """Typographic signature of a document, or None when there is too little text."""
     if image_bgr is None or image_bgr.size == 0:
         return None
-    gray = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY)
+    if image_bgr.ndim == 2:
+        gray = image_bgr
+    elif image_bgr.shape[2] == 4:
+        gray = cv2.cvtColor(image_bgr, cv2.COLOR_BGRA2GRAY)
+    else:
+        gray = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY)
     binv, boxes = _text_lines(gray)
     boxes = [b for b in boxes if b[1] > HEADER_FRACTION * gray.shape[0]]
     feats = [f for f in (_line_features(binv, b) for b in boxes) if f]
@@ -119,6 +130,13 @@ class TemplateFontForensics:
             return
         try:
             blob = json.loads(p.read_text())
+            ver = blob.get("extractor_version")
+            if ver is not None and ver != EXTRACTOR_VERSION:
+                logger.warning(
+                    "Font profile at %s was calibrated for extractor %s but this "
+                    "code is %s — refusing it; recalibrate with "
+                    "tools/forge/calibrate_font.py", p, ver, EXTRACTOR_VERSION)
+                return
             self.profiles = blob.get("profiles", {})
             self.vote = int(blob.get("vote", 1))
             self.meta = blob.get("measured_holdout", {})
@@ -141,9 +159,15 @@ class TemplateFontForensics:
         breaches: List[Dict[str, Any]] = []
         for feat, spec in prof.items():
             v = sig.get(feat)
-            if v is None:
+            if v is None or not isinstance(spec, dict):
                 continue
-            bound, side = spec["bound"], spec["side"]
+            bound, side = spec.get("bound"), spec.get("side")
+            if bound is None or side not in ("high", "low"):
+                # Malformed entry must not crash the whole forensics stack
+                # (audit S1: the node's blanket except fails OPEN).
+                logger.warning("Malformed font profile spec %r for feature %s — skipped",
+                               spec, feat)
+                continue
             if (side == "high" and v > bound) or (side == "low" and v < bound):
                 breaches.append({"feature": feat, "value": round(v, 4),
                                  "bound": round(bound, 4), "side": side})

@@ -55,6 +55,20 @@ def _bound(values, side, margin):
     return med + margin * mad if side == "high" else med - margin * mad
 
 
+def _split_complete(split_dir: Path, n: int) -> bool:
+    """Cache is valid only if EVERY doc type has exactly n genuine images and
+    a forged set. The original check looked at pan/genuine alone (audit C1) —
+    a partial or differently-sized cache silently produced envelopes that the
+    committed seeds could not reproduce.
+    """
+    for dt in DOC_TYPES:
+        if len(list((split_dir / "genuine" / dt / "images").glob("*.jpg"))) != n:
+            return False
+        if not list((split_dir / "forged" / dt / "images").glob("*font_swap*.jpg")):
+            return False
+    return True
+
+
 def build_data(n, force=False):
     from tools.forge.identity_forge import generate
     from tools.forge.tamper_forge import forge_dataset
@@ -62,12 +76,13 @@ def build_data(n, force=False):
     if force and WORK.exists():
         shutil.rmtree(WORK)
     for split, seed in (("cal", CAL_SEED), ("hold", HOLD_SEED)):
-        gdir = WORK / split / "genuine"
-        if (gdir / "pan" / "images").exists():
+        sdir = WORK / split
+        if _split_complete(sdir, n):
             continue
+        shutil.rmtree(sdir, ignore_errors=True)
         for dt in DOC_TYPES:
-            generate(dt, n, gdir, seed=seed, augment_level="light")
-        forge_dataset(gdir, WORK / split / "forged", list(DOC_TYPES),
+            generate(dt, n, sdir / "genuine", seed=seed, augment_level="light")
+        forge_dataset(sdir / "genuine", sdir / "forged", list(DOC_TYPES),
                       ["font_swap"], 1, "mixed", seed)
     return WORK
 
@@ -155,11 +170,34 @@ def evaluate(data, prof, vote=1):
     return {"recall": tp / max(tp + fn, 1), "fpr": fp / max(fp + tn, 1), "per": per}
 
 
+def data_hash() -> str:
+    """Content hash of every calibration/holdout image, for provenance.
+
+    Audit C1: the shipped profile could not be regenerated because stale cached
+    data had produced it. Recording what the envelope was fit ON makes that
+    failure detectable instead of silent.
+    """
+    import hashlib
+    h = hashlib.sha256()
+    for split in ("cal", "hold"):
+        for dt in DOC_TYPES:
+            for sub in ("genuine", "forged"):
+                d = WORK / split / sub / dt / "images"
+                for p in sorted(d.glob("*.jpg")):
+                    h.update(p.name.encode())
+                    h.update(p.read_bytes())
+    return h.hexdigest()[:16]
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--n", type=int, default=16, help="genuine docs per type per split")
     ap.add_argument("--emit", action="store_true", help="write config/font_profiles.json")
     ap.add_argument("--force", action="store_true", help="regenerate data")
+    ap.add_argument("--reveal-holdout", action="store_true",
+                    help="show holdout columns during the sweep. Off by default: "
+                         "watching holdout numbers while choosing a selection rule "
+                         "consumes the holdout (ADR-030 S2).")
     args = ap.parse_args()
 
     print(f"generating (n={args.n}/type/split)...")
@@ -173,8 +211,9 @@ def main():
     grid = (3.0, 4.0, 5.0, 6.0, 8.0, 10.0, 12.0, 15.0)
     loo = {(m, v): loo_fpr(cal, m, v) for m in grid for v in (1, 2, 3)}
 
-    print(f"\n{'margin':>7s} {'vote':>5s} {'LOO fpr':>8s} {'CAL rec':>8s} "
-          f"{'HOLD fpr':>9s} {'HOLD rec':>9s}  note")
+    hold_hdr = f" {'HOLD fpr':>9s} {'HOLD rec':>9s}" if args.reveal_holdout else ""
+    print(f"\n{'margin':>7s} {'vote':>5s} {'LOO fpr':>8s} {'CAL rec':>8s}"
+          f"{hold_hdr}  note")
     best = None
     for i, margin in enumerate(grid):
         for vote in (1, 2, 3):
@@ -193,8 +232,10 @@ def main():
                 loo[(grid[j], vote)] == 0.0 for j in range(max(0, i - 2), i)
             ) and i >= 2
             note = "" if stable else ("  boundary" if lf == 0.0 else "  x")
-            print(f"{margin:7.1f} {vote:5d} {lf:8.1%} {c['recall']:8.1%} "
-                  f"{h['fpr']:9.1%} {h['recall']:9.1%}{note}")
+            hold_cols = (f" {h['fpr']:9.1%} {h['recall']:9.1%}"
+                         if args.reveal_holdout else "")
+            print(f"{margin:7.1f} {vote:5d} {lf:8.1%} {c['recall']:8.1%}"
+                  f"{hold_cols}{note}")
             if stable and (best is None or c["recall"] > best[1]["recall"]):
                 best = (margin, c, h, prof, vote)
 
@@ -212,10 +253,14 @@ def main():
         print(f"  {dt:16s} {p['recall']:8.1%} {p['fpr']:7.1%}")
 
     if args.emit:
+        from services.forensics.font_profile import EXTRACTOR_VERSION
         PROFILE.write_text(json.dumps({
             "_comment": "Calibrated by tools/forge/calibrate_font.py — see ADR-030. "
                         "Fit on calibration seed only; held-out numbers below are "
                         "out-of-sample.",
+            "extractor_version": EXTRACTOR_VERSION,
+            "calibration_data_hash": data_hash(),
+            "calibration_n_per_type": args.n,
             "calibration_seed": CAL_SEED, "holdout_seed": HOLD_SEED,
             "margin": margin, "vote": vote, "features": FEATURES,
             "measured_holdout": {"recall": round(h["recall"], 4),

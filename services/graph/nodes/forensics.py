@@ -33,13 +33,21 @@ def forensics_node(state: CaseState) -> CaseState:
         screen = ScreenRecaptureDetector().detect(img)
 
         # Needs the doc type to pick the right calibrated envelope; classify
-        # runs before forensics in the graph so this is populated.
-        font_template = _template_font().analyze(img, state.get("doc_type", ""))
+        # runs before forensics in the graph so this is populated. Isolated
+        # try: a profile/config problem here must degrade to "signal absent",
+        # not discard the other detectors' results via the outer except —
+        # that path fails OPEN (spoof_score 0, auto-clear).
+        try:
+            font_template = _template_font().analyze(img, state.get("doc_type", ""))
+        except Exception:
+            logger.warning("Template font forensics failed — continuing without it",
+                           exc_info=True)
+            font_template = None
 
         result = SpoofScorer().compute(ela, copy_move, font, metadata, screen,
                                        font_template_result=font_template)
-    except Exception as e:
-        logger.warning("Forensics analysis failed: {}", e)
+    except Exception:
+        logger.warning("Forensics analysis failed", exc_info=True)
         result = {"spoof_score": 0.0, "risk_level": "LOW", "evidence": [], "recommendation": "PASS"}
 
     return {

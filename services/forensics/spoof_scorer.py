@@ -33,8 +33,9 @@ class SpoofScorer:
     # font_template is a SEPARATE signal from the legacy `font` prior above.
     # Rather than intra-document consistency, it tests conformance to a
     # per-doc-type typographic envelope calibrated on genuine documents
-    # (ADR-030). Measured on a disjoint holdout seed: 64.6% recall at 0.0% FPR,
-    # so it earns a real prior where stroke-width consistency could not.
+    # (ADR-030). Holdout measurement lives in config/font_profiles.json
+    # (measured_holdout — recall at 0.0% FPR on a disjoint seed), so it earns
+    # a real prior where stroke-width consistency could not.
     DEFAULT_PRIORS = {
         "ela": 0.55,
         "copy_move": 0.90,
