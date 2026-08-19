@@ -1,0 +1,80 @@
+{
+  "_comment": "Calibrated by tools/forge/calibrate_font.py \u2014 see ADR-030. Fit on calibration seed only; held-out numbers below are out-of-sample.",
+  "calibration_seed": 9001,
+  "holdout_seed": 24601,
+  "margin": 8.0,
+  "vote": 1,
+  "features": {
+    "corner_top": "high",
+    "mod_top": "low",
+    "adv_cv_min": "high"
+  },
+  "measured_holdout": {
+    "recall": 0.6042,
+    "fpr": 0.0,
+    "per_doc_type": {
+      "pan": {
+        "recall": 0.8125,
+        "fpr": 0.0,
+        "n_swap": 16,
+        "n_gen": 16
+      },
+      "aadhaar": {
+        "recall": 0.0625,
+        "fpr": 0.0,
+        "n_swap": 16,
+        "n_gen": 16
+      },
+      "driving_license": {
+        "recall": 0.9375,
+        "fpr": 0.0,
+        "n_swap": 16,
+        "n_gen": 16
+      }
+    }
+  },
+  "profiles": {
+    "pan": {
+      "corner_top": {
+        "side": "high",
+        "bound": 0.43613432240110006
+      },
+      "mod_top": {
+        "side": "low",
+        "bound": 0.35086293021837855
+      },
+      "adv_cv_min": {
+        "side": "high",
+        "bound": 0.38563020989256114
+      }
+    },
+    "aadhaar": {
+      "corner_top": {
+        "side": "high",
+        "bound": 0.6311899163087995
+      },
+      "mod_top": {
+        "side": "low",
+        "bound": 0.2980922584732373
+      },
+      "adv_cv_min": {
+        "side": "high",
+        "bound": 0.2284819125409018
+      }
+    },
+    "driving_license": {
+      "corner_top": {
+        "side": "high",
+        "bound": 0.8045696201812521
+      },
+      "mod_top": {
+        "side": "low",
+        "bound": 0.23726260165373486
+      },
+      "adv_cv_min": {
+        "side": "high",
+        "bound": 0.08067777589470973
+      }
+    }
+  }
+}

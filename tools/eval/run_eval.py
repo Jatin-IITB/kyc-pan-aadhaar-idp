@@ -59,6 +59,7 @@ def run_forensics(root: Path) -> Dict[str, Any]:
     from services.forensics.copy_move import CopyMoveDetector
     from services.forensics.ela import ELADetector
     from services.forensics.font_analysis import FontConsistencyAnalyzer
+    from services.forensics.font_profile import TemplateFontForensics
     from services.forensics.metadata import MetadataForensics
     from services.forensics.screen_recapture import ScreenRecaptureDetector
     from services.forensics.spoof_scorer import SpoofScorer
@@ -68,8 +69,14 @@ def run_forensics(root: Path) -> Dict[str, Any]:
         "font": FontConsistencyAnalyzer(), "metadata": MetadataForensics(),
         "screen": ScreenRecaptureDetector(),
     }
+    template_font = TemplateFontForensics()
     scorer = SpoofScorer()
     latency: Dict[str, List[float]] = defaultdict(list)
+
+    def _doc_type_of(image_path: str) -> str:
+        # .../<split>/<doc_type>/images/<file>.jpg
+        parts = Path(image_path).parts
+        return parts[-3] if len(parts) >= 3 else ""
 
     def sweep(image_path: str) -> Dict[str, Any]:
         img = cv2.imread(image_path)
@@ -84,8 +91,14 @@ def run_forensics(root: Path) -> Dict[str, Any]:
             else:
                 results[name] = det.detect(img)
             latency[name].append((time.perf_counter() - t0) * 1000)
+
+        t0 = time.perf_counter()
+        ft = template_font.analyze(img, _doc_type_of(image_path))
+        latency["font_template"].append((time.perf_counter() - t0) * 1000)
+
         return scorer.compute(results["ela"], results["copy_move"], results["font"],
-                              results["metadata"], results["screen"])
+                              results["metadata"], results["screen"],
+                              font_template_result=ft)
 
     genuine: List[Dict[str, Any]] = []
     for ip in sorted(glob.glob(str(root / "synthetic" / "*" / "images" / "*.jpg"))):

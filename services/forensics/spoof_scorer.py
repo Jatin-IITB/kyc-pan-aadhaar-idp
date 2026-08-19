@@ -30,10 +30,16 @@ class SpoofScorer:
     # blind-spot leakage metric (audit S2). Its result is still computed and
     # reported for reviewers, but contributes nothing to the score until
     # OCR-context font forensics exists (W5).
+    # font_template is a SEPARATE signal from the legacy `font` prior above.
+    # Rather than intra-document consistency, it tests conformance to a
+    # per-doc-type typographic envelope calibrated on genuine documents
+    # (ADR-030). Measured on a disjoint holdout seed: 64.6% recall at 0.0% FPR,
+    # so it earns a real prior where stroke-width consistency could not.
     DEFAULT_PRIORS = {
         "ela": 0.55,
         "copy_move": 0.90,
         "font": 0.0,
+        "font_template": 0.80,
         "metadata": 0.55,
         "screen": 0.65,
     }
@@ -48,6 +54,7 @@ class SpoofScorer:
         font_result: Dict[str, Any],
         metadata_result: Dict[str, Any],
         screen_result: Dict[str, Any],
+        font_template_result: Dict[str, Any] | None = None,
     ) -> Dict[str, Any]:
         evidence: List[Dict[str, Any]] = []
         gated: Dict[str, float] = {k: 0.0 for k in self.DEFAULT_PRIORS}
@@ -82,6 +89,17 @@ class SpoofScorer:
                 "type": "font_inconsistency",
                 "score": gated["font"],
                 "detail": f"{len(inconsistent)} inconsistent region(s)",
+            })
+
+        # --- Template font conformance: typography vs calibrated envelope ---
+        if font_template_result and font_template_result.get("template_mismatch"):
+            strength = max(0.7, float(font_template_result.get("strength", 0.0)))
+            gated["font_template"] = self.priors["font_template"] * strength
+            feats = [b["feature"] for b in font_template_result.get("breaches", [])]
+            evidence.append({
+                "type": "font_template_mismatch",
+                "score": gated["font_template"],
+                "detail": f"typography outside issuing-template envelope ({', '.join(feats)})",
             })
 
         # --- Metadata: gate on editor software, date anomaly, or low JPEG quality ---
