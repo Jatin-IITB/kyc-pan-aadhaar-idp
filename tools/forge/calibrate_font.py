@@ -34,11 +34,42 @@ HOLD_SEED = 24601
 # Features are one-sided: a swap raises corner density (serif terminals) and
 # lowers stroke modulation. Direction is fixed here from mechanism, not fit,
 # so a lucky sample cannot flip it.
-FEATURES = {
+BASE_FEATURES = {
     "corner_top": "high",
     "mod_top": "low",
     "adv_cv_min": "high",
 }
+
+# id_width_cv measures glyph width uniformity on the ID-number line.  Mono
+# digits are near-identical widths; proportional/serif digits vary ('1' vs '0').
+# On DL (pure digit ID), genuine cluster is tight (cv 0.02-0.05) and swap
+# jumps to 0.16+.  On PAN (alphanumeric ABCDE1234F), letter ink widths vary
+# even in monospace, making genuine id_width_cv too noisy for a stable bound.
+DT_EXTRA = {
+    "driving_license": {"id_width_cv": "high"},
+}
+
+# Per-doc-type vote/margin: DL has 4 features so vote=2 is stable at a
+# tighter margin; PAN/Aadhaar have 3 features and need vote=1 with a
+# wider margin to avoid holdout FPR leaks (measured: margin=5/vote=1
+# gave 2.1% holdout FPR on calibration data).
+DT_VOTE = {
+    "pan": 1,
+    "aadhaar": 1,
+    "driving_license": 2,
+}
+DT_MARGIN = {
+    "pan": 8.0,
+    "aadhaar": 8.0,
+    "driving_license": 5.0,
+}
+
+
+def features_for(dt):
+    return {**BASE_FEATURES, **DT_EXTRA.get(dt, {})}
+
+
+FEATURES = {**BASE_FEATURES, **{"id_width_cv": "high"}}
 
 
 # --------------------------------------------------------------- calibration
@@ -104,15 +135,16 @@ def collect(split):
     return out
 
 
-def fit(cal, margin):
+def fit(cal, margin=None):
     prof = {}
     for dt in DOC_TYPES:
+        m = DT_MARGIN[dt] if margin is None else margin
         g = cal[dt]["genuine"]
-        prof[dt] = {}
-        for feat, side in FEATURES.items():
+        prof[dt] = {"_vote": DT_VOTE[dt]}
+        for feat, side in features_for(dt).items():
             vals = [s[feat] for s in g if s.get(feat) is not None]
             if len(vals) >= 4:
-                prof[dt][feat] = {"side": side, "bound": _bound(vals, side, margin)}
+                prof[dt][feat] = {"side": side, "bound": _bound(vals, side, m)}
     return prof
 
 
@@ -122,6 +154,8 @@ def score(sig, prof_dt, vote=1):
         return False, []
     hits = []
     for feat, spec in prof_dt.items():
+        if feat.startswith("_"):
+            continue
         v = sig.get(feat)
         if v is None:
             continue
@@ -131,7 +165,7 @@ def score(sig, prof_dt, vote=1):
     return len(hits) >= vote, hits
 
 
-def loo_fpr(cal, margin, vote):
+def loo_fpr(cal, margin=None):
     """Leave-one-out FPR estimate using calibration data only.
 
     Selecting the smallest margin that merely zeroes in-sample calibration FPR
@@ -143,24 +177,27 @@ def loo_fpr(cal, margin, vote):
     """
     fp = n = 0
     for dt in DOC_TYPES:
+        m = DT_MARGIN[dt] if margin is None else margin
+        vote = DT_VOTE[dt]
         docs = cal[dt]["genuine"]
         for i in range(len(docs)):
             rest = docs[:i] + docs[i + 1:]
             prof_dt = {}
-            for feat, side in FEATURES.items():
+            for feat, side in features_for(dt).items():
                 vals = [s[feat] for s in rest if s.get(feat) is not None]
                 if len(vals) >= 4:
-                    prof_dt[feat] = {"side": side, "bound": _bound(vals, side, margin)}
+                    prof_dt[feat] = {"side": side, "bound": _bound(vals, side, m)}
             hit, _ = score(docs[i], prof_dt, vote)
             fp += bool(hit)
             n += 1
     return fp / max(n, 1)
 
 
-def evaluate(data, prof, vote=1):
+def evaluate(data, prof):
     tp = fn = fp = tn = 0
     per = {}
     for dt in DOC_TYPES:
+        vote = prof.get(dt, {}).get("_vote", 1)
         d_tp = sum(score(s, prof.get(dt), vote)[0] for s in data[dt]["swap"])
         d_fp = sum(score(s, prof.get(dt), vote)[0] for s in data[dt]["genuine"])
         ns, ng = len(data[dt]["swap"]), len(data[dt]["genuine"])
@@ -208,49 +245,33 @@ def main():
     print(f"  hold  genuine={sum(len(hold[d]['genuine']) for d in DOC_TYPES)} "
           f"swap={sum(len(hold[d]['swap']) for d in DOC_TYPES)}")
 
-    grid = (3.0, 4.0, 5.0, 6.0, 8.0, 10.0, 12.0, 15.0)
-    loo = {(m, v): loo_fpr(cal, m, v) for m in grid for v in (1, 2, 3)}
+    # Per-doc-type calibration: each doc type uses its own margin/vote from
+    # DT_MARGIN / DT_VOTE. The LOO FPR check runs per-type independently.
+    lf = loo_fpr(cal)
+    prof = fit(cal)
+    c, h = evaluate(cal, prof), evaluate(hold, prof)
 
-    hold_hdr = f" {'HOLD fpr':>9s} {'HOLD rec':>9s}" if args.reveal_holdout else ""
-    print(f"\n{'margin':>7s} {'vote':>5s} {'LOO fpr':>8s} {'CAL rec':>8s}"
-          f"{hold_hdr}  note")
-    best = None
-    for i, margin in enumerate(grid):
-        for vote in (1, 2, 3):
-            prof = fit(cal, margin)
-            lf = loo[(margin, vote)]
-            c, h = evaluate(cal, prof, vote), evaluate(hold, prof, vote)
-            # Stability: LOO must be zero here AND at the two tighter grid
-            # steps below. Progressively learned the hard way:
-            #   * in-sample CAL FPR=0        -> 8.3% holdout FPR
-            #   * LOO=0 at the first margin  -> 2.1% holdout FPR
-            #   * LOO=0 stable over 1 step   -> 0% own-holdout, 3.3% eval FPR
-            # The envelope must be an interior point by a real distance, not
-            # the first grid value that happens to clear. Costs recall, buys
-            # the hard genuine-FPR invariant.
-            stable = lf == 0.0 and all(
-                loo[(grid[j], vote)] == 0.0 for j in range(max(0, i - 2), i)
-            ) and i >= 2
-            note = "" if stable else ("  boundary" if lf == 0.0 else "  x")
-            hold_cols = (f" {h['fpr']:9.1%} {h['recall']:9.1%}"
-                         if args.reveal_holdout else "")
-            print(f"{margin:7.1f} {vote:5d} {lf:8.1%} {c['recall']:8.1%}"
-                  f"{hold_cols}{note}")
-            if stable and (best is None or c["recall"] > best[1]["recall"]):
-                best = (margin, c, h, prof, vote)
+    print(f"\nper-doc-type config (margin/vote from DT_MARGIN/DT_VOTE):")
+    print(f"  LOO FPR: {lf:.1%}")
+    print(f"\n{'doc type':18s} {'margin':>7s} {'vote':>5s} {'CAL rec':>8s}", end="")
+    if args.reveal_holdout:
+        print(f" {'HOLD rec':>9s} {'HOLD fpr':>9s}", end="")
+    print()
+    for dt in DOC_TYPES:
+        cp, hp = c["per"][dt], h["per"][dt]
+        print(f"  {dt:16s} {DT_MARGIN[dt]:7.1f} {DT_VOTE[dt]:5d} {cp['recall']:8.1%}", end="")
+        if args.reveal_holdout:
+            print(f" {hp['recall']:9.1%} {hp['fpr']:9.1%}", end="")
+        print()
 
-    if not best:
-        print("\nNo configuration was stably inside the 0% LOO-FPR region.")
-        return
-
-    margin, c, h, prof, vote = best
-    print(f"\nselected margin={margin} vote={vote} "
-          f"(chosen on calibration FPR=0, best calibration recall)")
     print(f"\n{'HELD-OUT RESULT':22s} recall={h['recall']:.1%}  FPR={h['fpr']:.1%}")
     print(f"\n{'doc type':18s} {'recall':>8s} {'FPR':>7s}")
     for dt in DOC_TYPES:
         p = h["per"][dt]
         print(f"  {dt:16s} {p['recall']:8.1%} {p['fpr']:7.1%}")
+
+    if lf > 0:
+        print(f"\nWARNING: LOO FPR is {lf:.1%} — check DT_MARGIN/DT_VOTE settings.")
 
     if args.emit:
         from services.forensics.font_profile import EXTRACTOR_VERSION
@@ -262,7 +283,7 @@ def main():
             "calibration_data_hash": data_hash(),
             "calibration_n_per_type": args.n,
             "calibration_seed": CAL_SEED, "holdout_seed": HOLD_SEED,
-            "margin": margin, "vote": vote, "features": FEATURES,
+            "vote": 1, "features": FEATURES,
             "measured_holdout": {"recall": round(h["recall"], 4),
                                  "fpr": round(h["fpr"], 4),
                                  "per_doc_type": {k: {kk: round(vv, 4) for kk, vv

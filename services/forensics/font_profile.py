@@ -36,7 +36,7 @@ HEADER_FRACTION = 0.18
 # HEADER_FRACTION, ...). Calibrated envelopes are only valid for the extractor
 # that produced them; a profile carrying a different version is refused at
 # load rather than silently mis-scoring every document (audit S3).
-EXTRACTOR_VERSION = "tf-1"
+EXTRACTOR_VERSION = "tf-2"
 
 
 def _text_lines(gray: np.ndarray):
@@ -90,6 +90,52 @@ def _line_features(binv: np.ndarray, box) -> Optional[Dict[str, Any]]:
     return {"mod": mod, "corner": corner, "adv_cv": adv_cv, "ink": ink}
 
 
+def _id_line_features(binv: np.ndarray, boxes):
+    """Features of the probable ID-number line (tallest multi-character line).
+
+    ID numbers (PAN, Aadhaar, DL) are rendered at the largest font size on
+    the card.  Identified by: at least 8 connected components AND tallest
+    median CC height.  Glyph height is roughly preserved across font faces
+    at the same point size, so the criterion is stable under font swap.
+
+    Returns (width_cv,) or (None,) when no qualifying line is found.
+    ``width_cv`` measures glyph width uniformity: mono digits have near-
+    identical widths; proportional/serif digits differ (e.g. '1' vs '0').
+    """
+    best_width_cv: Optional[float] = None
+    best_height = 0.0
+    for box in boxes:
+        x, y, w, h = box
+        roi = binv[y:y + h, x:x + w]
+        if roi.size == 0:
+            continue
+        n, _, stats, _ = cv2.connectedComponentsWithStats(roi, connectivity=8)
+        heights: list[float] = []
+        widths: list[float] = []
+        for j in range(1, n):
+            ch = stats[j, cv2.CC_STAT_HEIGHT]
+            cw = stats[j, cv2.CC_STAT_WIDTH]
+            if ch >= 5 and cw >= 2:
+                heights.append(float(ch))
+                widths.append(float(cw))
+        if len(widths) < 8:
+            continue
+        med_h = float(np.median(heights))
+        if med_h <= best_height:
+            continue
+        wa = np.array(widths, dtype=float)
+        med_w = float(np.median(wa))
+        # Adjacent glyphs can touch and merge into one CC, producing a
+        # component much wider than any single glyph.  These inflated
+        # widths are noise, not font signal — filter before computing CV.
+        wa = wa[wa <= 2.5 * med_w]
+        if len(wa) < 6:
+            continue
+        best_width_cv = float(wa.std() / max(wa.mean(), 1e-6))
+        best_height = med_h
+    return (best_width_cv,)
+
+
 def signature(image_bgr: np.ndarray) -> Optional[Dict[str, float]]:
     """Typographic signature of a document, or None when there is too little text."""
     if image_bgr is None or image_bgr.size == 0:
@@ -109,11 +155,13 @@ def signature(image_bgr: np.ndarray) -> Optional[Dict[str, float]]:
     by_ink = sorted(feats, key=lambda f: -f["ink"])
     top = by_ink[:max(3, len(by_ink) // 3)]
     cvs = [f["adv_cv"] for f in feats if f["adv_cv"] is not None]
+    (id_wcv,) = _id_line_features(binv, boxes)
 
     return {
         "corner_top": float(np.mean([f["corner"] for f in top])),
         "mod_top": float(np.mean([f["mod"] for f in top])),
         "adv_cv_min": float(min(cvs)) if cvs else None,
+        "id_width_cv": id_wcv,
     }
 
 
@@ -156,8 +204,12 @@ class TemplateFontForensics:
         if sig is None:
             return {"template_mismatch": False, "reason": "insufficient text"}
 
+        vote = int(prof.get("_vote", self.vote))
+
         breaches: List[Dict[str, Any]] = []
         for feat, spec in prof.items():
+            if feat.startswith("_"):
+                continue
             v = sig.get(feat)
             if v is None or not isinstance(spec, dict):
                 continue
@@ -172,10 +224,10 @@ class TemplateFontForensics:
                 breaches.append({"feature": feat, "value": round(v, 4),
                                  "bound": round(bound, 4), "side": side})
 
-        mismatch = len(breaches) >= self.vote
+        mismatch = len(breaches) >= vote
         # Strength saturates at 2 breaches beyond the vote threshold; a single
         # marginal breach should not read as strongly as a broad mismatch.
-        strength = min(1.0, len(breaches) / max(self.vote + 2, 1)) if mismatch else 0.0
+        strength = min(1.0, len(breaches) / max(vote + 2, 1)) if mismatch else 0.0
         return {
             "template_mismatch": mismatch,
             "strength": round(strength, 3),

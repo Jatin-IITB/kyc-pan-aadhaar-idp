@@ -42,7 +42,7 @@ class TestSignature:
                         cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 0), 2)
         sig = signature(img)
         assert sig is not None
-        assert set(sig) == {"corner_top", "mod_top", "adv_cv_min"}
+        assert set(sig) == {"corner_top", "mod_top", "adv_cv_min", "id_width_cv"}
         assert sig["corner_top"] > 0
 
 
@@ -146,6 +146,51 @@ class TestTemplateFontForensics:
         out = det.analyze(img, "pan")
         # one breach, vote of 2 -> must not flag
         assert out["template_mismatch"] is False
+
+    def test_per_doc_type_vote_overrides_global(self, tmp_path):
+        """W8: _vote in per-doc-type profile overrides the global vote."""
+        prof = tmp_path / "p.json"
+        prof.write_text(json.dumps({
+            "vote": 1,
+            "profiles": {
+                "pan": {
+                    "_vote": 2,
+                    "corner_top": {"side": "high", "bound": -1.0},
+                },
+            },
+        }))
+        det = TemplateFontForensics(prof)
+        import cv2
+        img = _blank()
+        for i in range(6):
+            cv2.putText(img, "SAMPLE TEXT 12345", (20, 90 + i * 45),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 0), 2)
+        out = det.analyze(img, "pan")
+        # global vote=1 would flag, but per-type _vote=2 requires 2 breaches
+        assert out["template_mismatch"] is False
+
+    def test_vote_metadata_key_not_treated_as_feature(self, tmp_path):
+        """W8: _vote must not be iterated as a feature spec."""
+        prof = tmp_path / "p.json"
+        prof.write_text(json.dumps({
+            "vote": 1,
+            "profiles": {
+                "pan": {
+                    "_vote": 1,
+                    "corner_top": {"side": "high", "bound": -1.0},
+                },
+            },
+        }))
+        det = TemplateFontForensics(prof)
+        import cv2
+        img = _blank()
+        for i in range(6):
+            cv2.putText(img, "SAMPLE TEXT 12345", (20, 90 + i * 45),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 0), 2)
+        out = det.analyze(img, "pan")
+        assert out["template_mismatch"] is True
+        # _vote should never appear in breach list
+        assert all(b["feature"] != "_vote" for b in out["breaches"])
 
 
 class TestScorerIntegration:
