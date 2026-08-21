@@ -16,11 +16,13 @@ forensics:
   # recall 63.9% -> 75.6% with genuine FPR held at 0 on both passes. Values
   # reflect the REPRODUCIBLE profile (post-audit re-emit, ADR-030 C1) — the
   # first emit was fit on stale cached data and measured higher.
-  overall_recall_min: 0.70
+  overall_recall_min: 0.75
   per_attack_recall_min:
     copy_move: 0.50        # tuning 0.60 / holdout 0.63
     exif_edit: 0.90        # tuning 1.00 / holdout 1.00
-    screen_recapture: 0.30 # tuning 0.33 / holdout 0.43 (evasion case is by-design undetectable)
+    # W9: radial-ring FFT scan catches Moiré the wide-band prominence misses.
+    # tuning 0.53 / holdout 0.70 (period-3 evasion cases partly recovered).
+    screen_recapture: 0.50
     text_splice: 0.90      # W4: JPEG quality gate (tautological on forge — see ADR-028 L1-L2)
     # W6+W8: template-conformance typography with per-doc-type vote/margin
     # (ADR-030, ADR-032). NOT tautological — envelopes are calibrated on a
@@ -35,8 +37,9 @@ decision:
   flagged_leakage_max: 0
   # Forgeries forensics cannot see (blind spots) that therefore auto-clear.
   # W4 closed text_splice/regenerate (135 -> 75); W6+W8 closed most of the
-  # font_swap blind spot (tuning 46 / holdout 43 after per-doc-type vote).
-  undetected_autoclear_max: 50
+  # font_swap blind spot; W9 ring scan closed more screen_recapture
+  # (tuning 40 / holdout 35).
+  undetected_autoclear_max: 42
   # Genuine docs (perfect extraction) that auto-clear. With clean forensics
   # (0% FPR), this should be 1.0.
   genuine_auto_clear_min: 0.95

@@ -25,6 +25,34 @@ def test_screen_recapture_runs():
     result = ScreenRecaptureDetector().detect(_noise())
     assert "is_recaptured" in result
     assert "moire_score" in result
+    assert "ring_ratio" in result
+
+
+def test_screen_recapture_ring_scan_catches_moire():
+    """W9: radial-ring scan detects periodic Moiré that wide-band prominence misses."""
+    rng = np.random.default_rng(42)
+    img = rng.integers(100, 180, (630, 1000, 3), dtype=np.uint8)
+    # Overlay strong horizontal Moiré at period 7
+    for y in range(img.shape[0]):
+        img[y, :, :] = np.clip(
+            img[y, :, :].astype(np.int16) + int(40 * np.sin(2 * np.pi * y / 7)),
+            0, 255,
+        ).astype(np.uint8)
+    det = ScreenRecaptureDetector()
+    result = det.detect(img)
+    assert result["is_recaptured"] is True
+    assert result["ring_ratio"] > det.ring_threshold
+
+
+def test_screen_recapture_flat_image_below_ring_threshold():
+    """Flat image with mild noise should not trigger ring scan."""
+    rng = np.random.default_rng(7)
+    img = np.full((400, 600, 3), 180, dtype=np.uint8)
+    img = (img.astype(np.int16) + rng.integers(-5, 5, img.shape)).clip(0, 255).astype(np.uint8)
+    det = ScreenRecaptureDetector()
+    result = det.detect(img)
+    assert result["is_recaptured"] == False
+    assert result["ring_ratio"] < det.ring_threshold
 
 
 def test_font_analyzer_runs():
