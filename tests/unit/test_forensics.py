@@ -115,6 +115,25 @@ def test_metadata_png_has_no_quality():
     assert "low_jpeg_quality" not in result["metadata_flags"]
 
 
+def test_copy_move_sift_fallback_catches_shifted_patch():
+    """W10: SIFT fallback detects copy-move when ORB misses."""
+    from services.forensics.copy_move import CopyMoveDetector
+    rng = np.random.default_rng(42)
+    img = rng.integers(80, 200, (630, 1000, 3), dtype=np.uint8)
+    # Add a textured photo-like patch with enough SIFT features
+    for c in range(3):
+        for y in range(150, 350):
+            for x in range(100, 300):
+                img[y, x, c] = int(120 + 40 * np.sin(x / 7.0) * np.cos(y / 11.0)
+                                   + rng.integers(-10, 10))
+    # Copy the patch to a different location (shift > 48px)
+    img[200:400, 500:700, :] = img[150:350, 100:300, :]
+    det = CopyMoveDetector()
+    result = det.detect(img)
+    assert result["detected"] is True
+    assert result["dominant_shift"] is not None
+
+
 def test_spoof_scorer_low_jpeg_quality_flags():
     """Low JPEG quality in metadata triggers the metadata gate."""
     result = SpoofScorer().compute(
