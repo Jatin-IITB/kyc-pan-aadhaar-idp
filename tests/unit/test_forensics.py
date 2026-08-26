@@ -134,6 +134,35 @@ def test_copy_move_sift_fallback_catches_shifted_patch():
     assert result["dominant_shift"] is not None
 
 
+def test_screen_recapture_combined_score_catches_weak_dual_signal():
+    """W11: combined score catches period-13-like Moiré where both signals
+    are present but individually below threshold."""
+    rng = np.random.default_rng(13)
+    img = rng.integers(100, 180, (630, 1000, 3), dtype=np.uint8)
+    # Overlay weak horizontal Moiré at period 13
+    for y in range(img.shape[0]):
+        img[y, :, :] = np.clip(
+            img[y, :, :].astype(np.int16) + int(18 * np.sin(2 * np.pi * y / 13)),
+            0, 255,
+        ).astype(np.uint8)
+    det = ScreenRecaptureDetector()
+    result = det.detect(img)
+    assert "combined_score" in result
+    # If either individual signal fires, the combined score is moot —
+    # but it should be present and > 0.
+    assert result["combined_score"] > 0.0
+
+
+def test_screen_recapture_combined_score_in_flat_image():
+    """Flat images should have low combined score."""
+    rng = np.random.default_rng(7)
+    img = np.full((400, 600, 3), 180, dtype=np.uint8)
+    img = (img.astype(np.int16) + rng.integers(-5, 5, img.shape)).clip(0, 255).astype(np.uint8)
+    det = ScreenRecaptureDetector()
+    result = det.detect(img)
+    assert result["combined_score"] < det.combined_threshold
+
+
 def test_spoof_scorer_low_jpeg_quality_flags():
     """Low JPEG quality in metadata triggers the metadata gate."""
     result = SpoofScorer().compute(

@@ -4,7 +4,7 @@ A production-shaped document intelligence platform for Indian identity documents
 
 Built as a LangGraph state machine with dual-path extraction (YOLOv8 + PaddleOCR fast path, vision-LLM fallback) and a measurement harness that gates CI on ratcheting quality thresholds.
 
-![Python](https://img.shields.io/badge/python-3.14-blue) ![Tests](https://img.shields.io/badge/tests-129-green) ![ADRs](https://img.shields.io/badge/ADRs-34-blueviolet) ![License](https://img.shields.io/badge/license-MIT-lightgrey)
+![Python](https://img.shields.io/badge/python-3.14-blue) ![Tests](https://img.shields.io/badge/tests-131-green) ![ADRs](https://img.shields.io/badge/ADRs-35-blueviolet) ![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
 ---
 
@@ -72,7 +72,7 @@ All forensics numbers below come from `make eval`, scored on a **held-out seed p
 | Metric | Result |
 |---|---|
 | **Genuine false-positive rate** | **0/30 (0.0%)** |
-| Overall tamper recall | 82.8% |
+| Overall tamper recall | 86.1% |
 | Decision-layer leakage (flagged docs that auto-cleared) | **0** |
 | Genuine auto-clear rate | 100% |
 
@@ -84,8 +84,8 @@ Per attack class:
 | `text_splice` | 100% \* | JPEG quantization-table quality |
 | `regenerate` | 100% \* | JPEG quantization-table quality |
 | `copy_move` | 73% | ORB keypoint matching + SIFT fallback ([ADR-034](docs/adr/034-w10-sift-copy-move-fallback.md)) |
-| `font_swap` | 50% † | Template-conformance typography ([ADR-030](docs/adr/030-template-font-forensics.md), [ADR-032](docs/adr/032-w8-per-doc-type-font-forensics.md)) |
-| `screen_recapture` | 70% | FFT Moiré analysis + radial-ring scan ([ADR-033](docs/adr/033-w9-dct-copy-move-negative-result.md)) |
+| `font_swap` | 57% † | Template-conformance typography ([ADR-030](docs/adr/030-template-font-forensics.md), [ADR-032](docs/adr/032-w8-per-doc-type-font-forensics.md)) |
+| `screen_recapture` | 87% | FFT Moiré analysis + radial-ring scan + combined score ([ADR-033](docs/adr/033-w9-dct-copy-move-negative-result.md), [ADR-035](docs/adr/035-w11-combined-moire-score.md)) |
 
 > **\* Read these two honestly.** The 100% is *tautological*: the detector fires on "saved at Q<88," which is an artifact of how the forge writes these attacks — not evidence of tampering. An attacker who re-saves at Q=92 evades it completely. Documented in full in [ADR-028](docs/adr/028-w4-forensic-precision.md). They're gated at 0.90 to catch regressions, **not** as a claim of adversarial robustness.
 
@@ -99,7 +99,7 @@ Per attack class:
 | font | 4.1 ms | 9.2 ms |
 | font template | 5.3 ms | 10.7 ms |
 | ELA | 7.3 ms | 15.3 ms |
-| screen recapture | 27 ms | 41 ms |
+| screen recapture | 27 ms | 56 ms |
 | copy-move (ORB + SIFT) | 225 ms | 533 ms |
 
 ### Field detection
@@ -153,11 +153,11 @@ The eval harness exists precisely to keep these claims falsifiable — it's what
 
 ## Engineering practices
 
-- **34 ADRs** in [`docs/adr/`](docs/adr/) — every non-obvious decision recorded, including the ones that *failed*: [ADR-019](docs/adr/019-rotation-classifier.md) documents a rotation classifier that scored 0/4 on real cards and was disabled rather than shipped.
+- **35 ADRs** in [`docs/adr/`](docs/adr/) — every non-obvious decision recorded, including the ones that *failed*: [ADR-019](docs/adr/019-rotation-classifier.md) documents a rotation classifier that scored 0/4 on real cards and was disabled rather than shipped.
 - **Independent audit per phase** — each phase reviewed by a separate pass, findings tracked Critical/Significant/Minor and remediated before moving on.
 - **Ratcheting CI gates** — [`config/eval_thresholds.yaml`](config/eval_thresholds.yaml) encodes the current measured floor. Any change that degrades a certified metric turns the build red.
 - **Held-out evaluation** — tuning and holdout seed pairs are separate and CI-enforced, so numbers can't be tuned into existence.
-- **129 unit tests.**
+- **131 unit tests.**
 
 ---
 

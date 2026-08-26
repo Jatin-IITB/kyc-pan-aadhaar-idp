@@ -9,18 +9,22 @@ import numpy as np
 class ScreenRecaptureDetector:
     """Detect Moire patterns indicating the document was photographed from a screen.
 
-    Two complementary FFT-domain signals (W9, ADR-033):
+    Three complementary FFT-domain signals:
 
     1. **Prominence score** (original) — peak-vs-mean in a wide mid-band annulus.
        Strong on period-7 DL/Aadhaar but diluted on PAN where document texture
        raises band variance.
-    2. **Radial-ring scan** — scan narrow concentric rings in the Moiré-relevant
-       frequency band (periods ~3.5-16 px, radii 40-180) and report the maximum
-       peak-to-ring-mean ratio.  Genuine documents max at ~1.40 because their
-       energy is spread smoothly; Moiré concentrates energy in one ring, pushing
-       the ratio above 1.55 for period-7 and above 1.42 for period-13.
+    2. **Radial-ring scan** (W9, ADR-033) — scan narrow concentric rings in the
+       Moiré-relevant frequency band (periods ~3.5-16 px, radii 40-180) and
+       report the maximum peak-to-ring-mean ratio.  Genuine documents max at
+       ~1.40; Moiré concentrates energy in one ring, pushing above 1.55 for
+       period-7.
+    3. **Combined score** (W11, ADR-035) — normalized sum of prominence and ring
+       ratio.  Period-13 Moiré is too weak to exceed either threshold alone but
+       elevates both signals simultaneously.  Genuine documents rarely have both
+       signals elevated (max ~1.49 on n=180).
 
-    Flag as recaptured when either signal exceeds its threshold.
+    Flag as recaptured when any signal exceeds its threshold.
     """
 
     RING_R_MIN = 40
@@ -32,9 +36,11 @@ class ScreenRecaptureDetector:
         self,
         freq_threshold: float = 0.25,
         ring_threshold: float = 1.45,
+        combined_threshold: float = 1.55,
     ) -> None:
         self.freq_threshold = freq_threshold
         self.ring_threshold = ring_threshold
+        self.combined_threshold = combined_threshold
 
     def detect(self, image_bgr: np.ndarray) -> Dict[str, Any]:
         gray = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY).astype(np.float32)
@@ -54,7 +60,8 @@ class ScreenRecaptureDetector:
         max_mag = magnitude.max()
         if max_mag == 0:
             return {"is_recaptured": False, "moire_score": 0.0,
-                    "ring_ratio": 0.0, "dominant_frequencies": []}
+                    "ring_ratio": 0.0, "combined_score": 0.0,
+                    "dominant_frequencies": []}
 
         magnitude_norm = magnitude / max_mag
 
@@ -75,7 +82,8 @@ class ScreenRecaptureDetector:
 
         if mid_freq_count == 0:
             return {"is_recaptured": False, "moire_score": 0.0,
-                    "ring_ratio": 0.0, "dominant_frequencies": []}
+                    "ring_ratio": 0.0, "combined_score": 0.0,
+                    "dominant_frequencies": []}
 
         band_vals = mid_freq[mask > 0]
         band_mean = float(band_vals.mean()) if band_vals.size else 0.0
@@ -106,13 +114,18 @@ class ScreenRecaptureDetector:
         # --- radial-ring scan (narrow-band peak/mean ratio) ---
         ring_ratio = self._ring_scan(magnitude, cy, cx)
 
+        combined_score = (moire_score / self.freq_threshold
+                          + ring_ratio / self.ring_threshold)
+
         is_recaptured = (moire_score > self.freq_threshold
-                         or ring_ratio > self.ring_threshold)
+                         or ring_ratio > self.ring_threshold
+                         or combined_score > self.combined_threshold)
 
         return {
             "is_recaptured": is_recaptured,
             "moire_score": moire_score,
             "ring_ratio": float(ring_ratio),
+            "combined_score": round(float(combined_score), 4),
             "dominant_frequencies": dominant_frequencies,
         }
 
