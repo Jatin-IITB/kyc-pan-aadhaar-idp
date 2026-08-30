@@ -152,6 +152,15 @@ def test_copy_move_sift_merge_constants_and_no_regression():
     assert result["detected"] is True
 
 
+def test_copy_move_patch_ncc_constants():
+    """W14: Patch-NCC verification parameters are set."""
+    from services.forensics.copy_move import CopyMoveDetector
+    det = CopyMoveDetector()
+    assert det.SIFT_PATCH_NCC_MIN == 0.78
+    assert det.SIFT_PATCH_DOM_MIN == 17
+    assert det.SIFT_PATCH_RATIO_MIN == 1.15
+
+
 def test_screen_recapture_combined_score_catches_weak_dual_signal():
     """W11: combined score catches period-13-like Moiré where both signals
     are present but individually below threshold."""

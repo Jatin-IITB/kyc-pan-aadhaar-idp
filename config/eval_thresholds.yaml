@@ -16,10 +16,10 @@ forensics:
   # recall 63.9% -> 75.6% with genuine FPR held at 0 on both passes. Values
   # reflect the REPRODUCIBLE profile (post-audit re-emit, ADR-030 C1) — the
   # first emit was fit on stale cached data and measured higher.
-  overall_recall_min: 0.86
+  overall_recall_min: 0.87
   per_attack_recall_min:
-    # W13: SIFT neighborhood merge (ADR-037). tuning 0.77 / holdout 0.77.
-    copy_move: 0.70
+    # W14: patch-NCC verification (ADR-038). tuning 0.80 / holdout 0.90.
+    copy_move: 0.77
     exif_edit: 0.90        # tuning 1.00 / holdout 1.00
     # W9: radial-ring FFT scan, W11: combined moire+ring score.
     # tuning 0.77 / holdout 0.87 (period-13 recovered via combined score).
@@ -40,8 +40,9 @@ decision:
   # font_swap blind spot; W9 ring scan closed more screen_recapture;
   # W10 SIFT fallback closed more copy_move; W11 combined score closed
   # more screen_recapture; W12 Aadhaar font closed more font_swap;
-  # W13 SIFT merge closed more copy_move (tuning 23 / holdout 19).
-  undetected_autoclear_max: 25
+  # W13 SIFT merge closed more copy_move; W14 patch-NCC closed more
+  # copy_move (tuning 22 / holdout 15).
+  undetected_autoclear_max: 23
   # Genuine docs (perfect extraction) that auto-clear. With clean forensics
   # (0% FPR), this should be 1.0.
   genuine_auto_clear_min: 0.95

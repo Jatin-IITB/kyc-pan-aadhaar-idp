@@ -57,6 +57,9 @@ class CopyMoveDetector:
     SIFT_MAX_ASPECT: float = 3.0
     SIFT_MERGE_RADIUS: int = 1
     SIFT_MERGE_MIN: int = 25
+    SIFT_PATCH_NCC_MIN: float = 0.78
+    SIFT_PATCH_DOM_MIN: int = 17
+    SIFT_PATCH_RATIO_MIN: float = 1.15
 
     def __init__(
         self,
@@ -90,6 +93,41 @@ class CopyMoveDetector:
         if not result["detected"]:
             result = self._sift_stage(gray)
         return result
+
+    def _patch_ncc(
+        self, gray: np.ndarray, src_pts: np.ndarray, dom_bin: tuple
+    ) -> float:
+        """Pearson correlation between the source region and its shifted copy."""
+        h, w = gray.shape[:2]
+        pad = 10
+        x0, y0 = src_pts.min(axis=0).astype(int)
+        x1, y1 = src_pts.max(axis=0).astype(int)
+        x0, y0 = max(0, x0 - pad), max(0, y0 - pad)
+        x1, y1 = min(w, x1 + pad), min(h, y1 + pad)
+        sx = int(dom_bin[0] * self.shift_bin_px)
+        sy = int(dom_bin[1] * self.shift_bin_px)
+        tx0, ty0 = x0 + sx, y0 + sy
+        tx1, ty1 = x1 + sx, y1 + sy
+        if tx0 < 0:
+            x0 -= tx0; tx0 = 0
+        if ty0 < 0:
+            y0 -= ty0; ty0 = 0
+        if tx1 > w:
+            x1 -= tx1 - w; tx1 = w
+        if ty1 > h:
+            y1 -= ty1 - h; ty1 = h
+        if x1 - x0 < 20 or y1 - y0 < 20:
+            return 0.0
+        src = gray[y0:y1, x0:x1].astype(np.float64).ravel()
+        tgt = gray[ty0:ty1, tx0:tx1].astype(np.float64).ravel()
+        if src.shape != tgt.shape or len(src) < 100:
+            return 0.0
+        src_z = src - src.mean()
+        tgt_z = tgt - tgt.mean()
+        denom = np.sqrt((src_z ** 2).sum() * (tgt_z ** 2).sum())
+        if denom < 1e-10:
+            return 0.0
+        return float((src_z * tgt_z).sum() / denom)
 
     def _orb_stage(self, gray: np.ndarray) -> Dict[str, Any]:
         empty: Dict[str, Any] = {
@@ -213,6 +251,10 @@ class CopyMoveDetector:
             self.SIFT_PROMISCUITY_L2,
             merge_radius=self.SIFT_MERGE_RADIUS,
             merge_min=self.SIFT_MERGE_MIN,
+            gray=gray,
+            patch_ncc_min=self.SIFT_PATCH_NCC_MIN,
+            patch_dom_min=self.SIFT_PATCH_DOM_MIN,
+            patch_ratio_min=self.SIFT_PATCH_RATIO_MIN,
         )
 
     def _cluster_and_decide(
@@ -224,6 +266,10 @@ class CopyMoveDetector:
         dist_scale: float,
         merge_radius: int = 0,
         merge_min: int = 25,
+        gray: np.ndarray | None = None,
+        patch_ncc_min: float = 0.0,
+        patch_dom_min: int = 0,
+        patch_ratio_min: float = 0.0,
     ) -> Dict[str, Any]:
         bins: List[tuple] = []
         oriented: List[tuple] = []
@@ -276,6 +322,14 @@ class CopyMoveDetector:
                     detected = True
                     dom_pairs = nbr_pairs
                     dom_count = merged_count
+
+        if (not detected and gray is not None and patch_ncc_min > 0
+                and span_ok
+                and dom_count >= patch_dom_min
+                and dom_count > patch_ratio_min * runner_up):
+            ncc = self._patch_ncc(gray, src, dom_bin)
+            if ncc >= patch_ncc_min:
+                detected = True
 
         matched_pairs = [
             {
