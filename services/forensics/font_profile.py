@@ -214,9 +214,16 @@ class TemplateFontForensics:
             if v is None or not isinstance(spec, dict):
                 continue
             bound, side = spec.get("bound"), spec.get("side")
+            if side == "band":
+                lo, hi = spec.get("low"), spec.get("high")
+                if lo is not None and v < lo:
+                    breaches.append({"feature": feat, "value": round(v, 4),
+                                     "bound": round(lo, 4), "side": "band_low"})
+                elif hi is not None and v > hi:
+                    breaches.append({"feature": feat, "value": round(v, 4),
+                                     "bound": round(hi, 4), "side": "band_high"})
+                continue
             if bound is None or side not in ("high", "low"):
-                # Malformed entry must not crash the whole forensics stack
-                # (audit S1: the node's blanket except fails OPEN).
                 logger.warning("Malformed font profile spec %r for feature %s — skipped",
                                spec, feat)
                 continue

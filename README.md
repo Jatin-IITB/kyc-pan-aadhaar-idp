@@ -4,7 +4,7 @@ A production-shaped document intelligence platform for Indian identity documents
 
 Built as a LangGraph state machine with dual-path extraction (YOLOv8 + PaddleOCR fast path, vision-LLM fallback) and a measurement harness that gates CI on ratcheting quality thresholds.
 
-![Python](https://img.shields.io/badge/python-3.14-blue) ![Tests](https://img.shields.io/badge/tests-131-green) ![ADRs](https://img.shields.io/badge/ADRs-35-blueviolet) ![License](https://img.shields.io/badge/license-MIT-lightgrey)
+![Python](https://img.shields.io/badge/python-3.14-blue) ![Tests](https://img.shields.io/badge/tests-132-green) ![ADRs](https://img.shields.io/badge/ADRs-36-blueviolet) ![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
 ---
 
@@ -72,7 +72,7 @@ All forensics numbers below come from `make eval`, scored on a **held-out seed p
 | Metric | Result |
 |---|---|
 | **Genuine false-positive rate** | **0/30 (0.0%)** |
-| Overall tamper recall | 86.1% |
+| Overall tamper recall | 88.9% |
 | Decision-layer leakage (flagged docs that auto-cleared) | **0** |
 | Genuine auto-clear rate | 100% |
 
@@ -84,12 +84,12 @@ Per attack class:
 | `text_splice` | 100% \* | JPEG quantization-table quality |
 | `regenerate` | 100% \* | JPEG quantization-table quality |
 | `copy_move` | 73% | ORB keypoint matching + SIFT fallback ([ADR-034](docs/adr/034-w10-sift-copy-move-fallback.md)) |
-| `font_swap` | 57% † | Template-conformance typography ([ADR-030](docs/adr/030-template-font-forensics.md), [ADR-032](docs/adr/032-w8-per-doc-type-font-forensics.md)) |
+| `font_swap` | 73% † | Template-conformance typography ([ADR-030](docs/adr/030-template-font-forensics.md), [ADR-032](docs/adr/032-w8-per-doc-type-font-forensics.md), [ADR-036](docs/adr/036-w12-aadhaar-font-recalibration.md)) |
 | `screen_recapture` | 87% | FFT Moiré analysis + radial-ring scan + combined score ([ADR-033](docs/adr/033-w9-dct-copy-move-negative-result.md), [ADR-035](docs/adr/035-w11-combined-moire-score.md)) |
 
 > **\* Read these two honestly.** The 100% is *tautological*: the detector fires on "saved at Q<88," which is an artifact of how the forge writes these attacks — not evidence of tampering. An attacker who re-saves at Q=92 evades it completely. Documented in full in [ADR-028](docs/adr/028-w4-forensic-precision.md). They're gated at 0.90 to catch regressions, **not** as a claim of adversarial robustness.
 
-> **† font_swap went 0% → 50% by changing the question.** The attack re-renders the whole card with permuted fonts, so internal-consistency checks are blind *by construction* — no region is an outlier when everything shifts together. The detector tests conformance to per-doc-type typographic envelopes (corner density, stroke modulation, advance uniformity, glyph width CV) calibrated on genuine documents, with leave-one-out threshold selection, interior-point stability margins, per-doc-type vote/margin, and a content hash binding the shipped profile to its calibration data. Validated at 0% FPR on seeds never used for calibration. Known gap: Aadhaar recall is ~6% ([ADR-030 L1](docs/adr/030-template-font-forensics.md), [ADR-032](docs/adr/032-w8-per-doc-type-font-forensics.md)).
+> **† font_swap went 0% → 73% by changing the question.** The attack re-renders the whole card with permuted fonts, so internal-consistency checks are blind *by construction* — no region is an outlier when everything shifts together. The detector tests conformance to per-doc-type typographic envelopes (corner density, stroke modulation, advance uniformity, glyph width CV) calibrated on genuine documents, with leave-one-out threshold selection, interior-point stability margins, per-doc-type vote/margin, and a content hash binding the shipped profile to its calibration data. Validated at 0% FPR on seeds never used for calibration. Aadhaar recall was near-zero until W12 added `id_width_cv` and tightened margins ([ADR-036](docs/adr/036-w12-aadhaar-font-recalibration.md)).
 
 ### Forensics latency (p95, per detector)
 
@@ -153,11 +153,11 @@ The eval harness exists precisely to keep these claims falsifiable — it's what
 
 ## Engineering practices
 
-- **35 ADRs** in [`docs/adr/`](docs/adr/) — every non-obvious decision recorded, including the ones that *failed*: [ADR-019](docs/adr/019-rotation-classifier.md) documents a rotation classifier that scored 0/4 on real cards and was disabled rather than shipped.
+- **36 ADRs** in [`docs/adr/`](docs/adr/) — every non-obvious decision recorded, including the ones that *failed*: [ADR-019](docs/adr/019-rotation-classifier.md) documents a rotation classifier that scored 0/4 on real cards and was disabled rather than shipped.
 - **Independent audit per phase** — each phase reviewed by a separate pass, findings tracked Critical/Significant/Minor and remediated before moving on.
 - **Ratcheting CI gates** — [`config/eval_thresholds.yaml`](config/eval_thresholds.yaml) encodes the current measured floor. Any change that degrades a certified metric turns the build red.
 - **Held-out evaluation** — tuning and holdout seed pairs are separate and CI-enforced, so numbers can't be tuned into existence.
-- **131 unit tests.**
+- **132 unit tests.**
 
 ---
 
@@ -266,7 +266,7 @@ docs/adr/           30 architecture decision records
 
 **Known gaps — stated deliberately:**
 - **PAN detector is under-trained** — 71 train / 6 val images; `pan` class recall 0.60. Needs a materially larger annotated set before it should carry traffic.
-- Aadhaar font conformance is near-zero (6% vs 75–81% for PAN/DL) — its number-dominant layout needs an ID-line-specific feature ([ADR-030 L1](docs/adr/030-template-font-forensics.md)).
+- Aadhaar font conformance improved from near-zero to ~63% via `id_width_cv` and margin tightening ([ADR-036](docs/adr/036-w12-aadhaar-font-recalibration.md)), but further improvement likely requires additional features or a learned discriminator.
 - `copy_move` improved from 63% to 73% via SIFT fallback ([ADR-034](docs/adr/034-w10-sift-copy-move-fallback.md)). The remaining 27% consists of cases where neither ORB nor SIFT can build a dominant shift cluster due to document structural repetition. Three earlier approaches were rejected — dense offset-residual (zero discrimination), ORB retune (FPR), and block DCT (grid alignment). Further improvement likely requires either restricting the search to YOLO-detected photo regions or a learned localizer.
 - `text_splice` / `regenerate` detection is metadata-only and evadable; robust detection needs frequency-domain work (double-JPEG ghosts, DCT histogram analysis, or a learned localizer).
 - No production-traffic calibration — all forensics numbers are synthetic-set numbers.

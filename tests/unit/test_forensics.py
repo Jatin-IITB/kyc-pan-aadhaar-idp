@@ -163,6 +163,33 @@ def test_screen_recapture_combined_score_in_flat_image():
     assert result["combined_score"] < det.combined_threshold
 
 
+def test_font_template_band_bound_catches_outliers():
+    """W12: band bounds (side='band') flag values outside [low, high]."""
+    from services.forensics.font_profile import TemplateFontForensics
+    import json, tempfile, pathlib
+    profile = {
+        "extractor_version": "tf-2",
+        "profiles": {
+            "test_type": {
+                "_vote": 1,
+                "corner_top": {"side": "band", "low": 0.20, "high": 0.40},
+            }
+        }
+    }
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
+        json.dump(profile, f)
+        f.flush()
+        det = TemplateFontForensics(profile_path=f.name)
+    rng = np.random.default_rng(42)
+    img = rng.integers(80, 200, (630, 1000, 3), dtype=np.uint8)
+    result = det.analyze(img, "test_type")
+    sig_val = result.get("signature", {}).get("corner_top")
+    if sig_val is not None and not (0.20 <= sig_val <= 0.40):
+        assert result["template_mismatch"] is True
+        assert any(b["side"].startswith("band_") for b in result["breaches"])
+    pathlib.Path(f.name).unlink()
+
+
 def test_spoof_scorer_low_jpeg_quality_flags():
     """Low JPEG quality in metadata triggers the metadata gate."""
     result = SpoofScorer().compute(

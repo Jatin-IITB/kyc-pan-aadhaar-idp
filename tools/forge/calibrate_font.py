@@ -45,14 +45,18 @@ BASE_FEATURES = {
 # On DL (pure digit ID), genuine cluster is tight (cv 0.02-0.05) and swap
 # jumps to 0.16+.  On PAN (alphanumeric ABCDE1234F), letter ink widths vary
 # even in monospace, making genuine id_width_cv too noisy for a stable bound.
+# On Aadhaar (12-digit number), genuine clusters at 0.15-0.25; font swaps
+# scatter both directions but the genuine right tail is too heavy for a band
+# bound (12.5% FPR), so only the low side is used (W12, ADR-036).
 DT_EXTRA = {
     "driving_license": {"id_width_cv": "high"},
+    "aadhaar": {"id_width_cv": "low"},
 }
 
 # Per-doc-type vote/margin: DL has 4 features so vote=2 is stable at a
-# tighter margin; PAN/Aadhaar have 3 features and need vote=1 with a
-# wider margin to avoid holdout FPR leaks (measured: margin=5/vote=1
-# gave 2.1% holdout FPR on calibration data).
+# tighter margin; PAN has 3 features and needs vote=1 with a wider margin.
+# Aadhaar was margin=8 (W6-W10) which zeroed recall; adding id_width_cv
+# and tightening to margin=4 recovered recall at 0% LOO FPR (W12).
 DT_VOTE = {
     "pan": 1,
     "aadhaar": 1,
@@ -60,7 +64,7 @@ DT_VOTE = {
 }
 DT_MARGIN = {
     "pan": 8.0,
-    "aadhaar": 8.0,
+    "aadhaar": 4.0,
     "driving_license": 5.0,
 }
 
@@ -144,7 +148,14 @@ def fit(cal, margin=None):
         for feat, side in features_for(dt).items():
             vals = [s[feat] for s in g if s.get(feat) is not None]
             if len(vals) >= 4:
-                prof[dt][feat] = {"side": side, "bound": _bound(vals, side, m)}
+                if side == "band":
+                    prof[dt][feat] = {
+                        "side": "band",
+                        "low": _bound(vals, "low", m),
+                        "high": _bound(vals, "high", m),
+                    }
+                else:
+                    prof[dt][feat] = {"side": side, "bound": _bound(vals, side, m)}
     return prof
 
 
@@ -159,8 +170,13 @@ def score(sig, prof_dt, vote=1):
         v = sig.get(feat)
         if v is None:
             continue
-        if (spec["side"] == "high" and v > spec["bound"]) or \
-           (spec["side"] == "low" and v < spec["bound"]):
+        side = spec.get("side")
+        if side == "band":
+            if (spec.get("low") is not None and v < spec["low"]) or \
+               (spec.get("high") is not None and v > spec["high"]):
+                hits.append(feat)
+        elif (side == "high" and v > spec["bound"]) or \
+             (side == "low" and v < spec["bound"]):
             hits.append(feat)
     return len(hits) >= vote, hits
 
@@ -186,7 +202,14 @@ def loo_fpr(cal, margin=None):
             for feat, side in features_for(dt).items():
                 vals = [s[feat] for s in rest if s.get(feat) is not None]
                 if len(vals) >= 4:
-                    prof_dt[feat] = {"side": side, "bound": _bound(vals, side, m)}
+                    if side == "band":
+                        prof_dt[feat] = {
+                            "side": "band",
+                            "low": _bound(vals, "low", m),
+                            "high": _bound(vals, "high", m),
+                        }
+                    else:
+                        prof_dt[feat] = {"side": side, "bound": _bound(vals, side, m)}
             hit, _ = score(docs[i], prof_dt, vote)
             fp += bool(hit)
             n += 1

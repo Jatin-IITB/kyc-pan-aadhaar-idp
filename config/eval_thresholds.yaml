@@ -16,7 +16,7 @@ forensics:
   # recall 63.9% -> 75.6% with genuine FPR held at 0 on both passes. Values
   # reflect the REPRODUCIBLE profile (post-audit re-emit, ADR-030 C1) — the
   # first emit was fit on stale cached data and measured higher.
-  overall_recall_min: 0.80
+  overall_recall_min: 0.84
   per_attack_recall_min:
     copy_move: 0.65        # tuning 0.73 / holdout 0.73 (W10: SIFT fallback)
     exif_edit: 0.90        # tuning 1.00 / holdout 1.00
@@ -24,11 +24,10 @@ forensics:
     # tuning 0.77 / holdout 0.87 (period-13 recovered via combined score).
     screen_recapture: 0.70
     text_splice: 0.90      # W4: JPEG quality gate (tautological on forge — see ADR-028 L1-L2)
-    # W6+W8: template-conformance typography with per-doc-type vote/margin
-    # (ADR-030, ADR-032). NOT tautological — envelopes are calibrated on a
-    # disjoint seed and validated against this eval's own independent genuine
-    # set. W8 added id_width_cv for DL and per-doc-type vote.
-    font_swap: 0.47        # tuning 0.53 / holdout 0.50
+    # W6+W8+W12: template-conformance typography with per-doc-type vote/margin
+    # and id_width_cv for Aadhaar (ADR-030, ADR-032, ADR-036).
+    # W12: Aadhaar margin 8->4 + id_width_cv low. tuning 0.67 / holdout 0.73.
+    font_swap: 0.60
     regenerate: 0.90       # W4: JPEG quality gate (tautological on forge — see ADR-028 L1-L2)
 
 decision:
@@ -39,8 +38,9 @@ decision:
   # W4 closed text_splice/regenerate (135 -> 75); W6+W8 closed most of the
   # font_swap blind spot; W9 ring scan closed more screen_recapture;
   # W10 SIFT fallback closed more copy_move; W11 combined score closed
-  # more screen_recapture (tuning 29 / holdout 25).
-  undetected_autoclear_max: 32
+  # more screen_recapture; W12 Aadhaar font closed more font_swap
+  # (tuning 25 / holdout 20).
+  undetected_autoclear_max: 28
   # Genuine docs (perfect extraction) that auto-clear. With clean forensics
   # (0% FPR), this should be 1.0.
   genuine_auto_clear_min: 0.95
