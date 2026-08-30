@@ -134,6 +134,24 @@ def test_copy_move_sift_fallback_catches_shifted_patch():
     assert result["dominant_shift"] is not None
 
 
+def test_copy_move_sift_merge_constants_and_no_regression():
+    """W13: SIFT merge parameters are set and basic detection still works."""
+    from services.forensics.copy_move import CopyMoveDetector
+    det = CopyMoveDetector()
+    assert det.SIFT_MERGE_RADIUS == 1
+    assert det.SIFT_MERGE_MIN == 25
+    rng = np.random.default_rng(42)
+    img = rng.integers(80, 200, (630, 1000, 3), dtype=np.uint8)
+    for c in range(3):
+        for y in range(150, 350):
+            for x in range(100, 300):
+                img[y, x, c] = int(120 + 40 * np.sin(x / 7.0) * np.cos(y / 11.0)
+                                   + rng.integers(-10, 10))
+    img[200:400, 500:700, :] = img[150:350, 100:300, :]
+    result = det.detect(img)
+    assert result["detected"] is True
+
+
 def test_screen_recapture_combined_score_catches_weak_dual_signal():
     """W11: combined score catches period-13-like Moiré where both signals
     are present but individually below threshold."""

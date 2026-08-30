@@ -55,6 +55,8 @@ class CopyMoveDetector:
     SIFT_PROMISCUITY_L2: float = 200.0
     SIFT_MIN_MATCHES: int = 12
     SIFT_MAX_ASPECT: float = 3.0
+    SIFT_MERGE_RADIUS: int = 1
+    SIFT_MERGE_MIN: int = 25
 
     def __init__(
         self,
@@ -209,6 +211,8 @@ class CopyMoveDetector:
         return self._cluster_and_decide(
             pts, pairs, self.SIFT_MIN_MATCHES, self.SIFT_MAX_ASPECT,
             self.SIFT_PROMISCUITY_L2,
+            merge_radius=self.SIFT_MERGE_RADIUS,
+            merge_min=self.SIFT_MERGE_MIN,
         )
 
     def _cluster_and_decide(
@@ -218,6 +222,8 @@ class CopyMoveDetector:
         min_matches: int,
         max_aspect: float,
         dist_scale: float,
+        merge_radius: int = 0,
+        merge_min: int = 25,
     ) -> Dict[str, Any]:
         bins: List[tuple] = []
         oriented: List[tuple] = []
@@ -243,6 +249,34 @@ class CopyMoveDetector:
                    and max_ext <= self.max_span_px
                    and aspect <= max_aspect)
 
+        detected = dominant and span_ok
+
+        if not detected and merge_radius > 0:
+            neighborhood = set()
+            for db in range(-merge_radius, merge_radius + 1):
+                for dd in range(-merge_radius, merge_radius + 1):
+                    neighborhood.add((dom_bin[0] + db, dom_bin[1] + dd))
+            merged_count = sum(tally.get(nb, 0) for nb in neighborhood)
+            nbr_runner = max((c for b, c in tally.items()
+                              if b not in neighborhood), default=0)
+            nbr_dominant = merged_count >= max(merge_min,
+                                               self.dominance_ratio * nbr_runner)
+            if nbr_dominant:
+                nbr_pairs = [p for p, b in zip(oriented, bins)
+                             if b in neighborhood]
+                nbr_src = np.array([pts[i] for i, _, _ in nbr_pairs])
+                nbr_ext = (nbr_src.max(axis=0) - nbr_src.min(axis=0)
+                           if len(nbr_src) > 1 else np.zeros(2))
+                nbr_min = float(min(nbr_ext))
+                nbr_max = float(max(nbr_ext))
+                nbr_asp = nbr_max / max(nbr_min, 1.0)
+                if (self.min_span_px <= nbr_min
+                        and nbr_max <= self.max_span_px
+                        and nbr_asp <= max_aspect):
+                    detected = True
+                    dom_pairs = nbr_pairs
+                    dom_count = merged_count
+
         matched_pairs = [
             {
                 "block1": [int(pts[i][0]), int(pts[i][1])],
@@ -252,7 +286,6 @@ class CopyMoveDetector:
             for i, j, dist in dom_pairs[:20]
         ]
 
-        detected = dominant and span_ok
         confidence = min(1.0, dom_count / (min_matches * 2))
 
         return {
