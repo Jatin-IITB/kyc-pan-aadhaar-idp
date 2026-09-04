@@ -10,6 +10,21 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+_POINT_NAMESPACE = uuid.UUID("eef0b2db-ec75-4c6f-a828-9fe930f0bc87")
+
+
+def canonical_chunk_id(
+    source_file: str,
+    section_header: str,
+    section_chunk_index: int,
+) -> str:
+    """Return the stable, human-readable identity of a policy chunk.
+
+    The ID is derived from policy structure rather than a retrieval run, so
+    authored relevance labels remain valid across re-indexes.
+    """
+    return f"{source_file}::{section_header}::{section_chunk_index}"
+
 
 class PolicyIndexer:
     """Reads Markdown policy documents, chunks them, embeds with
@@ -26,18 +41,29 @@ class PolicyIndexer:
         qdrant_url: str,
         collection_name: str = "kyc_policies",
         embedding_model: str = "BAAI/bge-small-en-v1.5",
+        *,
+        encoder: Any = None,
+        qdrant_client: Any = None,
     ) -> None:
         self.qdrant_url = qdrant_url
         self.collection_name = collection_name
         self.embedding_model = embedding_model
 
         # Lazy-loaded at first use
-        self._encoder: Any = None
-        self._qdrant: Any = None
+        self._encoder: Any = encoder
+        self._qdrant: Any = qdrant_client
 
     # ------------------------------------------------------------------
     # Public API
     # ------------------------------------------------------------------
+
+    def load_policy_chunks(self, policies_dir: Path) -> List[Dict[str, Any]]:
+        """Build structurally identified chunks without loading ML services."""
+        all_chunks: List[Dict[str, Any]] = []
+        for md_path in sorted(Path(policies_dir).glob("*.md")):
+            text = md_path.read_text(encoding="utf-8")
+            all_chunks.extend(self._chunk_markdown(text, source=md_path.name))
+        return all_chunks
 
     def index_policies(self, policies_dir: Path) -> int:
         """Read all ``.md`` files from *policies_dir*, chunk, embed, and
@@ -57,12 +83,7 @@ class PolicyIndexer:
             logger.warning("No .md files found in {}", policies_dir)
             return 0
 
-        all_chunks: List[Dict[str, Any]] = []
-        for md_path in md_files:
-            text = md_path.read_text(encoding="utf-8")
-            chunks = self._chunk_markdown(text, source=md_path.name)
-            all_chunks.extend(chunks)
-
+        all_chunks = self.load_policy_chunks(policies_dir)
         if not all_chunks:
             return 0
 
@@ -82,13 +103,15 @@ class PolicyIndexer:
 
         points = [
             PointStruct(
-                id=str(uuid.uuid4()),
+                id=str(uuid.uuid5(_POINT_NAMESPACE, all_chunks[i]["chunk_id"])),
                 vector=embeddings[i].tolist(),
                 payload={
+                    "chunk_id": all_chunks[i]["chunk_id"],
                     "text": all_chunks[i]["text"],
                     "source_file": all_chunks[i]["source_file"],
                     "section_header": all_chunks[i]["section_header"],
                     "chunk_index": all_chunks[i]["chunk_index"],
+                    "section_chunk_index": all_chunks[i]["section_chunk_index"],
                 },
             )
             for i in range(len(all_chunks))
@@ -113,7 +136,8 @@ class PolicyIndexer:
         section into chunks of ~512 tokens with 50-token overlap.
 
         Returns a list of dicts with keys:
-          ``text``, ``source_file``, ``section_header``, ``chunk_index``.
+          ``chunk_id``, ``text``, ``source_file``, ``section_header``,
+          ``chunk_index``, ``section_chunk_index``.
         """
         max_tokens = 512
         overlap_tokens = 50
@@ -139,18 +163,26 @@ class PolicyIndexer:
             overlap_words = int(overlap_tokens * 0.75)
 
             pos = 0
+            section_chunk_idx = 0
             while pos < len(words):
                 end = min(pos + max_words, len(words))
                 chunk_text = " ".join(words[pos:end])
                 chunks.append(
                     {
+                        "chunk_id": canonical_chunk_id(
+                            source,
+                            header,
+                            section_chunk_idx,
+                        ),
                         "text": chunk_text,
                         "source_file": source,
                         "section_header": header,
                         "chunk_index": global_idx,
+                        "section_chunk_index": section_chunk_idx,
                     }
                 )
                 global_idx += 1
+                section_chunk_idx += 1
                 pos = end - overlap_words if end < len(words) else end
 
         return chunks

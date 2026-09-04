@@ -42,15 +42,19 @@ class PolicyVerifier:
 
     def __init__(
         self,
-        retriever: HybridRetriever,
-        reranker: CrossEncoderReranker,
+        retriever: Optional[HybridRetriever] = None,
+        reranker: Optional[CrossEncoderReranker] = None,
         llm_url: str = DEFAULT_OLLAMA_URL,
         llm_model: str = DEFAULT_OLLAMA_MODEL,
+        timeout_s: float = DEFAULT_TIMEOUT_S,
     ) -> None:
-        self.retriever = retriever
-        self.reranker = reranker
+        self.retriever = retriever or HybridRetriever(
+            qdrant_url=(os.getenv("QDRANT_URL") or "http://localhost:6333").strip()
+        )
+        self.reranker = reranker or CrossEncoderReranker()
         self.llm_url = llm_url.rstrip("/")
         self.llm_model = llm_model
+        self.timeout_s = timeout_s
 
     # ------------------------------------------------------------------
     # Public API
@@ -231,8 +235,9 @@ class PolicyVerifier:
             "model": self.llm_model,
             "messages": messages,
             "stream": False,
+            "think": False,
             "format": "json",
-            "options": {"temperature": 0.0},
+            "options": {"temperature": 0.0, "seed": 0},
         }
         data = json.dumps(payload).encode("utf-8")
         req = urllib.request.Request(
@@ -242,7 +247,7 @@ class PolicyVerifier:
             method="POST",
         )
         try:
-            with urllib.request.urlopen(req, timeout=DEFAULT_TIMEOUT_S) as r:
+            with urllib.request.urlopen(req, timeout=self.timeout_s) as r:
                 body = r.read().decode("utf-8", errors="replace")
         except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError) as e:
             raise PolicyVerifierError(f"Ollama request failed: {e}") from e

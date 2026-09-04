@@ -257,8 +257,13 @@ def run_extraction(root: Path, n: int) -> Optional[Dict[str, Any]]:
 
 
 def render_report(metrics: Dict[str, Any], out: Path) -> None:
-    f, d, e, g = (metrics.get("forensics"), metrics.get("decision"),
-                  metrics.get("extraction"), metrics.get("gates"))
+    f, d, e, r, g = (
+        metrics.get("forensics"),
+        metrics.get("decision"),
+        metrics.get("extraction"),
+        metrics.get("rag"),
+        metrics.get("gates"),
+    )
 
     def card(label, value, good=True):
         color = "#10b981" if good else "#ef4444"
@@ -281,6 +286,9 @@ def render_report(metrics: Dict[str, Any], out: Path) -> None:
         cards += card("Field F1 (honest)", pct(e["micro"]["f1"]), e["micro"]["f1"] >= 0.85)
         if e.get("n_failed"):
             cards += card("Extract Failures", f'{e["n_failed"]}/{e["n_attempted"]}', e["n_failed"] == 0)
+    if r:
+        cards += card("RAG Recall@5", pct(r["recall_at_5"]), r["recall_at_5"] >= 0.8)
+        cards += card("RAG MRR", f'{r["mrr"]:.3f}', r["mrr"] >= 0.7)
 
     attack_rows = "".join(
         f'<tr><td>{a}</td><td>{s["recall"]*100:.0f}%</td><td>{s["flagged"]}/{s["n"]}</td></tr>'
@@ -290,6 +298,15 @@ def render_report(metrics: Dict[str, Any], out: Path) -> None:
         f'<tr><td>{fl}</td><td>{s["f1"]:.3f}</td><td>{s["fuzzy_f1"]:.3f}</td><td>{s["n"]}</td></tr>'
         for fl, s in (e["per_field"].items() if e else [])
     ) or '<tr><td colspan="4">extraction tier not run</td></tr>'
+    rag_rows = "".join(
+        f'<tr><td>{name}</td><td>{result["metrics"]["report"]["recall_at_1"]:.3f}</td>'
+        f'<td>{result["metrics"]["report"]["recall_at_5"]:.3f}</td>'
+        f'<td>{result["metrics"]["report"]["mrr"]:.3f}</td>'
+        f'<td>{result["metrics"]["report"]["ndcg_at_10"]:.3f}</td></tr>'
+        for name, result in (
+            (metrics.get("rag_ablation") or {}).get("configurations", {}).items()
+        )
+    ) or '<tr><td colspan="5">RAG tier not run</td></tr>'
     gate_rows = "".join(
         f'<tr><td>{r["gate"]}</td><td>{r["limit"]}</td><td>{r["actual"]}</td>'
         f'<td class="{r["status"].lower()}">{r["status"]}</td></tr>'
@@ -311,6 +328,7 @@ th{{color:#71717a;font-size:11px;text-transform:uppercase;letter-spacing:.06em}}
 <div class="cards">{cards}</div>
 <h2>Tamper recall by attack</h2><table><tr><th>Attack</th><th>Recall</th><th>Flagged</th></tr>{attack_rows}</table>
 <h2>Extraction by field</h2><table><tr><th>Field</th><th>F1 (exact)</th><th>F1 (fuzzy)</th><th>n</th></tr>{field_rows}</table>
+<h2>RAG ablation (report split)</h2><table><tr><th>Configuration</th><th>Recall@1</th><th>Recall@5</th><th>MRR</th><th>nDCG@10</th></tr>{rag_rows}</table>
 <h2>CI gates</h2><table><tr><th>Gate</th><th>Limit</th><th>Actual</th><th>Status</th></tr>{gate_rows}</table>
 <p class="meta">dataset: {metrics["dataset"]} &middot; decision assumption: {d["assumption"] if d else "-"}</p>
 </body></html>"""
@@ -324,6 +342,9 @@ def main() -> int:
     ap.add_argument("--regen", action="store_true", help="force dataset regeneration")
     ap.add_argument("--no-extraction", action="store_true", help="skip the VLM tier")
     ap.add_argument("--extraction-n", type=int, default=12)
+    ap.add_argument("--rag", action="store_true", help="run the policy RAG ablation tier")
+    ap.add_argument("--rag-golden", type=Path, default=Path("data/rag_eval/golden.jsonl"))
+    ap.add_argument("--rag-policies", type=Path, default=Path("config/policies"))
     ap.add_argument("--check", action="store_true", help="exit non-zero if any gate fails")
     args = ap.parse_args()
 
@@ -347,12 +368,23 @@ def main() -> int:
     else:
         print("[3/4] VLM extraction tier skipped")
 
+    rag = rag_ablation = None
+    if args.rag:
+        print("[RAG] retrieval component ablation...")
+        rag, rag_ablation = run_rag_stage(args.rag_policies, args.rag_golden)
+    else:
+        print("[RAG] policy retrieval tier skipped")
+
     # Gate BOTH passes independently; ALL must pass.
     thresholds = yaml.safe_load(Path("config/eval_thresholds.yaml").read_text()) or {}
     all_gate_results: List[Dict[str, Any]] = []
     all_ok = True
     for pass_name, pm in pass_metrics.items():
-        m = {**pm, "extraction": extraction if pass_name == "tuning" else None}
+        m = {
+            **pm,
+            "extraction": extraction if pass_name == "tuning" else None,
+            "rag": rag if pass_name == "holdout" else None,
+        }
         gates = check_gates(m, thresholds)
         for r in gates["results"]:
             r["pass"] = pass_name
@@ -371,6 +403,8 @@ def main() -> int:
             "decision": pass_metrics["holdout"]["decision"],
         },
         "extraction": extraction,
+        "rag": rag,
+        "rag_ablation": rag_ablation,
         "gates": {"passed": all_ok, "results": all_gate_results},
     }
 
@@ -386,6 +420,23 @@ def main() -> int:
     print()
     print("ALL GATES PASS" if all_ok else "GATE FAILURES — see eval/report.html")
     return 0 if all_ok or not args.check else 1
+
+
+def run_rag_stage(
+    policies_dir: Path,
+    golden_path: Path,
+) -> tuple[Dict[str, Any], Dict[str, Any]]:
+    """Append-only Phase 12 stage: run ablations and expose shipped metrics."""
+    from tools.eval.rag_eval import SHIPPED_CONFIGURATION, run_ablation
+
+    evidence = run_ablation(policies_dir, golden_path)
+    shipped = evidence["configurations"][SHIPPED_CONFIGURATION]["metrics"]["report"]
+    summary = {
+        **shipped,
+        "configuration": SHIPPED_CONFIGURATION,
+        "dataset_sha256": evidence["dataset"]["sha256"],
+    }
+    return summary, evidence
 
 
 if __name__ == "__main__":

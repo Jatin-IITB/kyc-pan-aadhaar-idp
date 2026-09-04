@@ -1,0 +1,76 @@
+name: RAG Evidence
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "config/policies/**"
+      - "data/rag_eval/**"
+      - "services/rag/**"
+      - "tools/eval/rag_*.py"
+      - "tools/eval/metrics.py"
+      - "tests/unit/test_rag_*.py"
+      - "config/eval_thresholds.yaml"
+      - ".github/workflows/rag_evidence.yaml"
+  pull_request:
+    paths:
+      - "config/policies/**"
+      - "data/rag_eval/**"
+      - "services/rag/**"
+      - "tools/eval/rag_*.py"
+      - "tools/eval/metrics.py"
+      - "tests/unit/test_rag_*.py"
+      - "config/eval_thresholds.yaml"
+      - ".github/workflows/rag_evidence.yaml"
+
+jobs:
+  retrieval-ablation:
+    runs-on: ubuntu-latest
+    env:
+      HF_HOME: ~/.cache/huggingface
+      TOKENIZERS_PARALLELISM: "false"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Cache retrieval models
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: rag-models-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+
+      - name: Install pinned RAG evaluation dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install \
+            "numpy==1.26.3" \
+            "torch==2.1.2" \
+            "transformers==4.37.2" \
+            "sentence-transformers==2.3.1" \
+            "qdrant-client==1.7.3" \
+            "rank-bm25==0.2.2" \
+            "pyyaml==6.0.2" \
+            "pytest==8.3.3"
+
+      - name: RAG unit tests
+        run: |
+          python -m pytest -q \
+            tests/unit/test_rag_metrics.py \
+            tests/unit/test_rag_faithfulness.py
+
+      # Baseline workflow publishes evidence now. `--check` is enabled only
+      # after the Windows model host records and commits measured floors.
+      - name: Report-split retrieval evidence
+        run: python -m tools.eval.rag_eval
+
+      - name: Upload RAG evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rag-evidence
+          path: eval/rag_metrics.json

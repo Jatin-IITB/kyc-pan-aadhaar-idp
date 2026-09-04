@@ -122,5 +122,26 @@ def check_gates(metrics: Dict[str, Any], thresholds: Dict[str, Any]) -> Dict[str
              (extraction or {}).get("micro_fuzzy", {}).get("f1") if extraction else None,
              eth["fuzzy_f1_min"], "min")
 
+    rag = metrics.get("rag")
+    rth = thresholds.get("rag", {})
+    for metric_name in (
+        "recall_at_1",
+        "recall_at_5",
+        "recall_at_10",
+        "mrr",
+        "ndcg_at_10",
+        "negative_abstention_rate",
+        "citation_support_rate",
+        "judge_agreement",
+    ):
+        threshold_name = f"{metric_name}_min"
+        if threshold_name in rth:
+            gate(
+                f"rag.{metric_name}",
+                (rag or {}).get(metric_name) if rag else None,
+                rth[threshold_name],
+                "min",
+            )
+
     passed = all(r["status"] != "FAIL" for r in results)
     return {"passed": passed, "results": results}

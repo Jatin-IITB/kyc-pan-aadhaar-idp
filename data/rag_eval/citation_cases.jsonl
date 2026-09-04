@@ -1,0 +1,5 @@
+{"id":"citation-pan","doc_type":"pan","flat_fields":{"name":"RAHUL SHARMA","pan_number":"ABCDE1234F","date_of_birth":"1990-02-01"}}
+{"id":"citation-aadhaar","doc_type":"aadhaar","flat_fields":{"name":"PRIYA VERMA","aadhaar_number":"123456789012","date_of_birth":"1988-06-14","address":"12 MG ROAD, PUNE"}}
+{"id":"citation-driving-licence","doc_type":"driving_license","flat_fields":{"name":"ARJUN SINGH","license_number":"MH1420110062821","date_of_birth":"1985-11-23","address":"9 PARK STREET, MUMBAI"}}
+{"id":"citation-pan-and-aadhaar","doc_type":"pan_aadhaar_packet","flat_fields":{"name":"NEHA PATEL","pan_number":"FGHIJ5678K","aadhaar_number":"987654321098","date_of_birth":"1992-03-30","address":"42 LAKE VIEW, AHMEDABAD"}}
+{"id":"citation-voter-card","doc_type":"voter_id","flat_fields":{"name":"VIKRAM DAS","voter_id_number":"ABC1234567","address":"7 STATION ROAD, KOLKATA"}}

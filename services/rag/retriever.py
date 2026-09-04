@@ -5,6 +5,8 @@ from typing import Any, Dict, List, Optional
 
 import logging
 
+from services.rag.indexer import canonical_chunk_id
+
 logger = logging.getLogger(__name__)
 
 
@@ -21,14 +23,17 @@ class HybridRetriever:
         qdrant_url: str,
         collection_name: str = "kyc_policies",
         embedding_model: str = "BAAI/bge-small-en-v1.5",
+        *,
+        encoder: Any = None,
+        qdrant_client: Any = None,
     ) -> None:
         self.qdrant_url = qdrant_url
         self.collection_name = collection_name
         self.embedding_model = embedding_model
 
         # Lazy-loaded
-        self._encoder: Any = None
-        self._qdrant: Any = None
+        self._encoder: Any = encoder
+        self._qdrant: Any = qdrant_client
         self._bm25: Any = None
         self._corpus: List[Dict[str, Any]] = []
         self._corpus_loaded = False
@@ -39,13 +44,24 @@ class HybridRetriever:
 
     def _ensure_loaded(self) -> None:
         """Load encoder, Qdrant client, and BM25 corpus on first use."""
-        from qdrant_client import QdrantClient
-        from sentence_transformers import SentenceTransformer
+        self._ensure_dense_loaded()
+        self._ensure_corpus_loaded()
 
-        if self._encoder is None:
-            self._encoder = SentenceTransformer(self.embedding_model)
+    def _ensure_qdrant_loaded(self) -> None:
+        from qdrant_client import QdrantClient
+
         if self._qdrant is None:
             self._qdrant = QdrantClient(url=self.qdrant_url)
+
+    def _ensure_dense_loaded(self) -> None:
+        from sentence_transformers import SentenceTransformer
+
+        self._ensure_qdrant_loaded()
+        if self._encoder is None:
+            self._encoder = SentenceTransformer(self.embedding_model)
+
+    def _ensure_corpus_loaded(self) -> None:
+        self._ensure_qdrant_loaded()
         if not self._corpus_loaded:
             self._load_bm25_corpus()
 
@@ -65,13 +81,23 @@ class HybridRetriever:
         for rec in records:
             payload = rec.payload or {}
             text = payload.get("text", "")
+            source_file = payload.get("source_file", "")
+            section_header = payload.get("section_header", "")
+            section_chunk_index = payload.get("section_chunk_index", 0)
             self._corpus.append(
                 {
                     "id": str(rec.id),
+                    "chunk_id": payload.get("chunk_id")
+                    or canonical_chunk_id(
+                        source_file,
+                        section_header,
+                        section_chunk_index,
+                    ),
                     "text": text,
-                    "source_file": payload.get("source_file", ""),
-                    "section_header": payload.get("section_header", ""),
+                    "source_file": source_file,
+                    "section_header": section_header,
                     "chunk_index": payload.get("chunk_index", 0),
+                    "section_chunk_index": section_chunk_index,
                 }
             )
             tokenized.append(text.lower().split())
@@ -91,11 +117,20 @@ class HybridRetriever:
     def retrieve(self, query: str, top_k: int = 10) -> List[Dict[str, Any]]:
         """Run hybrid search (dense + sparse) and return up to *top_k*
         chunks ranked by Reciprocal Rank Fusion."""
-        self._ensure_loaded()
+        return self.retrieve_rrf(query, top_k=top_k)
 
+    def retrieve_dense(self, query: str, top_k: int = 10) -> List[Dict[str, Any]]:
+        """Return dense-only results using the production embedding index."""
+        return self._dense_search(query, top_k=top_k)
+
+    def retrieve_bm25(self, query: str, top_k: int = 10) -> List[Dict[str, Any]]:
+        """Return BM25-only results without loading the embedding model."""
+        return self._sparse_search(query, top_k=top_k)
+
+    def retrieve_rrf(self, query: str, top_k: int = 10) -> List[Dict[str, Any]]:
+        """Return dense + BM25 results fused with reciprocal rank fusion."""
         dense_results = self._dense_search(query, top_k=top_k)
         sparse_results = self._sparse_search(query, top_k=top_k)
-
         fused = self._reciprocal_rank_fusion(dense_results, sparse_results)
         return fused[:top_k]
 
@@ -105,6 +140,7 @@ class HybridRetriever:
 
     def _dense_search(self, query: str, top_k: int) -> List[Dict[str, Any]]:
         """Encode *query* with the embedding model and search Qdrant."""
+        self._ensure_dense_loaded()
         vector = self._encoder.encode(query).tolist()
         hits = self._qdrant.search(
             collection_name=self.collection_name,
@@ -115,13 +151,23 @@ class HybridRetriever:
         results: List[Dict[str, Any]] = []
         for hit in hits:
             payload = hit.payload or {}
+            source_file = payload.get("source_file", "")
+            section_header = payload.get("section_header", "")
+            section_chunk_index = payload.get("section_chunk_index", 0)
             results.append(
                 {
                     "id": str(hit.id),
+                    "chunk_id": payload.get("chunk_id")
+                    or canonical_chunk_id(
+                        source_file,
+                        section_header,
+                        section_chunk_index,
+                    ),
                     "text": payload.get("text", ""),
-                    "source_file": payload.get("source_file", ""),
-                    "section_header": payload.get("section_header", ""),
+                    "source_file": source_file,
+                    "section_header": section_header,
                     "chunk_index": payload.get("chunk_index", 0),
+                    "section_chunk_index": section_chunk_index,
                     "score": float(hit.score),
                 }
             )
@@ -133,6 +179,7 @@ class HybridRetriever:
 
     def _sparse_search(self, query: str, top_k: int) -> List[Dict[str, Any]]:
         """Score the in-memory corpus with BM25 and return top results."""
+        self._ensure_corpus_loaded()
         if self._bm25 is None or not self._corpus:
             return []
 
@@ -151,10 +198,12 @@ class HybridRetriever:
             results.append(
                 {
                     "id": entry["id"],
+                    "chunk_id": entry["chunk_id"],
                     "text": entry["text"],
                     "source_file": entry["source_file"],
                     "section_header": entry["section_header"],
                     "chunk_index": entry["chunk_index"],
+                    "section_chunk_index": entry["section_chunk_index"],
                     "score": float(scores[idx]),
                 }
             )
