@@ -142,12 +142,22 @@ class HybridRetriever:
         """Encode *query* with the embedding model and search Qdrant."""
         self._ensure_dense_loaded()
         vector = self._encoder.encode(query).tolist()
-        hits = self._qdrant.search(
-            collection_name=self.collection_name,
-            query_vector=vector,
-            limit=top_k,
-            with_payload=True,
-        )
+        # qdrant-client removed .search() in 1.x in favour of .query_points();
+        # keep the old call for older pinned clients so both resolve.
+        if hasattr(self._qdrant, "query_points"):
+            hits = self._qdrant.query_points(
+                collection_name=self.collection_name,
+                query=vector,
+                limit=top_k,
+                with_payload=True,
+            ).points
+        else:  # pragma: no cover - legacy client
+            hits = self._qdrant.search(
+                collection_name=self.collection_name,
+                query_vector=vector,
+                limit=top_k,
+                with_payload=True,
+            )
         results: List[Dict[str, Any]] = []
         for hit in hits:
             payload = hit.payload or {}

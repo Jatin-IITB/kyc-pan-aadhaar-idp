@@ -55,6 +55,20 @@ def _pctl(values: List[float], q: float) -> float:
     return float(statistics.quantiles(values, n=100)[int(q) - 1]) if len(values) > 1 else values[0]
 
 
+def _sibling_image(json_path: str, sidecar_dir: str) -> str:
+    """Map <...>/<sidecar_dir>/<stem>.json -> <...>/images/<stem>.jpg.
+
+    Must not use str.replace("/x/", "/images/"): glob returns backslash-
+    separated paths on Windows, so the replacement silently no-ops and the
+    harness then tries to read the .json path as a .jpg. Measured: every
+    forensic sweep died on the first attack record under Windows.
+    """
+    p = Path(json_path)
+    if p.parent.name != sidecar_dir:
+        raise ValueError(f"expected a {sidecar_dir}/ path, got {json_path}")
+    return str(p.parent.parent / "images" / f"{p.stem}.jpg")
+
+
 def run_forensics(root: Path) -> Dict[str, Any]:
     from services.forensics.copy_move import CopyMoveDetector
     from services.forensics.ela import ELADetector
@@ -107,7 +121,7 @@ def run_forensics(root: Path) -> Dict[str, Any]:
     per_attack: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
     for ap in sorted(glob.glob(str(root / "tamper" / "*" / "attacks" / "*.json"))):
         rec = json.loads(Path(ap).read_text())
-        ip = ap.replace("/attacks/", "/images/").replace(".json", ".jpg")
+        ip = _sibling_image(ap, "attacks")
         per_attack[rec["attack"]].append(sweep(ip))
 
     if not genuine or not per_attack:
@@ -223,7 +237,7 @@ def run_extraction(root: Path, n: int) -> Optional[Dict[str, Any]]:
     samples, lat, failed = [], [], []
     for tp in sampled:
         truth = json.loads(Path(tp).read_text())
-        ip = tp.replace("/truth/", "/images/").replace(".json", ".jpg")
+        ip = _sibling_image(tp, "truth")
         img = cv2.imread(ip)
         t0 = time.perf_counter()
         try:
