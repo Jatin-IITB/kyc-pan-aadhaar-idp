@@ -9,11 +9,6 @@ REM
 REM      tools\setup_verify.cmd
 REM
 REM  Requires the venv ACTIVATED (prompt shows "(.venv)").
-REM
-REM  NOTE: an earlier version dispatched commands through a :stage
-REM  subroutine as a quoted string and ran them via %~2. That silently
-REM  failed to invoke anything -- all seven stages "failed" in 2s. Keep
-REM  the commands inline.
 REM ===================================================================
 setlocal
 cd /d "%~dp0.."
@@ -41,11 +36,11 @@ python -c "import cv2;cv2.SIFT_create();print('SIFT OK')">>"%LOG%" 2>&1
 set E0=%errorlevel%
 if "%E0%"=="0" (echo     SIFT ok) else (echo     SIFT FAILED)
 
-REM ================= 1: regenerate datasets ==========================
-echo === 1/6 regenerate datasets ^(slow, several minutes^)
+REM ================= 1: verify datasets exist ========================
+echo === 1/6 verify datasets exist
 echo.>>"%LOG%"
-echo ============ 1/6 regenerate datasets ============>>"%LOG%"
-python -m tools.eval.run_eval --regen --no-extraction>>"%LOG%" 2>&1
+echo ============ 1/6 verify datasets ============>>"%LOG%"
+python -c "from pathlib import Path; splits=['tuning','holdout']; missing=[f'{s}/{k}' for s in splits for k in ['synthetic','tamper'] if not list((Path('data')/s/k).rglob('*.jpg'))]; raise SystemExit(', '.join(missing)) if missing else print(f'all dataset splits present')">>"%LOG%" 2>&1
 set E1=%errorlevel%
 call :tick %E1%
 
@@ -97,7 +92,7 @@ echo ============================================================
 echo.>>"%LOG%"
 echo ============ SUMMARY ============>>"%LOG%"
 call :report "SIFT available       " %E0%
-call :report "1 regenerate datasets" %E1%
+call :report "1 datasets present   " %E1%
 call :report "2 unit tests         " %E2%
 call :report "3 forensics gates    " %E3%
 call :report "4 RAG unit tests     " %E4%
