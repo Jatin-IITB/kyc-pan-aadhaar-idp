@@ -40,7 +40,7 @@ REM ================= 1: verify datasets exist ========================
 echo === 1/6 verify datasets exist
 echo.>>"%LOG%"
 echo ============ 1/6 verify datasets ============>>"%LOG%"
-python -c "from pathlib import Path; splits=['tuning','holdout']; missing=[f'{s}/{k}' for s in splits for k in ['synthetic','tamper'] if not list((Path('data')/s/k).rglob('*.jpg'))]; raise SystemExit(', '.join(missing)) if missing else print(f'all dataset splits present')">>"%LOG%" 2>&1
+python -c "import sys;from pathlib import Path;m=[f'{s}/{k}' for s in ['tuning','holdout'] for k in ['synthetic','tamper'] if not list((Path('data')/s/k).rglob('*.jpg'))];print('MISSING: '+', '.join(m)) if m else print('all dataset splits present');sys.exit(1 if m else 0)">>"%LOG%" 2>&1
 set E1=%errorlevel%
 call :tick %E1%
 
