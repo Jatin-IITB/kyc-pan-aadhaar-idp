@@ -1,0 +1,66 @@
+# Generated from the environment that actually passes the test suite
+# (Python 3.14.6, macOS). requirements.txt is stale by several major
+# versions and cannot resolve on 3.14 -- use THIS file.
+# Lines marked NOT INSTALLED are pinned upstream but absent here.
+
+# Core API & Web
+fastapi==0.141.1
+uvicorn[standard]==0.52.1
+pydantic==2.13.4
+python-multipart==0.0.32
+# NOT INSTALLED in the working env: streamlit==1.30.0
+
+# Image Processing & CV
+# NOT INSTALLED in the working env: opencv-python-headless==4.6.0.66
+pillow==12.3.0
+# NOT INSTALLED in the working env: albumentations==1.3.1
+# NOT INSTALLED in the working env: scikit-image==0.22.0
+
+# OCR
+paddleocr==3.7.0
+# NOT INSTALLED in the working env: paddlepaddle==2.6.2
+
+# ML & Detection
+ultralytics==8.4.116
+torch==2.13.0
+torchvision==0.28.0
+
+# Data & Utils
+numpy==2.3.5
+pandas==3.0.5
+python-dateutil==2.9.0.post0
+pyyaml==6.0.2
+python-dotenv==1.2.2
+jsonschema==4.26.0
+requests==2.34.2
+
+# Testing
+pytest==9.1.1
+# NOT INSTALLED in the working env: pytest-asyncio==0.23.3
+# NOT INSTALLED in the working env: pytest-cov==4.1.0
+httpx==0.28.1
+
+# Async & Queue
+celery==5.6.3
+redis==8.1.0
+
+# Database & Storage
+# NOT INSTALLED in the working env: sqlalchemy[asyncio]==2.0.25
+# NOT INSTALLED in the working env: asyncpg==0.29.0
+# NOT INSTALLED in the working env: alembic==1.13.1
+# NOT INSTALLED in the working env: minio==7.2.3
+
+# Orchestration & Search
+langgraph==1.2.10
+qdrant-client==1.19.0
+sentence-transformers==5.7.0
+rank-bm25==0.2.2
+
+# Monitoring & Logging
+# NOT INSTALLED in the working env: loguru==0.7.2
+# NOT INSTALLED in the working env: prometheus-client==0.19.0
+
+# Data Generation (tools/)
+faker==40.36.0
+reportlab==5.0.0
+qrcode==8.2

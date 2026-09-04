@@ -1,6 +1,6 @@
 PY := .venv/bin/python
 
-.PHONY: eval eval-fast eval-rag eval-rag-faithfulness forge test
+.PHONY: eval eval-fast eval-rag eval-rag-faithfulness eval-evasion forge test
 
 ## eval: full Truth Engine run — forensics + decision + VLM extraction + CI gates
 eval:
@@ -17,6 +17,10 @@ eval-rag:
 ## eval-rag-faithfulness: retrieval gates plus local qwen3 citation audit
 eval-rag-faithfulness:
 	$(PY) -m tools.eval.rag_eval --faithfulness --check
+
+## eval-evasion: recall vs attacker save quality — draws the ADR-040 tautology
+eval-evasion:
+	$(PY) -m tools.eval.evasion_probe
 
 ## forge: regenerate the synthetic + tamper datasets from their seeds
 forge:

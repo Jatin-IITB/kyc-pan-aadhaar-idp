@@ -4,7 +4,7 @@ A production-shaped document intelligence platform for Indian identity documents
 
 Built as a LangGraph state machine with dual-path extraction (YOLOv8 + PaddleOCR fast path, vision-LLM fallback) and a measurement harness that gates CI on ratcheting quality thresholds.
 
-![Python](https://img.shields.io/badge/python-3.14-blue) ![Tests](https://img.shields.io/badge/tests-135-green) ![ADRs](https://img.shields.io/badge/ADRs-39-blueviolet) ![License](https://img.shields.io/badge/license-MIT-lightgrey)
+![Python](https://img.shields.io/badge/python-3.14-blue) ![Tests](https://img.shields.io/badge/tests-149-green) ![ADRs](https://img.shields.io/badge/ADRs-41-blueviolet) ![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
 ---
 
@@ -87,7 +87,7 @@ Per attack class:
 | `font_swap` | 77% † | Template-conformance typography ([ADR-030](docs/adr/030-template-font-forensics.md), [ADR-032](docs/adr/032-w8-per-doc-type-font-forensics.md), [ADR-036](docs/adr/036-w12-aadhaar-font-recalibration.md), [ADR-039](docs/adr/039-w15-pan-corner-top-tightening.md)) |
 | `screen_recapture` | 87% | FFT Moiré analysis + radial-ring scan + combined score ([ADR-033](docs/adr/033-w9-dct-copy-move-negative-result.md), [ADR-035](docs/adr/035-w11-combined-moire-score.md)) |
 
-> **\* Read these two honestly.** The 100% is *tautological*: the detector fires on "saved at Q<88," which is an artifact of how the forge writes these attacks — not evidence of tampering. An attacker who re-saves at Q=92 evades it completely. Documented in full in [ADR-028](docs/adr/028-w4-forensic-precision.md). They're gated at 0.90 to catch regressions, **not** as a claim of adversarial robustness.
+> **\* Read these two honestly.** The 100% is *tautological*: the detector fires on "saved at Q<88," which is an artifact of how the forge writes these attacks — not evidence of tampering. This is no longer an assertion — it is **measured**: raising only the attacker's save quality to Q=95 collapses recall to **7.8%** (`text_splice`) and **10.0%** (`regenerate`), with the quality flag firing 0/180 times ([ADR-040](docs/adr/040-w16-tautology-measured-and-double-jpeg-negative-result.md), reproduce with `make eval-evasion`). W16 also establishes that textbook double-JPEG detection cannot replace the gate here — genuine documents are mismatched double-JPEG while `regenerate` is same-quality triple-JPEG, so the signal is *inverted*. Origin documented in [ADR-028](docs/adr/028-w4-forensic-precision.md). They're gated at 0.90 to catch regressions in the metadata path, **not** as a claim of adversarial robustness.
 
 > **† font_swap went 0% → 73% by changing the question.** The attack re-renders the whole card with permuted fonts, so internal-consistency checks are blind *by construction* — no region is an outlier when everything shifts together. The detector tests conformance to per-doc-type typographic envelopes (corner density, stroke modulation, advance uniformity, glyph width CV) calibrated on genuine documents, with leave-one-out threshold selection, interior-point stability margins, per-doc-type vote/margin, and a content hash binding the shipped profile to its calibration data. Validated at 0% FPR on seeds never used for calibration. Aadhaar recall was near-zero until W12 added `id_width_cv` and tightened margins ([ADR-036](docs/adr/036-w12-aadhaar-font-recalibration.md)).
 
@@ -153,11 +153,11 @@ The eval harness exists precisely to keep these claims falsifiable — it's what
 
 ## Engineering practices
 
-- **39 ADRs** in [`docs/adr/`](docs/adr/) — every non-obvious decision recorded, including the ones that *failed*: [ADR-019](docs/adr/019-rotation-classifier.md) documents a rotation classifier that scored 0/4 on real cards and was disabled rather than shipped.
+- **41 ADRs** in [`docs/adr/`](docs/adr/) — every non-obvious decision recorded, including the ones that *failed*: [ADR-019](docs/adr/019-rotation-classifier.md) documents a rotation classifier that scored 0/4 on real cards and was disabled rather than shipped.
 - **Independent audit per phase** — each phase reviewed by a separate pass, findings tracked Critical/Significant/Minor and remediated before moving on.
 - **Ratcheting CI gates** — [`config/eval_thresholds.yaml`](config/eval_thresholds.yaml) encodes the current measured floor. Any change that degrades a certified metric turns the build red.
 - **Held-out evaluation** — tuning and holdout seed pairs are separate and CI-enforced, so numbers can't be tuned into existence.
-- **135 unit tests.**
+- **149 unit tests.**
 
 ---
 
@@ -173,10 +173,20 @@ API docs at `http://localhost:8000/docs`.
 Local development:
 
 ```bash
-python -m venv .venv && .venv/bin/pip install -r requirements.txt
+python -m venv .venv && .venv/bin/pip install -r requirements-lock.txt
 .venv/bin/python -m pytest tests/unit -q     # tests
+make forge                                   # regenerate eval data from seeds
 make eval                                    # reproduce the forensics metrics above
 ```
+
+> Use **`requirements-lock.txt`**, not `requirements.txt`. The latter is stale
+> by several major versions and cannot resolve on Python 3.14. It also pins
+> `opencv-python-headless`, which lacks **SIFT** — the copy-move detector
+> (90% recall) requires `opencv-contrib-python`. See the lockfile header.
+
+Windows: use `.venv\Scripts\python.exe`, install Python 3.12 (PaddlePaddle has
+no Windows wheels on 3.14), and substitute `python -m tools.eval.run_eval
+--regen --no-extraction` for `make forge`.
 
 Fetch the Aadhaar field detector:
 
