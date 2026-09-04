@@ -16,7 +16,7 @@ forensics:
   # recall 63.9% -> 75.6% with genuine FPR held at 0 on both passes. Values
   # reflect the REPRODUCIBLE profile (post-audit re-emit, ADR-030 C1) — the
   # first emit was fit on stale cached data and measured higher.
-  overall_recall_min: 0.87
+  overall_recall_min: 0.88
   per_attack_recall_min:
     # W14: patch-NCC verification (ADR-038). tuning 0.80 / holdout 0.90.
     copy_move: 0.77
@@ -25,10 +25,11 @@ forensics:
     # tuning 0.77 / holdout 0.87 (period-13 recovered via combined score).
     screen_recapture: 0.70
     text_splice: 0.90      # W4: JPEG quality gate (tautological on forge — see ADR-028 L1-L2)
-    # W6+W8+W12: template-conformance typography with per-doc-type vote/margin
-    # and id_width_cv for Aadhaar (ADR-030, ADR-032, ADR-036).
-    # W12: Aadhaar margin 8->4 + id_width_cv low. tuning 0.67 / holdout 0.73.
-    font_swap: 0.60
+    # W6+W8+W12+W15: template-conformance typography with per-doc-type
+    # vote/margin and id_width_cv for Aadhaar (ADR-030, ADR-032, ADR-036).
+    # W15: per-feature margin for PAN corner_top (ADR-039).
+    # tuning 0.77 / holdout 0.77.
+    font_swap: 0.73
     regenerate: 0.90       # W4: JPEG quality gate (tautological on forge — see ADR-028 L1-L2)
 
 decision:
@@ -41,8 +42,8 @@ decision:
   # W10 SIFT fallback closed more copy_move; W11 combined score closed
   # more screen_recapture; W12 Aadhaar font closed more font_swap;
   # W13 SIFT merge closed more copy_move; W14 patch-NCC closed more
-  # copy_move (tuning 22 / holdout 15).
-  undetected_autoclear_max: 23
+  # copy_move; W15 per-feature PAN margin (tuning 20 / holdout 14).
+  undetected_autoclear_max: 20
   # Genuine docs (perfect extraction) that auto-clear. With clean forensics
   # (0% FPR), this should be 1.0.
   genuine_auto_clear_min: 0.95

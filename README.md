@@ -4,7 +4,7 @@ A production-shaped document intelligence platform for Indian identity documents
 
 Built as a LangGraph state machine with dual-path extraction (YOLOv8 + PaddleOCR fast path, vision-LLM fallback) and a measurement harness that gates CI on ratcheting quality thresholds.
 
-![Python](https://img.shields.io/badge/python-3.14-blue) ![Tests](https://img.shields.io/badge/tests-134-green) ![ADRs](https://img.shields.io/badge/ADRs-38-blueviolet) ![License](https://img.shields.io/badge/license-MIT-lightgrey)
+![Python](https://img.shields.io/badge/python-3.14-blue) ![Tests](https://img.shields.io/badge/tests-135-green) ![ADRs](https://img.shields.io/badge/ADRs-39-blueviolet) ![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
 ---
 
@@ -72,7 +72,7 @@ All forensics numbers below come from `make eval`, scored on a **held-out seed p
 | Metric | Result |
 |---|---|
 | **Genuine false-positive rate** | **0/30 (0.0%)** |
-| Overall tamper recall | 91.7% |
+| Overall tamper recall | 92.2% |
 | Decision-layer leakage (flagged docs that auto-cleared) | **0** |
 | Genuine auto-clear rate | 100% |
 
@@ -84,7 +84,7 @@ Per attack class:
 | `text_splice` | 100% \* | JPEG quantization-table quality |
 | `regenerate` | 100% \* | JPEG quantization-table quality |
 | `copy_move` | 90% | ORB keypoint matching + SIFT fallback + neighborhood merge + patch-NCC verification ([ADR-034](docs/adr/034-w10-sift-copy-move-fallback.md), [ADR-037](docs/adr/037-w13-sift-neighborhood-merge.md), [ADR-038](docs/adr/038-w14-sift-patch-ncc-verification.md)) |
-| `font_swap` | 73% † | Template-conformance typography ([ADR-030](docs/adr/030-template-font-forensics.md), [ADR-032](docs/adr/032-w8-per-doc-type-font-forensics.md), [ADR-036](docs/adr/036-w12-aadhaar-font-recalibration.md)) |
+| `font_swap` | 77% † | Template-conformance typography ([ADR-030](docs/adr/030-template-font-forensics.md), [ADR-032](docs/adr/032-w8-per-doc-type-font-forensics.md), [ADR-036](docs/adr/036-w12-aadhaar-font-recalibration.md), [ADR-039](docs/adr/039-w15-pan-corner-top-tightening.md)) |
 | `screen_recapture` | 87% | FFT Moiré analysis + radial-ring scan + combined score ([ADR-033](docs/adr/033-w9-dct-copy-move-negative-result.md), [ADR-035](docs/adr/035-w11-combined-moire-score.md)) |
 
 > **\* Read these two honestly.** The 100% is *tautological*: the detector fires on "saved at Q<88," which is an artifact of how the forge writes these attacks — not evidence of tampering. An attacker who re-saves at Q=92 evades it completely. Documented in full in [ADR-028](docs/adr/028-w4-forensic-precision.md). They're gated at 0.90 to catch regressions, **not** as a claim of adversarial robustness.
@@ -153,11 +153,11 @@ The eval harness exists precisely to keep these claims falsifiable — it's what
 
 ## Engineering practices
 
-- **38 ADRs** in [`docs/adr/`](docs/adr/) — every non-obvious decision recorded, including the ones that *failed*: [ADR-019](docs/adr/019-rotation-classifier.md) documents a rotation classifier that scored 0/4 on real cards and was disabled rather than shipped.
+- **39 ADRs** in [`docs/adr/`](docs/adr/) — every non-obvious decision recorded, including the ones that *failed*: [ADR-019](docs/adr/019-rotation-classifier.md) documents a rotation classifier that scored 0/4 on real cards and was disabled rather than shipped.
 - **Independent audit per phase** — each phase reviewed by a separate pass, findings tracked Critical/Significant/Minor and remediated before moving on.
 - **Ratcheting CI gates** — [`config/eval_thresholds.yaml`](config/eval_thresholds.yaml) encodes the current measured floor. Any change that degrades a certified metric turns the build red.
 - **Held-out evaluation** — tuning and holdout seed pairs are separate and CI-enforced, so numbers can't be tuned into existence.
-- **134 unit tests.**
+- **135 unit tests.**
 
 ---
 
@@ -266,7 +266,7 @@ docs/adr/           30 architecture decision records
 
 **Known gaps — stated deliberately:**
 - **PAN detector is under-trained** — 71 train / 6 val images; `pan` class recall 0.60. Needs a materially larger annotated set before it should carry traffic.
-- Aadhaar font conformance improved from near-zero to ~63% via `id_width_cv` and margin tightening ([ADR-036](docs/adr/036-w12-aadhaar-font-recalibration.md)), but further improvement likely requires additional features or a learned discriminator.
+- Aadhaar font conformance improved from near-zero to ~63% via `id_width_cv` and margin tightening ([ADR-036](docs/adr/036-w12-aadhaar-font-recalibration.md)), but further improvement likely requires additional features or a learned discriminator. PAN font conformance reached 100% holdout via per-feature margin tightening ([ADR-039](docs/adr/039-w15-pan-corner-top-tightening.md)); DL and Aadhaar misses remain intractable with threshold-based approaches.
 - `copy_move` improved from 63% to 90% via SIFT fallback ([ADR-034](docs/adr/034-w10-sift-copy-move-fallback.md)), shift-neighborhood merge ([ADR-037](docs/adr/037-w13-sift-neighborhood-merge.md)), and patch-NCC verification ([ADR-038](docs/adr/038-w14-sift-patch-ncc-verification.md)). The remaining 10% consists of cases where the dominant shift bin has too few matches or the wrong shift entirely dominates (structural repetition at a different offset). Further improvement likely requires restricting the search to YOLO-detected photo regions or a learned localizer.
 - `text_splice` / `regenerate` detection is metadata-only and evadable; robust detection needs frequency-domain work (double-JPEG ghosts, DCT histogram analysis, or a learned localizer).
 - No production-traffic calibration — all forensics numbers are synthetic-set numbers.

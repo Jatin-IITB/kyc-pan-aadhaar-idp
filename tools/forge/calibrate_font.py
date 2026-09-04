@@ -67,6 +67,14 @@ DT_MARGIN = {
     "aadhaar": 4.0,
     "driving_license": 5.0,
 }
+# Per-feature margin overrides (W15, ADR-039). PAN corner_top at margin=8
+# gives bound 0.436 — far outside the genuine range (max 0.340 across 52
+# images) because the calibration cluster is tight (MAD=0.015). Margin 3.5
+# gives bound 0.369, an interior point between genuine max (0.340) and
+# weakest swap recovery (0.400). Validated at 0% FPR on 52 genuine PAN.
+DT_FEATURE_MARGIN: dict[str, dict[str, float]] = {
+    "pan": {"corner_top": 3.5},
+}
 
 
 def features_for(dt):
@@ -139,13 +147,20 @@ def collect(split):
     return out
 
 
+def _margin_for(dt, feat, global_margin=None):
+    """Per-feature margin with DT_FEATURE_MARGIN override."""
+    if global_margin is not None:
+        return global_margin
+    return DT_FEATURE_MARGIN.get(dt, {}).get(feat, DT_MARGIN[dt])
+
+
 def fit(cal, margin=None):
     prof = {}
     for dt in DOC_TYPES:
-        m = DT_MARGIN[dt] if margin is None else margin
         g = cal[dt]["genuine"]
         prof[dt] = {"_vote": DT_VOTE[dt]}
         for feat, side in features_for(dt).items():
+            m = _margin_for(dt, feat, margin)
             vals = [s[feat] for s in g if s.get(feat) is not None]
             if len(vals) >= 4:
                 if side == "band":
@@ -193,13 +208,13 @@ def loo_fpr(cal, margin=None):
     """
     fp = n = 0
     for dt in DOC_TYPES:
-        m = DT_MARGIN[dt] if margin is None else margin
         vote = DT_VOTE[dt]
         docs = cal[dt]["genuine"]
         for i in range(len(docs)):
             rest = docs[:i] + docs[i + 1:]
             prof_dt = {}
             for feat, side in features_for(dt).items():
+                m = _margin_for(dt, feat, margin)
                 vals = [s[feat] for s in rest if s.get(feat) is not None]
                 if len(vals) >= 4:
                     if side == "band":

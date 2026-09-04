@@ -217,6 +217,17 @@ def test_font_template_band_bound_catches_outliers():
     pathlib.Path(f.name).unlink()
 
 
+def test_font_template_pan_corner_top_tightened():
+    """W15: PAN corner_top bound uses per-feature margin (0.37, not 0.44)."""
+    import json
+    from pathlib import Path
+    prof = json.loads(Path("config/font_profiles.json").read_text())
+    pan_ct = prof["profiles"]["pan"]["corner_top"]
+    assert pan_ct["side"] == "high"
+    assert pan_ct["bound"] < 0.40, f"PAN corner_top bound {pan_ct['bound']:.4f} too loose"
+    assert pan_ct["bound"] > 0.35, f"PAN corner_top bound {pan_ct['bound']:.4f} too tight"
+
+
 def test_spoof_scorer_low_jpeg_quality_flags():
     """Low JPEG quality in metadata triggers the metadata gate."""
     result = SpoofScorer().compute(
