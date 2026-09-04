@@ -36,9 +36,26 @@ PER_TYPE = 10
 
 def ensure_datasets(root: Path, regen: bool,
                     genuine_seed: int = 42, tamper_seed: int = 123) -> None:
+    from tools.forge.fonts import check_font_environment, font_environment
     from tools.forge.identity_forge import generate
     from tools.forge.tamper_forge import ATTACKS, forge_dataset
     from tools.forge.templates import RENDERERS
+
+    # Fail closed on a broken font environment. Rendering with PIL's default
+    # bitmap font, or with several kinds collapsed onto one file, produces a
+    # corpus the calibrated typographic envelope cannot describe — measured on
+    # Windows as 86.7% genuine FPR with font_swap recall inflated to 0.83.
+    # Generating that silently is worse than refusing.
+    if regen:
+        problems = check_font_environment()
+        if problems:
+            env = "\n".join(f"    {k:8s} -> {v}" for k, v in font_environment().items())
+            raise SystemExit(
+                "refusing to generate: font environment is not usable\n"
+                + "\n".join(f"  - {p}" for p in problems)
+                + f"\n  resolved fonts:\n{env}\n"
+                  "  Install the missing typefaces, or extend _CANDIDATES in "
+                  "tools/forge/fonts.py for this platform.")
 
     syn, tam = root / "synthetic", root / "tamper"
     for doc_type in RENDERERS:

@@ -4,7 +4,7 @@ A production-shaped document intelligence platform for Indian identity documents
 
 Built as a LangGraph state machine with dual-path extraction (YOLOv8 + PaddleOCR fast path, vision-LLM fallback) and a measurement harness that gates CI on ratcheting quality thresholds.
 
-![Python](https://img.shields.io/badge/python-3.14-blue) ![Tests](https://img.shields.io/badge/tests-154-green) ![ADRs](https://img.shields.io/badge/ADRs-41-blueviolet) ![License](https://img.shields.io/badge/license-MIT-lightgrey)
+![Python](https://img.shields.io/badge/python-3.14-blue) ![Tests](https://img.shields.io/badge/tests-160-green) ![ADRs](https://img.shields.io/badge/ADRs-41-blueviolet) ![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
 ---
 
@@ -157,7 +157,7 @@ The eval harness exists precisely to keep these claims falsifiable — it's what
 - **Independent audit per phase** — each phase reviewed by a separate pass, findings tracked Critical/Significant/Minor and remediated before moving on.
 - **Ratcheting CI gates** — [`config/eval_thresholds.yaml`](config/eval_thresholds.yaml) encodes the current measured floor. Any change that degrades a certified metric turns the build red.
 - **Held-out evaluation** — tuning and holdout seed pairs are separate and CI-enforced, so numbers can't be tuned into existence.
-- **154 unit tests.**
+- **160 unit tests.**
 
 ---
 
