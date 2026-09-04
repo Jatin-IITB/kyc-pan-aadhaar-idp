@@ -75,3 +75,53 @@ def test_case_and_verdict_ids_are_reproducible(tmp_path):
         "explanation": "Because.",
     }
     assert verdict_content_hash(verdict) == verdict_content_hash(dict(verdict))
+
+
+def test_policy_verifier_exposes_decision_and_audit_adapter_keys(monkeypatch):
+    class Retriever:
+        def retrieve(self, query, top_k):
+            return [{"text": "PAN is required."}]
+
+    class Reranker:
+        def rerank(self, query, chunks, top_k):
+            return chunks
+
+    verifier = PolicyVerifier(retriever=Retriever(), reranker=Reranker())
+    monkeypatch.setattr(verifier, "_generate_queries", lambda *_: ["Is PAN required?"])
+    monkeypatch.setattr(
+        verifier,
+        "_judge_requirement",
+        lambda *_: {
+            "requirement": "Is PAN required?",
+            "status": "PASS",
+            "citation": {
+                "source": "policy.md",
+                "section": "PAN",
+                "text": "PAN is required.",
+            },
+            "explanation": "The policy requires PAN.",
+        },
+    )
+
+    result = verifier.verify({"doc_type": "pan", "flat_fields": {}})
+    assert result["overall_status"] == "COMPLIANT"
+    assert result["compliant"] is True
+    assert result["citations"] == [result["checks"][0]["citation"]]
+
+
+def test_policy_retrieval_failure_requires_review_and_fails_closed(monkeypatch):
+    class FailingRetriever:
+        def retrieve(self, query, top_k):
+            raise RuntimeError("qdrant unavailable")
+
+    verifier = PolicyVerifier(
+        retriever=FailingRetriever(),
+        reranker=object(),
+    )
+    monkeypatch.setattr(verifier, "_generate_queries", lambda *_: ["Requirement"])
+
+    result = verifier.verify({"doc_type": "pan", "flat_fields": {"name": "A"}})
+    assert result["overall_status"] == "REQUIRES_REVIEW"
+    assert result["compliant"] is False
+    assert result["citations"] == []
+    assert result["checks"][0]["status"] == "INSUFFICIENT_DATA"

@@ -61,7 +61,17 @@ carry a hash of the exact verdict, so agreement cannot silently be reported
 against changed model output. qwen thinking is disabled for this structured
 classification; temperature and seed are fixed at zero.
 
-### D4: Baseline and gates are a follow-up measurement commit
+### D4: Preserve downstream decision and audit compatibility
+
+The existing graph consumers read `policy_result.compliant` and
+`policy_result.citations`, while the verifier originally returned only
+`overall_status` and nested checks. The verifier now emits both schemas:
+`compliant` is true only for `COMPLIANT`, and citations are flattened for the
+audit ledger. Retrieval failures return `REQUIRES_REVIEW` with
+`compliant: false`, preventing an unavailable policy store from silently
+auto-clearing a case.
+
+### D5: Baseline and gates are a follow-up measurement commit
 
 No retrieval or citation number is claimed in this commit. The designated
 model host is the Windows evaluation machine. After it produces the baseline,

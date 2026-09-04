@@ -72,6 +72,8 @@ class PolicyVerifier:
 
                 {
                     "overall_status": "COMPLIANT" | "NON_COMPLIANT" | "REQUIRES_REVIEW",
+                    "compliant": bool,
+                    "citations": [{"source": str, "section": str, "text": str}],
                     "checks": [
                         {
                             "requirement": str,
@@ -88,22 +90,50 @@ class PolicyVerifier:
 
         queries = self._generate_queries(doc_type, flat_fields)
         if not queries:
-            return {
-                "overall_status": "REQUIRES_REVIEW",
-                "checks": [],
-            }
+            return self._format_result("REQUIRES_REVIEW", [])
 
         checks: List[Dict[str, Any]] = []
         for query in queries:
-            retrieved = self.retriever.retrieve(query, top_k=10)
-            reranked = self.reranker.rerank(query, retrieved, top_k=5)
+            try:
+                retrieved = self.retriever.retrieve(query, top_k=10)
+                reranked = self.reranker.rerank(query, retrieved, top_k=5)
+            except Exception as exc:
+                logger.exception("Policy retrieval failed for query '%s'", query)
+                checks.append(
+                    {
+                        "requirement": query,
+                        "status": "INSUFFICIENT_DATA",
+                        "citation": {"source": "", "section": "", "text": ""},
+                        "explanation": (
+                            "Policy retrieval failed; manual review is required "
+                            f"({type(exc).__name__})."
+                        ),
+                    }
+                )
+                break
             judgement = self._judge_requirement(query, reranked, doc_type, flat_fields)
             checks.append(judgement)
 
         overall = self._determine_overall_status(checks)
+        return self._format_result(overall, checks)
 
+    @staticmethod
+    def _format_result(
+        overall_status: str,
+        checks: List[Dict[str, Any]],
+    ) -> Dict[str, Any]:
+        """Expose both the verifier schema and legacy downstream adapter keys."""
+        citations = [
+            check["citation"]
+            for check in checks
+            if isinstance(check.get("citation"), dict)
+            and any(check["citation"].get(key) for key in ("source", "section", "text"))
+        ]
         return {
-            "overall_status": overall,
+            "overall_status": overall_status,
+            # Decisioning is boolean today; review/unknown must fail closed.
+            "compliant": overall_status == "COMPLIANT",
+            "citations": citations,
             "checks": checks,
         }
 
