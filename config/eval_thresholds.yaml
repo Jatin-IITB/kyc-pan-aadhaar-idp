@@ -28,8 +28,24 @@ forensics:
     # W6+W8+W12+W15: template-conformance typography with per-doc-type
     # vote/margin and id_width_cv for Aadhaar (ADR-030, ADR-032, ADR-036).
     # W15: per-feature margin for PAN corner_top (ADR-039).
-    # tuning 0.77 / holdout 0.77.
-    font_swap: 0.73
+    #
+    # W17 RE-CERTIFIED DOWN 0.73 -> 0.70 (tuning 0.73 / holdout 0.70).
+    # This is the one floor the Windows-corpus recalibration could not hold,
+    # and it is lowered because the old value was never real. The 0.73 was
+    # certified against a corpus rendered with PIL's default bitmap font for
+    # every typographic kind (the fonts.py gap fixed in 33b9f46): font_swap
+    # permuted roles that all resolved to ONE face, so the "attack" re-rendered
+    # a near-identical card and the recall credited to it was the envelope
+    # firing on documents it could not describe — the same defect that showed
+    # up as 70-87% genuine FPR. Measured honestly on real Windows typography
+    # at 0% genuine FPR (LOO-validated, both seeds), font_swap recall is
+    # tuning 22/30, holdout 21/30. The 3 holdout misses are low-severity
+    # swaps (bold->serif only) whose measured signature is inside the genuine
+    # envelope; no margin/vote combination recovers them without reintroducing
+    # false positives, and per this file's own policy a floor records what is
+    # measured today. Raising it again needs an Aadhaar typography feature
+    # that works on 4-glyph number groups, not a threshold move.
+    font_swap: 0.70
     regenerate: 0.90       # W4: JPEG quality gate (tautological on forge — see ADR-028 L1-L2)
 
 decision:

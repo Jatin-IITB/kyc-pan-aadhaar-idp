@@ -49,6 +49,14 @@ class CopyMoveDetector:
     more tolerant. Runs only when ORB returns ``detected=False``, with a
     higher min_matches bar (12 vs 8) and tighter max_aspect (3.0 vs 4.0)
     to maintain 0% FPR.
+
+    v5: three guards against same-shift text coincidences, found when the
+    forge corpus was first rendered with real Windows fonts (4/60 genuine
+    documents flagged: repeated digits at the Aadhaar group pitch, a label
+    prefix shared with the next line, a name glyph coinciding with the photo
+    frame's corners). Span is measured on the cluster's main spatial group,
+    the SIFT stage uses a wider span floor, and every accepted cluster must
+    pass a weak patch-NCC floor. Measured: 0/60 genuine, recall unchanged.
     """
 
     SIFT_RATIO_THRESH: float = 0.65
@@ -60,6 +68,15 @@ class CopyMoveDetector:
     SIFT_PATCH_NCC_MIN: float = 0.78
     SIFT_PATCH_DOM_MIN: int = 17
     SIFT_PATCH_RATIO_MIN: float = 1.15
+    # v5 guards (see class docstring). SIFT's multi-scale keypoints scatter
+    # ~8 px wider than ORB's around the same glyphs: a repeated two-digit block
+    # of a monospace ID number measured 28x23 px under ORB (rejected by
+    # min_span_px) but 33x37 under SIFT. Glyph height at card scale is <= 37;
+    # the smallest real SIFT-path region cluster measured 49.
+    SIFT_MIN_SPAN_PX: float = 40.0
+    CORE_LINK_PX: float = 96.0
+    CORE_FRACTION: float = 0.75
+    PATCH_NCC_FLOOR: float = 0.40
 
     def __init__(
         self,
@@ -94,8 +111,15 @@ class CopyMoveDetector:
             result = self._sift_stage(gray)
         return result
 
+    @staticmethod
+    def _pair_shift(pts: np.ndarray, pairs: List[tuple]) -> tuple:
+        """Median pixel displacement of the pairs. The bin centre can be off by
+        up to shift_bin_px/2, which zeroes patch correlation on fine texture."""
+        d = np.median(np.array([pts[j] - pts[i] for i, j, _ in pairs]), axis=0)
+        return int(round(float(d[0]))), int(round(float(d[1])))
+
     def _patch_ncc(
-        self, gray: np.ndarray, src_pts: np.ndarray, dom_bin: tuple
+        self, gray: np.ndarray, src_pts: np.ndarray, shift: tuple
     ) -> float:
         """Pearson correlation between the source region and its shifted copy."""
         h, w = gray.shape[:2]
@@ -104,8 +128,7 @@ class CopyMoveDetector:
         x1, y1 = src_pts.max(axis=0).astype(int)
         x0, y0 = max(0, x0 - pad), max(0, y0 - pad)
         x1, y1 = min(w, x1 + pad), min(h, y1 + pad)
-        sx = int(dom_bin[0] * self.shift_bin_px)
-        sy = int(dom_bin[1] * self.shift_bin_px)
+        sx, sy = int(shift[0]), int(shift[1])
         tx0, ty0 = x0 + sx, y0 + sy
         tx1, ty1 = x1 + sx, y1 + sy
         if tx0 < 0:
@@ -128,6 +151,38 @@ class CopyMoveDetector:
         if denom < 1e-10:
             return 0.0
         return float((src_z * tgt_z).sum() / denom)
+
+    def _core_points(self, src: np.ndarray) -> np.ndarray:
+        """Points of the cluster's main spatial group, for span measurement.
+
+        Single-linkage at ``CORE_LINK_PX``; the largest group is used when it
+        holds at least ``CORE_FRACTION`` of the cluster, else the raw cluster.
+        Without this, one same-shift coincidence 180 px away stretched a
+        37x24 px repeated-digit block into a 105x198 "region". Measured on the
+        forge corpus: real photo-region clusters have internal gaps up to
+        ~70 px, strays sit >= 170 px away, so any radius in 80-160 separates
+        them; 96 is two minimum shifts.
+        """
+        n = len(src)
+        if n < 4:
+            return src
+        dist = np.hypot(src[:, 0, None] - src[None, :, 0], src[:, 1, None] - src[None, :, 1])
+        adjacent = dist <= self.CORE_LINK_PX
+        labels = np.full(n, -1)
+        groups = 0
+        for seed in range(n):
+            if labels[seed] >= 0:
+                continue
+            labels[seed] = groups
+            stack = [seed]
+            while stack:
+                u = stack.pop()
+                for v in np.flatnonzero(adjacent[u] & (labels < 0)):
+                    labels[v] = groups
+                    stack.append(v)
+            groups += 1
+        main = src[labels == np.bincount(labels).argmax()]
+        return main if len(main) >= self.CORE_FRACTION * n else src
 
     def _orb_stage(self, gray: np.ndarray) -> Dict[str, Any]:
         empty: Dict[str, Any] = {
@@ -179,7 +234,8 @@ class CopyMoveDetector:
         if not pairs:
             return empty
 
-        return self._cluster_and_decide(pts, pairs, self.min_matches, self.max_aspect, 256.0)
+        return self._cluster_and_decide(pts, pairs, self.min_matches, self.max_aspect, 256.0,
+                                        gray=gray)
 
     def _sift_stage(self, gray: np.ndarray) -> Dict[str, Any]:
         """SIFT fallback: 128-dim float descriptors with ratio test."""
@@ -249,6 +305,7 @@ class CopyMoveDetector:
         return self._cluster_and_decide(
             pts, pairs, self.SIFT_MIN_MATCHES, self.SIFT_MAX_ASPECT,
             self.SIFT_PROMISCUITY_L2,
+            min_span=self.SIFT_MIN_SPAN_PX,
             merge_radius=self.SIFT_MERGE_RADIUS,
             merge_min=self.SIFT_MERGE_MIN,
             gray=gray,
@@ -270,6 +327,7 @@ class CopyMoveDetector:
         patch_ncc_min: float = 0.0,
         patch_dom_min: int = 0,
         patch_ratio_min: float = 0.0,
+        min_span: float | None = None,
     ) -> Dict[str, Any]:
         bins: List[tuple] = []
         oriented: List[tuple] = []
@@ -286,16 +344,21 @@ class CopyMoveDetector:
         runner_up = top[1][1] if len(top) > 1 else 0
         dominant = dom_count >= max(min_matches, self.dominance_ratio * runner_up)
         dom_pairs = [p for p, b in zip(oriented, bins) if b == dom_bin]
+        shift_px = self._pair_shift(pts, dom_pairs)
 
-        src = np.array([pts[i] for i, _, _ in dom_pairs])
-        extents = src.max(axis=0) - src.min(axis=0) if len(src) > 1 else np.zeros(2)
-        min_ext, max_ext = float(min(extents)), float(max(extents))
-        aspect = max_ext / max(min_ext, 1.0)
-        span_ok = (self.min_span_px <= min_ext
-                   and max_ext <= self.max_span_px
-                   and aspect <= max_aspect)
+        if min_span is None:
+            min_span = self.min_span_px
+
+        def span_ok_for(points: np.ndarray) -> bool:
+            ext = points.max(axis=0) - points.min(axis=0) if len(points) > 1 else np.zeros(2)
+            lo, hi = float(min(ext)), float(max(ext))
+            return min_span <= lo and hi <= self.max_span_px and hi / max(lo, 1.0) <= max_aspect
+
+        src = self._core_points(np.array([pts[i] for i, _, _ in dom_pairs]))
+        span_ok = span_ok_for(src)
 
         detected = dominant and span_ok
+        verified = False
 
         if not detected and merge_radius > 0:
             neighborhood = set()
@@ -310,26 +373,32 @@ class CopyMoveDetector:
             if nbr_dominant:
                 nbr_pairs = [p for p, b in zip(oriented, bins)
                              if b in neighborhood]
-                nbr_src = np.array([pts[i] for i, _, _ in nbr_pairs])
-                nbr_ext = (nbr_src.max(axis=0) - nbr_src.min(axis=0)
-                           if len(nbr_src) > 1 else np.zeros(2))
-                nbr_min = float(min(nbr_ext))
-                nbr_max = float(max(nbr_ext))
-                nbr_asp = nbr_max / max(nbr_min, 1.0)
-                if (self.min_span_px <= nbr_min
-                        and nbr_max <= self.max_span_px
-                        and nbr_asp <= max_aspect):
+                nbr_src = self._core_points(np.array([pts[i] for i, _, _ in nbr_pairs]))
+                if span_ok_for(nbr_src):
                     detected = True
                     dom_pairs = nbr_pairs
                     dom_count = merged_count
+                    src = nbr_src
+                    shift_px = self._pair_shift(pts, dom_pairs)
 
         if (not detected and gray is not None and patch_ncc_min > 0
                 and span_ok
                 and dom_count >= patch_dom_min
                 and dom_count > patch_ratio_min * runner_up):
-            ncc = self._patch_ncc(gray, src, dom_bin)
+            ncc = self._patch_ncc(gray, src, shift_px)
             if ncc >= patch_ncc_min:
                 detected = True
+                verified = True
+
+        # Every accepted cluster must show at least weak pixel agreement
+        # between its box and the shifted box. Keypoint-only evidence can be a
+        # composite of unrelated coincidences at one shift — a repeated name
+        # glyph plus the two bottom corners of the photo frame measured 0.08,
+        # a label prefix shared with the next text line 0.18 — while real
+        # duplications measured >= 0.54 on the forge corpus.
+        if (detected and not verified and gray is not None
+                and self._patch_ncc(gray, src, shift_px) < self.PATCH_NCC_FLOOR):
+            detected = False
 
         matched_pairs = [
             {

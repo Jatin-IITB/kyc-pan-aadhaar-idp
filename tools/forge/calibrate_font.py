@@ -48,9 +48,18 @@ BASE_FEATURES = {
 # On Aadhaar (12-digit number), genuine clusters at 0.15-0.25; font swaps
 # scatter both directions but the genuine right tail is too heavy for a band
 # bound (12.5% FPR), so only the low side is used (W12, ADR-036).
+# adv_cv_min is EXCLUDED on Aadhaar (None). Its mechanism — a monospace ID
+# line whose advance turns irregular when mono is swapped away — cannot
+# operate there: the 12-digit number renders as three 4-glyph groups, below
+# the 5-component minimum, so the feature silently lands on the proportional
+# value/label lines instead. Measured on the Windows-rendered corpus: 0/48
+# font_swap documents exceed the genuine maximum (the high-severity swap sets
+# values in mono, which LOWERS the value-line CV), while a blur-fragmented
+# genuine document (stroke slivers counted as glyph starts) sits 11 MAD above
+# the bound — the last genuine false positive of the FPR audit.
 DT_EXTRA = {
     "driving_license": {"id_width_cv": "high"},
-    "aadhaar": {"id_width_cv": "low"},
+    "aadhaar": {"id_width_cv": "low", "adv_cv_min": None},
 }
 
 # Per-doc-type vote/margin: DL has 4 features so vote=2 is stable at a
@@ -72,13 +81,21 @@ DT_MARGIN = {
 # images) because the calibration cluster is tight (MAD=0.015). Margin 3.5
 # gives bound 0.369, an interior point between genuine max (0.340) and
 # weakest swap recovery (0.400). Validated at 0% FPR on 52 genuine PAN.
+# Windows-corpus recalibration (FPR audit): Aadhaar corner_top does not
+# separate genuine from swap (both span 0.26-0.60), and at margin 4 two
+# calibration documents breached it under leave-one-out; 5 restores LOO FPR 0
+# at no recall cost. DL mod_top is the discriminative feature there: margin 4
+# lifts calibration recall 12/16 -> 15/16 on both seeds with LOO FPR 0.
 DT_FEATURE_MARGIN: dict[str, dict[str, float]] = {
     "pan": {"corner_top": 3.5},
+    "aadhaar": {"corner_top": 5.0},
+    "driving_license": {"mod_top": 4.0},
 }
 
 
 def features_for(dt):
-    return {**BASE_FEATURES, **DT_EXTRA.get(dt, {})}
+    merged = {**BASE_FEATURES, **DT_EXTRA.get(dt, {})}
+    return {k: v for k, v in merged.items() if v is not None}
 
 
 FEATURES = {**BASE_FEATURES, **{"id_width_cv": "high"}}

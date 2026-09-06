@@ -1,7 +1,7 @@
 {
   "_comment": "Calibrated by tools/forge/calibrate_font.py \u2014 see ADR-030. Fit on calibration seed only; held-out numbers below are out-of-sample.",
   "extractor_version": "tf-2",
-  "calibration_data_hash": "cd5b10ad37779aee",
+  "calibration_data_hash": "e4cbe11604d185b3",
   "calibration_n_per_type": 16,
   "calibration_seed": 9001,
   "holdout_seed": 24601,
@@ -13,7 +13,7 @@
     "id_width_cv": "high"
   },
   "measured_holdout": {
-    "recall": 0.8542,
+    "recall": 0.8125,
     "fpr": 0.0,
     "per_doc_type": {
       "pan": {
@@ -23,7 +23,7 @@
         "n_gen": 16
       },
       "aadhaar": {
-        "recall": 0.625,
+        "recall": 0.5,
         "fpr": 0.0,
         "n_swap": 16,
         "n_gen": 16
@@ -41,53 +41,49 @@
       "_vote": 1,
       "corner_top": {
         "side": "high",
-        "bound": 0.3691382894972184
+        "bound": 0.3621974589250645
       },
       "mod_top": {
         "side": "low",
-        "bound": 0.35086293021837855
+        "bound": 0.3739891002575556
       },
       "adv_cv_min": {
         "side": "high",
-        "bound": 0.38563020989256114
+        "bound": 0.29350886115624514
       }
     },
     "aadhaar": {
       "_vote": 1,
       "corner_top": {
         "side": "high",
-        "bound": 0.5173174443216152
+        "bound": 0.5350026533911626
       },
       "mod_top": {
         "side": "low",
-        "bound": 0.33149251590172446
-      },
-      "adv_cv_min": {
-        "side": "high",
-        "bound": 0.22651444214345065
+        "bound": 0.31828944136699044
       },
       "id_width_cv": {
         "side": "low",
-        "bound": 0.1485829030159716
+        "bound": 0.15006347493172986
       }
     },
     "driving_license": {
       "_vote": 2,
       "corner_top": {
         "side": "high",
-        "bound": 0.7307463048130923
+        "bound": 0.6802744708526888
       },
       "mod_top": {
         "side": "low",
-        "bound": 0.2605898380279541
+        "bound": 0.224614183108012
       },
       "adv_cv_min": {
         "side": "high",
-        "bound": 0.06421163350153847
+        "bound": 0.07196553668124085
       },
       "id_width_cv": {
         "side": "high",
-        "bound": 0.061372533352627795
+        "bound": 0.05524275555953791
       }
     }
   }
